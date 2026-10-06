@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>شلم پیک - ورود و لابی مسابقه</title>
+<title>شلم پیک - Shelem Peak</title>
 
 <meta name="author" content="مجتبی سخایی">
 <meta name="copyright" content="تمامی حقوق مادی و معنوی شلم پیک محفوظ است.">
@@ -16,6 +16,7 @@
 --danger: #dc2626;
 --card-bg: #ffffff;
 --text-main: #f8fafc;
+--card-back-style: repeating-linear-gradient(45deg, #0f172a 0, #0f172a 4px, #1e293b 4px, #1e293b 8px);
 }
 * { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
 body {
@@ -31,7 +32,7 @@ position: relative;
 }
 .hidden { display: none !important; }
 
-/* صفحه اصلی ورودی و ثبت کاربر */
+/* صفحه فرود و صفحات منو */
 .view-screen {
 position: absolute;
 inset: 0;
@@ -51,19 +52,44 @@ color: var(--gold);
 text-shadow: 0 0 16px var(--gold-glow);
 margin-bottom: 4px;
 }
-.brand-sub { font-size: 13px; color: #94a3b8; margin-bottom: 20px; }
+.brand-sub { font-size: 13px; color: #94a3b8; margin-bottom: 18px; }
+
+.lang-container {
+display: flex;
+flex-wrap: wrap;
+justify-content: center;
+gap: 5px;
+margin-bottom: 16px;
+background: rgba(0, 0, 0, 0.5);
+padding: 5px 8px;
+border-radius: 20px;
+border: 1px solid rgba(255, 255, 255, 0.15);
+max-width: 320px;
+}
+.lang-btn {
+background: transparent;
+border: none;
+color: #94a3b8;
+font-size: 11px;
+font-weight: bold;
+padding: 4px 8px;
+border-radius: 12px;
+cursor: pointer;
+}
+.lang-btn.active { background: var(--gold); color: #000; }
 
 .card-panel {
 background: rgba(15, 23, 42, 0.95);
 border: 1px solid rgba(245, 158, 11, 0.3);
 border-radius: 16px;
-padding: 20px;
+padding: 18px;
 width: 100%;
 max-width: 320px;
 display: flex;
 flex-direction: column;
-gap: 12px;
+gap: 10px;
 box-shadow: 0 8px 24px rgba(0,0,0,0.5);
+text-align: inherit;
 }
 
 .input-field {
@@ -71,9 +97,9 @@ width: 100%;
 background: #0f172a;
 border: 1px solid #334155;
 color: #fff;
-padding: 12px;
+padding: 10px 12px;
 border-radius: 10px;
-font-size: 14px;
+font-size: 13px;
 font-family: inherit;
 outline: none;
 text-align: center;
@@ -84,49 +110,36 @@ text-align: center;
 background: var(--gold);
 color: #000;
 border: none;
-padding: 12px 16px;
+padding: 11px 16px;
 border-radius: 12px;
 font-weight: bold;
-font-size: 14px;
+font-size: 13px;
 cursor: pointer;
 box-shadow: 0 4px 12px var(--gold-glow);
 }
 .btn-action:active { transform: scale(0.97); }
-.btn-secondary { background: #334155; color: #cbd5e1; box-shadow: none; }
+.btn-secondary { background: #1e293b; color: #cbd5e1; border: 1px solid #475569; box-shadow: none; }
 .btn-outline { background: transparent; border: 1px solid var(--gold); color: var(--gold); box-shadow: none; }
+.btn-back { background: #334155; color: #fff; font-size: 12px; padding: 8px; box-shadow: none; }
 
-/* صفحه تشکیل تیم و انتخاب یار و حریف */
-.lobby-slots {
-display: flex;
-flex-direction: column;
-gap: 10px;
-width: 100%;
-margin: 12px 0;
-text-align: right;
+/* شخصی‌سازی پشت کارت */
+.card-back-grid {
+display: grid;
+grid-template-columns: repeat(3, 1fr);
+gap: 8px;
+margin: 10px 0;
 }
-.team-box {
-background: rgba(255, 255, 255, 0.05);
-border: 1px solid rgba(255, 255, 255, 0.1);
-border-radius: 10px;
-padding: 10px;
+.back-option {
+height: 60px;
+border-radius: 6px;
+border: 2px solid transparent;
+cursor: pointer;
+background-size: cover;
+background-position: center;
 }
-.team-title { font-size: 12px; font-weight: bold; color: var(--gold); margin-bottom: 6px; }
-.slot-row {
-display: flex;
-justify-content: space-between;
-align-items: center;
-background: #090d16;
-padding: 8px 12px;
-border-radius: 8px;
-font-size: 13px;
-margin-top: 4px;
-border: 1px dashed #334155;
-}
-.slot-row.filled { border-style: solid; border-color: #22c55e; }
-.slot-name { font-weight: bold; }
-.slot-tag { font-size: 10px; padding: 2px 6px; border-radius: 4px; background: #1e293b; color: #94a3b8; }
+.back-option.active { border-color: var(--gold); box-shadow: 0 0 8px var(--gold); }
 
-/* میز بازی اصلی */
+/* هدر تابلوی امتیاز */
 header {
 background: rgba(5, 10, 5, 0.9);
 padding: env(safe-area-inset-top, 8px) 12px 6px 12px;
@@ -148,6 +161,14 @@ padding: 3px 8px;
 border-radius: 12px;
 font-weight: bold;
 font-size: 10px;
+}
+.turn-timer {
+font-size: 10px;
+color: #38bdf8;
+background: #0f172a;
+padding: 2px 6px;
+border-radius: 8px;
+border: 1px solid #38bdf8;
 }
 
 #table-arena {
@@ -263,9 +284,10 @@ margin-left: -20px;
 .playing-card.disabled { opacity: 0.38; cursor: not-allowed; }
 .playing-card.red { color: #dc2626; }
 .playing-card.back-cover {
-background: #1e293b;
-border: 2px solid #38bdf8;
-background-image: repeating-linear-gradient(45deg, #0f172a 0, #0f172a 4px, #1e293b 4px, #1e293b 8px);
+background: var(--card-back-style);
+background-size: cover;
+background-position: center;
+border: 1px solid #cbd5e1;
 }
 
 .modal-backdrop {
@@ -285,74 +307,194 @@ border-radius: 16px;
 padding: 20px;
 width: 100%;
 max-width: 360px;
-text-align: center;
+text-align: inherit;
+max-height: 85vh;
+overflow-y: auto;
 }
 </style>
 
 <script>
-var currentUser = localStorage.getItem('shelem_user') || '';
-var lobby = {
-p0: '', // شما
-p2: 'مهدی (یار)', // هم‌تیمی روبه‌رو
-p1: 'رضا (حریف چپ)', // حریف ۱
-p3: 'سینا (حریف راست)' // حریف ۲
+/* سامانه چندزبانه */
+var I18N = {
+fa: {
+dir: 'rtl', title: 'شلم پیک', subtitle: 'نسخهٔ اختصاصی شلم لاری با حکم ثابت پیک',
+play4: 'ورود به بازی (۴ نفره)', play6: 'شلم پیک (۶ نفره) - به‌زودی',
+rulesBtn: 'راهنمای بازی و قوانین', customizeBtn: 'طرح پشت کارت',
+bidLbl: 'تعهد', trickLbl: 'دست:', trumpBadge: 'حکم: پیک ♠'
+},
+en: {
+dir: 'ltr', title: 'Shelem Peak', subtitle: 'Exclusive Shelem Lari with Spade Trump',
+play4: 'Play Game (4 Players)', play6: 'Shelem Peak (6 Players) - Soon',
+rulesBtn: 'Game Rules', customizeBtn: 'Card Back Design',
+bidLbl: 'Bid', trickLbl: 'Tricks:', trumpBadge: 'Trump: Spades ♠'
+},
+ar: {
+dir: 'rtl', title: 'شلم بيك', subtitle: 'نسخة شلم لاري الحصرية مع حكم السبيت الدائم',
+play4: 'دخول اللعبة (٤ لاعبين)', play6: 'شلم بيك (٦ لاعبين) - قريباً',
+rulesBtn: 'قواعد اللعبة', customizeBtn: 'تصميم ظهر البطاقة',
+bidLbl: 'التعهد', trickLbl: 'الجولات:', trumpBadge: 'الحكم: بيك ♠'
+},
+tr: {
+dir: 'ltr', title: 'Shelem Pik', subtitle: 'Sabit Maça Kozu ile Özel Shelem Lari',
+play4: 'Oyuna Başla (4 Oyunculu)', play6: 'Shelem Pik (6 Oyunculu) - Yakında',
+rulesBtn: 'Oyun Kuralları', customizeBtn: 'Kart Arkası Tasarımı',
+bidLbl: 'Teklif', trickLbl: 'El:', trumpBadge: 'Koz: Maça ♠'
+},
+de: {
+dir: 'ltr', title: 'Shelem Pik', subtitle: 'Shelem Lari mit permanentem Pik-Trumpf',
+play4: 'Spiel Starten (4 Spieler)', play6: 'Shelem Pik (6 Spieler) - Demnächst',
+rulesBtn: 'Spielregeln', customizeBtn: 'Kartenrücken-Design',
+bidLbl: 'Gebot', trickLbl: 'Stiche:', trumpBadge: 'Trumpf: Pik ♠'
+}
 };
 
-function initAuth() {
+var curLang = 'fa';
+var registeredUsers = JSON.parse(localStorage.getItem('shelem_all_users') || '["مهدی", "رضا", "سینا"]');
+var currentUser = localStorage.getItem('shelem_current_user') || '';
+var turnCountdown = 15;
+var turnTimerInterval = null;
+
+/* الگوهای معروف پشت کارت */
+var cardBacks = [
+{ id: 'b1', name: 'کلاسیک شبکه زنبوری', style: 'repeating-linear-gradient(45deg, #0f172a 0, #0f172a 4px, #1e293b 4px, #1e293b 8px)' },
+{ id: 'b2', name: 'کاردینال زرشکی', style: 'radial-gradient(circle, #991b1b 10%, #450a0a 90%)' },
+{ id: 'b3', name: 'کازینو سلطنتی سرمه‌ای', style: 'radial-gradient(circle, #1e40af 15%, #0f172a 90%)' },
+{ id: 'b4', name: 'فیروزه‌ای کهن', style: 'radial-gradient(circle, #0d9488 20%, #134e4a 90%)' },
+{ id: 'b5', name: 'طلایی لوکس', style: 'radial-gradient(circle, #b45309 20%, #78350f 90%)' }
+];
+var currentCardBack = localStorage.getItem('shelem_card_back') || cardBacks[0].style;
+
+function applyCardBack(styleStr) {
+currentCardBack = styleStr;
+localStorage.setItem('shelem_card_back', styleStr);
+document.documentElement.style.setProperty('--card-back-style', styleStr);
+}
+
+function handleCustomImageUpload(e) {
+var file = e.target.files[0];
+if (!file) return;
+var reader = new FileReader();
+reader.onload = function(evt) {
+var customUrl = 'url(' + evt.target.result + ')';
+applyCardBack(customUrl);
+alert('طرح اختصاصی با موفقیت اعمال شد.');
+};
+reader.readAsDataURL(file);
+}
+
+function setAppLanguage(lang) {
+curLang = lang;
+var dict = I18N[lang];
+document.documentElement.lang = lang;
+document.documentElement.dir = dict.dir;
+document.body.dir = dict.dir;
+
+var buttons = document.querySelectorAll('.lang-btn');
+for (var i = 0; i < buttons.length; i++) buttons[i].classList.remove('active');
+var activeBtn = document.getElementById('btn-' + lang);
+if (activeBtn) activeBtn.classList.add('active');
+
+document.getElementById('txt-title').innerText = dict.title;
+document.getElementById('txt-subtitle').innerText = dict.subtitle;
+document.getElementById('txt-play4').innerText = dict.play4;
+document.getElementById('txt-play6').innerText = dict.play6;
+document.getElementById('txt-rules-btn').innerText = dict.rulesBtn;
+document.getElementById('txt-custom-btn').innerText = dict.customizeBtn;
+}
+
+/* مدیریت ثبت کاربر و جلوگیری از نام تکراری */
+function openAuthOrLobby() {
 if (currentUser) {
-lobby.p0 = currentUser;
-showLobbyScreen();
+openLobby();
 } else {
+document.getElementById('welcome-screen').classList.add('hidden');
 document.getElementById('auth-screen').classList.remove('hidden');
 }
 }
 
-function handleRegisterUser() {
+function registerNewUser() {
 var name = document.getElementById('username-input').value.trim();
+var errEl = document.getElementById('auth-error');
 if (!name) {
-alert('لطفاً نام یا شناسه خود را وارد کنید.');
+errEl.innerText = 'لطفاً نام کاربری را وارد کنید.';
 return;
 }
+if (registeredUsers.indexOf(name) !== -1) {
+errEl.innerText = 'این نام کاربری قبلاً ثبت شده است. نام دیگری انتخاب کنید.';
+return;
+}
+registeredUsers.push(name);
+localStorage.setItem('shelem_all_users', JSON.stringify(registeredUsers));
 currentUser = name;
-localStorage.setItem('shelem_user', name);
-lobby.p0 = name;
+localStorage.setItem('shelem_current_user', name);
+
 document.getElementById('auth-screen').classList.add('hidden');
-showLobbyScreen();
+openLobby();
 }
 
-function showLobbyScreen() {
+function openLobby() {
+document.getElementById('welcome-screen').classList.add('hidden');
 document.getElementById('lobby-screen').classList.remove('hidden');
-document.getElementById('slot-p0-name').innerText = lobby.p0 + ' (شما)';
-document.getElementById('slot-p2-name').innerText = lobby.p2;
-document.getElementById('slot-p1-name').innerText = lobby.p1;
-document.getElementById('slot-p3-name').innerText = lobby.p3;
+document.getElementById('slot-p0-name').innerText = currentUser + ' (شما)';
+renderRegisteredDropdowns();
 }
 
-function changeSlotPlayer(slotKey, defaultLabel) {
-var currentVal = lobby[slotKey];
-var newName = prompt('نام بازیکن جدید را وارد کنید (یا خالی برای هوش مصنوعی):', currentVal);
-if (newName !== null) {
-lobby[slotKey] = newName.trim() || defaultLabel;
-showLobbyScreen();
-}
+function renderRegisteredDropdowns() {
+var others = registeredUsers.filter(function(u){ return u !== currentUser; });
+var s2 = document.getElementById('select-p2');
+var s1 = document.getElementById('select-p1');
+var s3 = document.getElementById('select-p3');
+
+s2.innerHTML = '<option value="مهدی (یار)">مهدی (یار)</option>';
+s1.innerHTML = '<option value="رضا">رضا</option>';
+s3.innerHTML = '<option value="سینا">سینا</option>';
+
+others.forEach(function(u) {
+s2.innerHTML += '<option value="' + u + '">' + u + '</option>';
+s1.innerHTML += '<option value="' + u + '">' + u + '</option>';
+s3.innerHTML += '<option value="' + u + '">' + u + '</option>';
+});
 }
 
-function startLobbyGame() {
+function goBackToWelcome() {
+document.getElementById('auth-screen').classList.add('hidden');
 document.getElementById('lobby-screen').classList.add('hidden');
-state.players[0].name = lobby.p0;
-state.players[2].name = lobby.p2;
-state.players[1].name = lobby.p1;
-state.players[3].name = lobby.p3;
-
-document.getElementById('pname-2').innerText = lobby.p2;
-document.getElementById('pname-1').innerText = lobby.p1;
-document.getElementById('pname-3').innerText = lobby.p3;
-document.getElementById('txt-team0-lbl').innerText = 'تیم ما (' + lobby.p0 + ' و ' + lobby.p2 + ')';
-
-startNewRoundCycle();
+document.getElementById('customize-screen').classList.add('hidden');
+document.getElementById('welcome-screen').classList.remove('hidden');
 }
 
-/* موتور بازی شلم لاری */
+function openCustomizeScreen() {
+document.getElementById('welcome-screen').classList.add('hidden');
+document.getElementById('customize-screen').classList.remove('hidden');
+}
+
+/* تایمر نوبت و بازگشت اضطراری در حین بازی */
+function startTurnTimer() {
+clearInterval(turnTimerInterval);
+turnCountdown = 15;
+document.getElementById('timer-val').innerText = turnCountdown;
+turnTimerInterval = setInterval(function() {
+turnCountdown--;
+document.getElementById('timer-val').innerText = turnCountdown;
+if (turnCountdown <= 0) {
+clearInterval(turnTimerInterval);
+// اجرای خودکار توسط ربات به جای بازیکن
+if (state.phase === 'playing' && state.currentTurn === 0) {
+var valids = getLegalMoves(0);
+if (valids.length > 0) userPickCard(valids[0].id);
+}
+}
+}, 1000);
+}
+
+function handleInGameBack() {
+var confirmLeave = confirm('فرصت شما برای بازگشت به اندازه زمان نوبت است. آیا موقتاً به منو بازمی‌گردید؟');
+if (confirmLeave) {
+document.getElementById('welcome-screen').classList.remove('hidden');
+}
+}
+
+/* موتور بازی شلم */
 var SUIT_ICONS = { SPADES: '♠', HEARTS: '♥', DIAMONDS: '♦', CLUBS: '♣' };
 var POS_MAP = { 0: 'bottom', 1: 'left', 2: 'top', 3: 'right' };
 
@@ -360,14 +502,39 @@ var state = {
 rules: { minBid: 2, targetScore: 500, enableEight: true, eightThreshold: 8 },
 teamScores: [0, 0], teamEights: [0, 0],
 players: [
-{ id: 0, name: '', team: 0, hand: [], bid: 0, tricks: 0, isBot: false },
-{ id: 1, name: '', team: 1, hand: [], bid: 0, tricks: 0, isBot: true },
-{ id: 2, name: '', team: 0, hand: [], bid: 0, tricks: 0, isBot: true },
-{ id: 3, name: '', team: 1, hand: [], bid: 0, tricks: 0, isBot: true }
+{ id: 0, name: 'شما', team: 0, hand: [], bid: 0, tricks: 0, isBot: false },
+{ id: 1, name: 'رضا', team: 1, hand: [], bid: 0, tricks: 0, isBot: true },
+{ id: 2, name: 'مهدی', team: 0, hand: [], bid: 0, tricks: 0, isBot: true },
+{ id: 3, name: 'سینا', team: 1, hand: [], bid: 0, tricks: 0, isBot: true }
 ],
 currentTurn: 0, dealer: 0, trick: [], leadSuit: null, blackJokerPlayed: false,
 phase: 'bidding', tempUserBid: 2
 };
+
+function startLobbyGame() {
+var p2 = document.getElementById('select-p2').value;
+var p1 = document.getElementById('select-p1').value;
+var p3 = document.getElementById('select-p3').value;
+
+if (p2 === p1 || p2 === p3 || p1 === p3) {
+alert('یک بازیکن نمی‌تواند در دو جایگاه مختلف قرار گیرد!');
+return;
+}
+
+state.players[0].name = currentUser || 'شما';
+state.players[2].name = p2;
+state.players[1].name = p1;
+state.players[3].name = p3;
+
+document.getElementById('pname-2').innerText = p2;
+document.getElementById('pname-1').innerText = p1;
+document.getElementById('pname-3').innerText = p3;
+document.getElementById('txt-team0-lbl').innerText = 'تیم ما (' + state.players[0].name + ' و ' + p2 + ')';
+
+document.getElementById('lobby-screen').classList.add('hidden');
+document.getElementById('welcome-screen').classList.add('hidden');
+startNewRoundCycle();
+}
 
 function sortPlayerHand(hand) {
 var suitWeights = { SPADES: 4, HEARTS: 3, CLUBS: 2, DIAMONDS: 1 };
@@ -410,6 +577,7 @@ state.leadSuit = null;
 state.phase = 'bidding';
 state.currentTurn = (state.dealer + 1) % 4;
 state.tempUserBid = 2;
+
 renderView();
 runBiddingRoutine();
 }
@@ -419,13 +587,14 @@ renderView();
 if (state.currentTurn === 0) {
 document.getElementById('bid-controller').style.display = 'flex';
 document.getElementById('bid-val-num').innerText = state.tempUserBid;
+startTurnTimer();
 } else {
 document.getElementById('bid-controller').style.display = 'none';
 setTimeout(function() {
 var p = state.players[state.currentTurn];
 p.bid = 2 + Math.floor(Math.random() * 2);
 advanceBiddingTurn();
-}, 400);
+}, 450);
 }
 }
 
@@ -435,6 +604,7 @@ document.getElementById('bid-val-num').innerText = state.tempUserBid;
 }
 
 function confirmUserBid() {
+clearInterval(turnTimerInterval);
 state.players[0].bid = state.tempUserBid;
 document.getElementById('bid-controller').style.display = 'none';
 advanceBiddingTurn();
@@ -462,7 +632,9 @@ setTimeout(function() {
 var valids = getLegalMoves(state.currentTurn);
 var pick = valids[Math.floor(Math.random() * valids.length)];
 executeMove(state.currentTurn, pick);
-}, 500);
+}, 550);
+} else {
+startTurnTimer();
 }
 }
 
@@ -486,6 +658,7 @@ var card = state.players[0].hand.find(function(c) { return c.id === cardId; });
 var valids = getLegalMoves(0);
 if (!valids.some(function(c) { return c.id === cardId; })) return;
 
+clearInterval(turnTimerInterval);
 var hasBlack = state.players[0].hand.some(function(c) { return c.type === 'blackJoker'; });
 if (hasBlack && state.players[0].hand.length <= 3 && card.type !== 'blackJoker') {
 applyBlackJokerPenalty(0);
@@ -502,7 +675,7 @@ if (state.trick.length === 0) state.leadSuit = card.suit;
 state.trick.push({ playerId: playerIndex, card: card });
 if (state.trick.length === 4) {
 renderView();
-setTimeout(settleTrickWinner, 700);
+setTimeout(settleTrickWinner, 750);
 } else {
 state.currentTurn = (state.currentTurn + 1) % 4;
 triggerRoundPlay();
@@ -546,7 +719,7 @@ return 0;
 function applyBlackJokerPenalty(violatingTeam) {
 var opp = 1 - violatingTeam;
 var violBid = state.players.filter(function(p) { return p.team === violatingTeam; }).reduce(function(a,b){ return a + b.bid; }, 0);
-var oppBid = state.players.filter(function(p) { return p.team === opp; }).reduce(function(a,b){ return a + b.bid; }, 0);
+var oppBid = state.players.filter(function(p) { return p.team === opp).reduce(function(a,b){ return a + b.bid; }, 0);
 state.teamScores[violatingTeam] -= (10 * violBid);
 state.teamScores[opp] += (10 * oppBid);
 openReportModal("تخلف جوکر سیاه!", "به دلیل نگه‌داشتن جوکر سیاه در دو برگ آخر، دور متوقف و تیم متخلف جریمه شد.");
@@ -654,67 +827,95 @@ node.innerHTML = '<div style="font-size:7px;">جوکر رنگی</div><div style=
 return node;
 }
 
-window.onload = initAuth;
+window.onload = function() {
+applyCardBack(currentCardBack);
+};
 </script>
 </head>
 <body>
 
-<!-- صفحه ثبت کاربری -->
-<div class="view-screen hidden" id="auth-screen">
-<div style="font-size:46px; margin-bottom:4px;">♠</div>
-<h1 class="brand-title">شلم پیک</h1>
-<p class="brand-sub">ثبت هویت بازیکن</p>
+<!-- ۱. صفحه فرود اصلی -->
+<div class="view-screen" id="welcome-screen">
+<div class="lang-container">
+<button type="button" class="lang-btn active" id="btn-fa" onclick="setAppLanguage('fa')">فارسی</button>
+<button type="button" class="lang-btn" id="btn-en" onclick="setAppLanguage('en')">English</button>
+<button type="button" class="lang-btn" id="btn-ar" onclick="setAppLanguage('ar')">العربية</button>
+<button type="button" class="lang-btn" id="btn-tr" onclick="setAppLanguage('tr')">Türkçe</button>
+<button type="button" class="lang-btn" id="btn-de" onclick="setAppLanguage('de')">Deutsch</button>
+</div>
+
+<div style="font-size:46px; margin-bottom:6px;">♠</div>
+<h1 class="brand-title" id="txt-title">شلم پیک</h1>
+<p class="brand-sub" id="txt-subtitle">نسخهٔ اختصاصی شلم لاری با حکم ثابت پیک</p>
 
 <div class="card-panel">
-<input type="text" id="username-input" class="input-field" placeholder="نام یا نام‌مستعار شما" maxlength="15">
-<button type="button" class="btn-action" onclick="handleRegisterUser()">ثبت و ورود به بازی</button>
+<button type="button" class="btn-action" id="txt-play4" onclick="openAuthOrLobby()">ورود به بازی (۴ نفره)</button>
+<button type="button" class="btn-action btn-secondary" id="txt-custom-btn" onclick="openCustomizeScreen()">طرح پشت کارت</button>
+<button type="button" class="btn-action btn-secondary" id="txt-play6" onclick="alert('نسخه ۶ نفره پس از تست نسخه فعلی فعال می‌شود.')">شلم پیک (۶ نفره) - به‌زودی</button>
+<button type="button" class="btn-action btn-outline" id="txt-rules-btn" onclick="document.getElementById('rules-modal').style.display='flex'">راهنمای بازی و قوانین</button>
 </div>
 </div>
 
-<!-- صفحه لابی انتخاب هم‌تیمی و حریفان -->
+<!-- ۲. صفحه ثبت کاربری -->
+<div class="view-screen hidden" id="auth-screen">
+<h2 class="brand-title" style="font-size:24px;">ثبت‌نام بازیکن جدید</h2>
+<p class="brand-sub">تعیین شناسهٔ یکتا در مسابقات</p>
+<div class="card-panel">
+<input type="text" id="username-input" class="input-field" placeholder="نام یا شناسه شما" maxlength="15">
+<div id="auth-error" style="color:var(--danger); font-size:11px;"></div>
+<button type="button" class="btn-action" onclick="registerNewUser()">تأیید و ورود</button>
+<button type="button" class="btn-action btn-back" onclick="goBackToWelcome()">بازگشت به منو</button>
+</div>
+</div>
+
+<!-- ۳. صفحه لابی و تعیین ترکیب -->
 <div class="view-screen hidden" id="lobby-screen">
-<h2 class="brand-title" style="font-size:26px;">میز اختصاصی مسابقه</h2>
-<p class="brand-sub">تنظیم ترکیب تیم‌ها و بازیکنان</p>
+<h2 class="brand-title" style="font-size:24px;">میز و ترکیب بازیکنان</h2>
+<p class="brand-sub">انتخاب هم‌تیمی و رقیبان مسابقه</p>
+<div class="card-panel">
+<div style="font-size:12px; color:var(--gold); font-weight:bold;">تیم اول:</div>
+<div style="background:#090d16; padding:8px; border-radius:8px; font-size:12px;" id="slot-p0-name">شما</div>
+<select id="select-p2" class="input-field" style="padding:6px; font-size:12px;"></select>
 
-<div class="card-panel" style="max-width:340px;">
-<div class="lobby-slots">
-<div class="team-box">
-<div class="team-title">تیم اول (شما و هم‌تیمی)</div>
-<div class="slot-row filled">
-<span class="slot-name" id="slot-p0-name">شما</span>
-<span class="slot-tag">میزبان</span>
-</div>
-<div class="slot-row" onclick="changeSlotPlayer('p2', 'مهدی (یار)')">
-<span class="slot-name" id="slot-p2-name">مهدی (یار)</span>
-<span class="slot-tag" style="color:var(--gold); cursor:pointer;">تغییر ✎</span>
-</div>
-</div>
+<div style="font-size:12px; color:var(--gold); font-weight:bold; margin-top:6px;">تیم دوم (حریفان):</div>
+<select id="select-p1" class="input-field" style="padding:6px; font-size:12px;"></select>
+<select id="select-p3" class="input-field" style="padding:6px; font-size:12px;"></select>
 
-<div class="team-box">
-<div class="team-title">تیم حریف (دو بازیکن)</div>
-<div class="slot-row" onclick="changeSlotPlayer('p1', 'رضا (حریف چپ)')">
-<span class="slot-name" id="slot-p1-name">رضا</span>
-<span class="slot-tag" style="color:var(--gold); cursor:pointer;">تغییر ✎</span>
-</div>
-<div class="slot-row" onclick="changeSlotPlayer('p3', 'سینا (حریف راست)')">
-<span class="slot-name" id="slot-p3-name">سینا</span>
-<span class="slot-tag" style="color:var(--gold); cursor:pointer;">تغییر ✎</span>
-</div>
+<button type="button" class="btn-action" style="margin-top:8px;" onclick="startLobbyGame()">شروع مسابقه</button>
+<button type="button" class="btn-action btn-back" onclick="goBackToWelcome()">بازگشت به منو</button>
 </div>
 </div>
 
-<button type="button" class="btn-action" onclick="startLobbyGame()">شروع مسابقه با این ترکیب</button>
+<!-- ۴. صفحه شخصی‌سازی پشت کارت -->
+<div class="view-screen hidden" id="customize-screen">
+<h2 class="brand-title" style="font-size:24px;">انتخاب پشت کارت</h2>
+<p class="brand-sub">انتخاب از ۵ طرح معروف یا آپلود عکس دلخواه</p>
+<div class="card-panel">
+<div class="card-back-grid">
+<div class="back-option" style="background: repeating-linear-gradient(45deg, #0f172a 0, #0f172a 4px, #1e293b 4px, #1e293b 8px);" onclick="applyCardBack(cardBacks[0].style)"></div>
+<div class="back-option" style="background: radial-gradient(circle, #991b1b 10%, #450a0a 90%);" onclick="applyCardBack(cardBacks[1].style)"></div>
+<div class="back-option" style="background: radial-gradient(circle, #1e40af 15%, #0f172a 90%);" onclick="applyCardBack(cardBacks[2].style)"></div>
+<div class="back-option" style="background: radial-gradient(circle, #0d9488 20%, #134e4a 90%);" onclick="applyCardBack(cardBacks[3].style)"></div>
+<div class="back-option" style="background: radial-gradient(circle, #b45309 20%, #78350f 90%);" onclick="applyCardBack(cardBacks[4].style)"></div>
+</div>
+<label class="btn-action btn-secondary" style="display:block; text-align:center; cursor:pointer;">
+📷 آپلود عکس شخصی از گالری
+<input type="file" accept="image/*" style="display:none;" onchange="handleCustomImageUpload(event)">
+</label>
+<button type="button" class="btn-action btn-back" onclick="goBackToWelcome()">بازگشت به منو</button>
 </div>
 </div>
 
-<!-- نوار بالای تابلوی امتیاز -->
+<!-- ۵. میز بازی اصلی -->
 <header>
+<button type="button" class="btn-action btn-back" style="padding:4px 8px; font-size:10px;" onclick="handleInGameBack()">⇦ منو</button>
 <div class="team-badge">
 <span id="txt-team0-lbl">تیم ما</span>
 <span class="team-score" id="score-t0">۰</span>
 <span style="font-size:9px;" id="meta-t0">تعهد: - | دست: ۰ | هشت: ۰</span>
 </div>
-<div class="trump-indicator">حکم: پیک ♠</div>
+<div class="trump-indicator">پیک ♠</div>
+<div class="turn-timer">⏱ <span id="timer-val">۱۵</span>s</div>
 <div class="team-badge" style="text-align: left;">
 <span>تیم حریف</span>
 <span class="team-score" id="score-t1">۰</span>
@@ -722,7 +923,6 @@ window.onload = initAuth;
 </div>
 </header>
 
-<!-- میز مسابقه -->
 <div id="table-arena">
 <div class="seat-node" id="node-top">
 <div class="player-pill" id="pill-2"><span id="pname-2">مهدی</span><br><span id="bid-lbl-2">تعهد: ؟</span> | دست: <span id="tricks-2">۰</span></div>
@@ -737,6 +937,7 @@ window.onload = initAuth;
 <div class="player-pill" id="pill-3"><span id="pname-3">سینا</span><br><span id="bid-lbl-3">تعهد: ؟</span> | دست: <span id="tricks-3">۰</span></div>
 <div class="playing-card back-cover" style="width:28px; height:40px; margin:0;"></div>
 </div>
+
 <div id="bid-controller">
 <span style="font-size:11px; color:var(--gold);">تعهد شما:</span>
 <button type="button" class="bid-btn-circle" onclick="changeBidStep(-1)">-</button>
@@ -751,7 +952,21 @@ window.onload = initAuth;
 <div class="hand-fan-container" id="user-cards-fan"></div>
 </div>
 
-<!-- مدال گزارش دور -->
+<!-- راهنمای قوانین -->
+<div class="modal-backdrop" id="rules-modal">
+<div class="modal-sheet" style="text-align: right; font-size:12px; line-height:1.7;">
+<h3 style="color:var(--gold); text-align:center; margin-bottom:12px;">قوانین شلم پیک</h3>
+<p><b>۱. برگ‌ها:</b> دسته ۵۲ تایی؛ ۲ دل و ۲ خشت حذف و دو جوکر اضافه شده‌اند[span_2](start_span)[span_2](end_span) .</p>
+<p><b>۲. حکم:</b> پیک همواره حکم است[span_3](start_span)[span_3](end_span) .</p>
+<p><b>۳. تعهد:</b> حداقل تعهد هر بازیکن ۲ دست است[span_4](start_span)[span_4](end_span) .</p>
+<p><b>۴. مهلت جوکر سیاه:</b> حداکثر تا ۳ برگ در دست باید بازی شود[span_5](start_span)[span_5](end_span) .</p>
+<p><b>۵. هشت برتر:</b> تعهد ۸ دست موفق باعث ثبت هشت برتر و خنثی‌سازی هشت حریف می‌شود[span_6](start_span)[span_6](end_span) .</p>
+<br>
+<button type="button" class="btn-action" style="width:100%;" onclick="document.getElementById('rules-modal').style.display='none'">متوجه شدم</button>
+</div>
+</div>
+
+<!-- گزارش پایان دور -->
 <div class="modal-backdrop" id="round-report-modal">
 <div class="modal-sheet">
 <h3 id="report-title" style="color:var(--gold); margin-bottom:10px;">نتیجه دور</h3>
