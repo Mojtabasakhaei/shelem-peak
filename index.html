@@ -32,7 +32,7 @@ position: relative;
 }
 .hidden { display: none !important; }
 
-/* صفحه فرود و صفحات منو */
+/* صفحه منو و فرود */
 .view-screen {
 position: absolute;
 inset: 0;
@@ -44,6 +44,7 @@ align-items: center;
 justify-content: center;
 padding: 20px;
 text-align: center;
+pointer-events: auto;
 }
 .brand-title {
 font-size: 34px;
@@ -110,12 +111,13 @@ text-align: center;
 background: var(--gold);
 color: #000;
 border: none;
-padding: 11px 16px;
+padding: 12px 16px;
 border-radius: 12px;
 font-weight: bold;
-font-size: 13px;
+font-size: 14px;
 cursor: pointer;
 box-shadow: 0 4px 12px var(--gold-glow);
+touch-action: manipulation;
 }
 .btn-action:active { transform: scale(0.97); }
 .btn-secondary { background: #1e293b; color: #cbd5e1; border: 1px solid #475569; box-shadow: none; }
@@ -139,7 +141,7 @@ background-position: center;
 }
 .back-option.active { border-color: var(--gold); box-shadow: 0 0 8px var(--gold); }
 
-/* هدر تابلوی امتیاز */
+/* هدر امتیاز */
 header {
 background: rgba(5, 10, 5, 0.9);
 padding: env(safe-area-inset-top, 8px) 12px 6px 12px;
@@ -314,7 +316,6 @@ overflow-y: auto;
 </style>
 
 <script>
-/* سامانه چندزبانه */
 var I18N = {
 fa: {
 dir: 'rtl', title: 'شلم پیک', subtitle: 'نسخهٔ اختصاصی شلم لاری با حکم ثابت پیک',
@@ -354,7 +355,6 @@ var currentUser = localStorage.getItem('shelem_current_user') || '';
 var turnCountdown = 15;
 var turnTimerInterval = null;
 
-/* الگوهای معروف پشت کارت */
 var cardBacks = [
 { id: 'b1', name: 'کلاسیک شبکه زنبوری', style: 'repeating-linear-gradient(45deg, #0f172a 0, #0f172a 4px, #1e293b 4px, #1e293b 8px)' },
 { id: 'b2', name: 'کاردینال زرشکی', style: 'radial-gradient(circle, #991b1b 10%, #450a0a 90%)' },
@@ -402,7 +402,6 @@ document.getElementById('txt-rules-btn').innerText = dict.rulesBtn;
 document.getElementById('txt-custom-btn').innerText = dict.customizeBtn;
 }
 
-/* مدیریت ثبت کاربر و جلوگیری از نام تکراری */
 function openAuthOrLobby() {
 if (currentUser) {
 openLobby();
@@ -468,7 +467,6 @@ document.getElementById('welcome-screen').classList.add('hidden');
 document.getElementById('customize-screen').classList.remove('hidden');
 }
 
-/* تایمر نوبت و بازگشت اضطراری در حین بازی */
 function startTurnTimer() {
 clearInterval(turnTimerInterval);
 turnCountdown = 15;
@@ -478,7 +476,6 @@ turnCountdown--;
 document.getElementById('timer-val').innerText = turnCountdown;
 if (turnCountdown <= 0) {
 clearInterval(turnTimerInterval);
-// اجرای خودکار توسط ربات به جای بازیکن
 if (state.phase === 'playing' && state.currentTurn === 0) {
 var valids = getLegalMoves(0);
 if (valids.length > 0) userPickCard(valids[0].id);
@@ -494,7 +491,6 @@ document.getElementById('welcome-screen').classList.remove('hidden');
 }
 }
 
-/* موتور بازی شلم */
 var SUIT_ICONS = { SPADES: '♠', HEARTS: '♥', DIAMONDS: '♦', CLUBS: '♣' };
 var POS_MAP = { 0: 'bottom', 1: 'left', 2: 'top', 3: 'right' };
 
@@ -719,7 +715,7 @@ return 0;
 function applyBlackJokerPenalty(violatingTeam) {
 var opp = 1 - violatingTeam;
 var violBid = state.players.filter(function(p) { return p.team === violatingTeam; }).reduce(function(a,b){ return a + b.bid; }, 0);
-var oppBid = state.players.filter(function(p) { return p.team === opp).reduce(function(a,b){ return a + b.bid; }, 0);
+var oppBid = state.players.filter(function(p) { return p.team === opp; }).reduce(function(a,b){ return a + b.bid; }, 0);
 state.teamScores[violatingTeam] -= (10 * violBid);
 state.teamScores[opp] += (10 * oppBid);
 openReportModal("تخلف جوکر سیاه!", "به دلیل نگه‌داشتن جوکر سیاه در دو برگ آخر، دور متوقف و تیم متخلف جریمه شد.");
@@ -956,11 +952,11 @@ applyCardBack(currentCardBack);
 <div class="modal-backdrop" id="rules-modal">
 <div class="modal-sheet" style="text-align: right; font-size:12px; line-height:1.7;">
 <h3 style="color:var(--gold); text-align:center; margin-bottom:12px;">قوانین شلم پیک</h3>
-<p><b>۱. برگ‌ها:</b> دسته ۵۲ تایی؛ ۲ دل و ۲ خشت حذف و دو جوکر اضافه شده‌اند[span_2](start_span)[span_2](end_span) .</p>
-<p><b>۲. حکم:</b> پیک همواره حکم است[span_3](start_span)[span_3](end_span) .</p>
-<p><b>۳. تعهد:</b> حداقل تعهد هر بازیکن ۲ دست است[span_4](start_span)[span_4](end_span) .</p>
-<p><b>۴. مهلت جوکر سیاه:</b> حداکثر تا ۳ برگ در دست باید بازی شود[span_5](start_span)[span_5](end_span) .</p>
-<p><b>۵. هشت برتر:</b> تعهد ۸ دست موفق باعث ثبت هشت برتر و خنثی‌سازی هشت حریف می‌شود[span_6](start_span)[span_6](end_span) .</p>
+<p><b>۱. برگ‌ها:</b> دسته ۵۲ تایی؛ ۲ دل و ۲ خشت حذف و دو جوکر اضافه شده‌اند[span_0](start_span)[span_0](end_span).</p>
+<p><b>۲. حکم:</b> پیک همواره حکم است[span_1](start_span)[span_1](end_span).</p>
+<p><b>۳. تعهد:</b> حداقل تعهد هر بازیکن ۲ دست است[span_2](start_span)[span_2](end_span).</p>
+<p><b>۴. مهلت جوکر سیاه:</b> حداکثر تا ۳ برگ در دست باید بازی شود[span_3](start_span)[span_3](end_span).</p>
+<p><b>۵. هشت برتر:</b> تعهد ۸ دست موفق باعث ثبت هشت برتر و خنثی‌سازی هشت حریف می‌شود[span_4](start_span)[span_4](end_span).</p>
 <br>
 <button type="button" class="btn-action" style="width:100%;" onclick="document.getElementById('rules-modal').style.display='none'">متوجه شدم</button>
 </div>
