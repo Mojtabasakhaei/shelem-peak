@@ -2,272 +2,408 @@
 <html lang="fa" dir="rtl">
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
 <title>شلم پیک - بازی اختصاصی شلم لاری</title>
 
 <meta name="author" content="مجتبی سخایی">
-<meta name="copyright" content="تمامی حقوق مادی و معنوی، قوانین و ایده شلم پیک متعلق به سازنده است.">
+<meta name="copyright" content="تمامی حقوق مادی و معنوی شلم پیک متعلق به مجتبی سخایی است.">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="شلم پیک">
 
 <style>
 :root {
---bg-felt: #14532d;
---card-bg: #f8fafc;
+--bg-felt: radial-gradient(circle at center, #1b5e20 0%, #0d3813 85%, #051a08 100%);
 --gold: #f59e0b;
---danger: #ef4444;
---spade: #0f172a;
---heart: #dc2626;
+--gold-glow: rgba(245, 158, 11, 0.4);
+--danger: #dc2626;
+--card-bg: #ffffff;
+--text-main: #f8fafc;
 }
 * { box-sizing: border-box; user-select: none; -webkit-user-select: none; margin: 0; padding: 0; }
 body {
-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Tahoma, sans-serif;
-background: var(--bg-felt);
-color: #fff;
+font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Vazirmatn", Tahoma, sans-serif;
+background: #051a08;
+color: var(--text-main);
 height: 100vh;
+height: 100dvh;
 overflow: hidden;
 display: flex;
 flex-direction: column;
+position: relative;
 }
 
+/* صفحه فرود و شروع */
+#welcome-screen {
+position: absolute;
+inset: 0;
+background: radial-gradient(circle at 50% 30%, #1e293b 0%, #090d16 100%);
+z-index: 200;
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+padding: 24px;
+text-align: center;
+}
+.brand-title {
+font-size: 34px;
+font-weight: 900;
+color: var(--gold);
+text-shadow: 0 0 16px var(--gold-glow);
+margin-bottom: 6px;
+letter-spacing: -0.5px;
+}
+.brand-sub {
+font-size: 13px;
+color: #94a3b8;
+margin-bottom: 24px;
+line-height: 1.5;
+}
+.owner-tag {
+font-size: 11px;
+color: #64748b;
+margin-top: 18px;
+border-top: 1px solid rgba(255,255,255,0.08);
+padding-top: 10px;
+width: 100%;
+max-width: 280px;
+}
+
+/* نوار وضعیت بالا */
 header {
-background: rgba(0, 0, 0, 0.7);
-padding: 6px 14px;
+background: rgba(5, 10, 5, 0.85);
+backdrop-filter: blur(8px);
+padding: env(safe-area-inset-top, 8px) 12px 6px 12px;
 display: flex;
 justify-content: space-between;
 align-items: center;
-font-size: 12px;
-border-bottom: 1px solid rgba(255,255,255,0.1);
-z-index: 10;
+font-size: 11px;
+border-bottom: 1px solid rgba(255, 215, 0, 0.2);
+z-index: 50;
+min-height: 48px;
 }
-.score-badge { display: flex; flex-direction: column; }
-.score-val { font-weight: bold; font-size: 15px; color: var(--gold); }
-.trump-pill { background: #000; padding: 4px 10px; border-radius: 12px; border: 1px solid var(--gold); font-size: 11px; }
+.team-badge {
+display: flex;
+flex-direction: column;
+line-height: 1.3;
+}
+.team-score { font-size: 15px; font-weight: 800; color: var(--gold); }
+.trump-indicator {
+background: #000;
+color: var(--gold);
+border: 1px solid var(--gold);
+padding: 3px 8px;
+border-radius: 12px;
+font-weight: bold;
+font-size: 10px;
+box-shadow: 0 0 6px rgba(0,0,0,0.5);
+}
 
-#warning-bar {
+#warning-strip {
 background: var(--danger);
 color: #fff;
-text-align: center;
-padding: 4px;
 font-size: 11px;
 font-weight: bold;
+text-align: center;
+padding: 3px;
 display: none;
-z-index: 10;
+z-index: 40;
 }
 
-#table {
+/* میز مسابقه */
+#table-arena {
 flex: 1;
+background: var(--bg-felt);
+position: relative;
+display: flex;
+justify-content: center;
+align-items: center;
+overflow: hidden;
+}
+
+.seat-node {
+position: absolute;
+display: flex;
+flex-direction: column;
+align-items: center;
+z-index: 10;
+}
+#node-top { top: 6px; }
+#node-left { left: 8px; top: 38%; transform: translateY(-50%); }
+#node-right { right: 8px; top: 38%; transform: translateY(-50%); }
+
+.player-pill {
+background: rgba(0,0,0,0.7);
+border: 1px solid rgba(255,255,255,0.15);
+border-radius: 8px;
+padding: 3px 8px;
+font-size: 10px;
+text-align: center;
+line-height: 1.3;
+margin-bottom: 3px;
+transition: all 0.2s ease;
+}
+.seat-node.active .player-pill {
+border-color: var(--gold);
+background: rgba(245, 158, 11, 0.2);
+box-shadow: 0 0 8px var(--gold);
+}
+
+/* کارت وسط دست */
+.table-center-tricks {
+width: 170px;
+height: 130px;
 position: relative;
 display: flex;
 justify-content: center;
 align-items: center;
 }
-.seat {
+.trick-slot {
 position: absolute;
-display: flex;
-flex-direction: column;
+transition: all 0.3s cubic-bezier(0.18, 0.89, 0.32, 1.28);
+}
+.trick-slot[data-pos="top"] { transform: translateY(-28px); }
+.trick-slot[data-pos="bottom"] { transform: translateY(28px); }
+.trick-slot[data-pos="left"] { transform: translateX(-34px); }
+.trick-slot[data-pos="right"] { transform: translateX(34px); }
+
+/* کادر شناور اعلام تعهد */
+#bid-controller {
+position: absolute;
+bottom: 125px;
+background: rgba(15, 23, 42, 0.95);
+border: 1px solid var(--gold);
+box-shadow: 0 8px 24px rgba(0,0,0,0.6);
+border-radius: 20px;
+padding: 6px 14px;
+display: none;
 align-items: center;
-font-size: 11px;
+gap: 12px;
+z-index: 80;
 }
-#seat-top { top: 8px; }
-#seat-left { left: 8px; }
-#seat-right { right: 8px; }
-
-.player-badge {
-background: rgba(0,0,0,0.6);
-padding: 4px 8px;
-border-radius: 8px;
-margin-bottom: 4px;
-border: 1px solid transparent;
-text-align: center;
-line-height: 1.3;
-}
-.seat.active .player-badge { border-color: var(--gold); box-shadow: 0 0 8px var(--gold); }
-
-.trick-area {
+.bid-btn-circle {
+width: 32px;
+height: 32px;
+border-radius: 50%;
+border: 1px solid #475569;
+background: #1e293b;
+color: #fff;
+font-size: 18px;
+font-weight: bold;
+cursor: pointer;
 display: flex;
-gap: 8px;
-min-height: 90px;
 align-items: center;
 justify-content: center;
 }
+.bid-btn-circle:active { background: var(--gold); color: #000; }
+#bid-val-num { font-size: 20px; font-weight: bold; color: var(--gold); min-width: 24px; text-align: center; }
 
-/* کارت‌ها */
-.card {
-width: 52px;
-height: 76px;
+/* دست کاربر: چیدمان متراکم بدون اسکرول */
+#user-hand-tray {
+background: rgba(0, 0, 0, 0.65);
+border-top: 1px solid rgba(255, 255, 255, 0.1);
+padding: 6px 4px calc(env(safe-area-inset-bottom, 12px) + 4px) 4px;
+display: flex;
+flex-direction: column;
+align-items: center;
+z-index: 60;
+}
+.hand-fan-container {
+display: flex;
+justify-content: center;
+align-items: flex-end;
+width: 100%;
+max-width: 440px;
+height: 90px;
+padding: 0 4px;
+position: relative;
+}
+
+/* گرافیک کارت‌ها */
+.playing-card {
+width: 46px;
+height: 72px;
 background: var(--card-bg);
-border-radius: 6px;
+border-radius: 5px;
+box-shadow: -2px 2px 6px rgba(0,0,0,0.45);
 border: 1px solid #cbd5e1;
 color: #0f172a;
 display: flex;
 flex-direction: column;
 justify-content: space-between;
-padding: 3px 4px;
-font-weight: bold;
-box-shadow: 0 4px 6px rgba(0,0,0,0.35);
-cursor: pointer;
+padding: 3px;
+font-weight: 800;
 position: relative;
-flex-shrink: 0;
+cursor: pointer;
+margin-left: -20px; /* همپوشانی فشرده بادبزنی */
+transition: transform 0.18s ease, margin 0.18s ease;
 touch-action: manipulation;
-transition: transform 0.15s ease;
 }
-.card:active { transform: translateY(-8px); }
-.card.red { color: var(--heart); }
-.card.disabled { opacity: 0.35; cursor: not-allowed; }
-.card.selected-bid-view { border: 2px solid var(--gold); }
-
-.card-back {
+.playing-card:first-child { margin-left: 0; }
+.playing-card.selectable:active { transform: translateY(-16px) scale(1.05); }
+.playing-card.disabled { opacity: 0.38; cursor: not-allowed; }
+.playing-card.red { color: #dc2626; }
+.playing-card.back-cover {
 background: #1e293b;
 border: 2px solid #38bdf8;
 background-image: repeating-linear-gradient(45deg, #0f172a 0, #0f172a 4px, #1e293b 4px, #1e293b 8px);
+box-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
-/* کانتینر تعهد بدون پوشاندن برگ‌ها */
-#bid-bar {
-position: absolute;
-bottom: 115px;
-background: rgba(15, 23, 42, 0.95);
-border: 1px solid var(--gold);
-border-radius: 12px;
-padding: 8px 16px;
-display: flex;
-align-items: center;
-gap: 10px;
-box-shadow: 0 6px 12px rgba(0,0,0,0.5);
-z-index: 50;
-}
-.bid-btn {
-background: #334155;
-color: #fff;
-border: 1px solid #64748b;
-width: 32px;
-height: 32px;
-border-radius: 6px;
-font-weight: bold;
-font-size: 16px;
-cursor: pointer;
-}
-.bid-btn:active { background: var(--gold); color: #000; }
-#bid-val-display { font-size: 18px; font-weight: bold; color: var(--gold); width: 24px; text-align: center; }
-
-/* دست بازیکن پایین */
-#hand-wrapper {
-background: rgba(0, 0, 0, 0.5);
-padding: 8px 4px 16px 4px;
-position: relative;
-display: flex;
-flex-direction: column;
-align-items: center;
-}
-#my-hand {
-display: flex;
-overflow-x: auto;
-gap: 3px;
-width: 100%;
-justify-content: flex-start;
-padding: 0 8px;
--webkit-overflow-scrolling: touch;
-}
-
-.modal {
+/* مودال‌ها و دکمه‌ها */
+.modal-backdrop {
 position: fixed;
 inset: 0;
 background: rgba(0,0,0,0.85);
-display: flex;
+backdrop-filter: blur(4px);
+display: none;
 justify-content: center;
 align-items: center;
-z-index: 100;
-padding: 20px;
+z-index: 300;
+padding: 16px;
 }
-.modal-box {
+.modal-sheet {
 background: #0f172a;
 border: 1px solid var(--gold);
-border-radius: 12px;
+border-radius: 16px;
 padding: 20px;
 width: 100%;
-max-width: 380px;
+max-width: 360px;
 text-align: center;
+max-height: 85vh;
+overflow-y: auto;
 }
-.btn {
+.btn-action {
 background: var(--gold);
 color: #000;
 border: none;
 padding: 10px 18px;
-border-radius: 8px;
+border-radius: 10px;
 font-weight: bold;
-margin: 6px 4px;
+font-size: 13px;
 cursor: pointer;
+margin: 6px 4px;
+box-shadow: 0 4px 10px var(--gold-glow);
 }
-.btn-danger { background: var(--danger); color: #fff; }
-.hidden { display: none !important; }
+.btn-outline {
+background: transparent;
+border: 1px solid var(--gold);
+color: var(--gold);
+}
 </style>
 </head>
 <body>
 
-<header>
-<div class="score-badge">
-<span>تیم ما (شما و یار)</span>
-<span class="score-val" id="score-t0">۰</span>
-<span style="font-size:10px;" id="meta-t0">تعهد: - | دست: ۰ | هشت: ۰</span>
+<!-- صفحهٔ فرود (شروع بازی و راهنما) -->
+<div id="welcome-screen">
+<div style="font-size:44px; margin-bottom:8px;">♠</div>
+<h1 class="brand-title">شلم پیک</h1>
+<p class="brand-sub">نسخهٔ اختصاصی شلم لاری با حکم همیشگی پیک و هشت برتر</p>
+
+<div style="display:flex; flex-direction:column; gap:10px; width:100%; max-width:240px;">
+<button class="btn-action" onclick="startGameSession()">شروع بازی مسابقه</button>
+<button class="btn-action btn-outline" onclick="openRulesModal()">راهنمای بازی و قوانین</button>
 </div>
-<div class="trump-pill">حکم: پیک ♠</div>
-<div class="score-badge" style="text-align: left;">
-<span>تیم حریف</span>
-<span class="score-val" id="score-t1">۰</span>
-<span style="font-size:10px;" id="meta-t1">تعهد: - | دست: ۰ | هشت: ۰</span>
+
+<div class="owner-tag">
+صاحب امتیاز و طراحی: <b>مجتبی سخایی</b><br>
+نگارش ۱.۰.۲ (آزمایشی آیفون)
+</div>
+</div>
+
+<!-- نوار بالای تابلوی امتیاز -->
+<header>
+<div class="team-badge">
+<span>تیم ما (شما و مهدی)</span>
+<span class="team-score" id="score-t0">۰</span>
+<span style="font-size:9px;" id="meta-t0">تعهد: - | دست: ۰ | هشت: ۰</span>
+</div>
+
+<div class="trump-indicator">حکم: پیک ♠</div>
+
+<div class="team-badge" style="text-align: left;">
+<span>تیم حریف (رضا و سینا)</span>
+<span class="team-score" id="score-t1">۰</span>
+<span style="font-size:9px;" id="meta-t1">تعهد: - | دست: ۰ | هشت: ۰</span>
 </div>
 </header>
 
-<div id="warning-bar">هشدار: جوکر سیاه را حداکثر با ۳ برگ در دست باید بازی کنید!</div>
+<!-- هشدار جوکر سیاه -->
+<div id="warning-strip">هشدار: جوکر سیاه را حداکثر با ۳ برگ در دست باید بازی کنید!</div>
 
-<div id="table">
-<div class="seat" id="seat-top">
-<div class="player-badge" id="badge-2">مهدی (یار)<br><span id="bids-2">تعهد: ؟</span> | دست: <span id="tricks-2">۰</span></div>
-<div class="card card-back" style="width:34px; height:46px;"></div>
+<!-- میز مسابقه -->
+<div id="table-arena">
+<!-- مهدی (یار بالا) -->
+<div class="seat-node" id="node-top">
+<div class="player-pill" id="pill-2">مهدی (یار)<br><span id="bid-lbl-2">تعهد: ؟</span> | دست: <span id="tricks-2">۰</span></div>
+<div class="playing-card back-cover" style="width:28px; height:40px; margin:0;"></div>
 </div>
 
-<div class="seat" id="seat-left">
-<div class="player-badge" id="badge-1">رضا (حریف)<br><span id="bids-1">تعهد: ؟</span> | دست: <span id="tricks-1">۰</span></div>
-<div class="card card-back" style="width:34px; height:46px;"></div>
+<!-- رضا (حریف چپ) -->
+<div class="seat-node" id="node-left">
+<div class="player-pill" id="pill-1">رضا<br><span id="bid-lbl-1">تعهد: ؟</span> | دست: <span id="tricks-1">۰</span></div>
+<div class="playing-card back-cover" style="width:28px; height:40px; margin:0;"></div>
 </div>
 
-<div class="trick-area" id="trick-area"></div>
+<!-- وسط میز: کارت‌های بازی‌شده -->
+<div class="table-center-tricks" id="trick-drop-zone"></div>
 
-<div class="seat" id="seat-right">
-<div class="player-badge" id="badge-3">سینا (حریف)<br><span id="bids-3">تعهد: ؟</span> | دست: <span id="tricks-3">۰</span></div>
-<div class="card card-back" style="width:34px; height:46px;"></div>
-</div>
-
-<!-- کادر شناور ثبت تعهد روی میز (برگ‌ها را نمی‌پوشاند) -->
-<div id="bid-bar" class="hidden">
-<span style="font-size:12px; color:var(--gold);">تعهد شما:</span>
-<button class="bid-btn" onclick="stepBid(-1)">-</button>
-<span id="bid-val-display">۲</span>
-<button class="bid-btn" onclick="stepBid(1)">+</button>
-<button class="btn" style="padding:6px 12px; font-size:12px;" onclick="confirmUserBid()">تأیید</button>
-</div>
+<!-- سینا (حریف راست) -->
+<div class="seat-node" id="node-right">
+<div class="player-pill" id="pill-3">سینا<br><span id="bid-lbl-3">تعهد: ؟</span> | دست: <span id="tricks-3">۰</span></div>
+<div class="playing-card back-cover" style="width:28px; height:40px; margin:0;"></div>
 </div>
 
-<div id="hand-wrapper">
-<div style="font-size:11px; color:#cbd5e1; margin-bottom:4px; width:100%; text-align:right; padding-right:10px;">
-دست شما (۱۳ برگ):
+<!-- کنترلر شناور ثبت تعهد کاربر -->
+<div id="bid-controller">
+<span style="font-size:11px; color:var(--gold);">تعهد شما:</span>
+<button class="bid-btn-circle" onclick="changeBidStep(-1)">-</button>
+<span id="bid-val-num">۲</span>
+<button class="bid-btn-circle" onclick="changeBidStep(1)">+</button>
+<button class="btn-action" style="padding:6px 14px; font-size:11px; margin:0;" onclick="confirmUserBid()">ثبت</button>
 </div>
-<div id="my-hand"></div>
 </div>
 
-<div class="modal hidden" id="round-modal">
-<div class="modal-box">
-<h3 id="round-title" style="color:var(--gold); margin-bottom:12px;">نتیجه دور</h3>
-<p id="round-desc" style="font-size:13px; line-height:1.6; margin-bottom:16px;"></p>
-<button class="btn" onclick="startNewRound()">شروع دور بعد</button>
-<button class="btn btn-danger" onclick="openShare()">اشتراک‌گذاری بازی</button>
+<!-- سینی کارت‌های دست پایین -->
+<div id="user-hand-tray">
+<div style="font-size:10px; color:#cbd5e1; margin-bottom:2px; width:100%; text-align:right; padding-right:8px;">
+برگ‌های دست شما (۱۳ برگ):
+</div>
+<div class="hand-fan-container" id="user-cards-fan"></div>
+</div>
+
+<!-- مودال راهنمای قوانین شلم پیک -->
+<div class="modal-backdrop" id="rules-modal">
+<div class="modal-sheet" style="text-align: right; font-size:12px; line-height:1.7;">
+<h3 style="color:var(--gold); text-align:center; margin-bottom:12px;">قوانین شلم پیک</h3>
+<p><b>۱. برگ‌ها و دسته‌ها:</b> بازی ۵۲ کارتی است. دوِ دل و دوِ خشت حذف شده و دو جوکر جایگزین شده‌اند.</p>
+<p><b>۲. حکم:</b> حکم بازی همواره <b>پیک (♠)</b> است و نیازی به انتخاب ندارد.</p>
+<p><b>۳. تعهد:</b> هر بازیکن حداقل ۲ دست اعلام می‌کند. تعهد تیم حاصل‌جمع تعهد دو بازیکن است.</p>
+<p><b>۴. قواعد جوکرها:</b>
+<br>• جوکر رنگی سرور تمام کارت‌ها است.
+<br>• جوکر سیاه بالاتر از تک پیک است و در هر دستی مجاز است.
+<br>• جوکر رنگی فقط بعد از بازی‌شدن جوکر سیاه آزاد می‌شود.
+<br>• <b>مهلت جوکر سیاه:</b> حداکثر زمانی که ۳ کارت در دست دارید باید بازی شود و نباید به دو کارت پایانی برسد.</p>
+<p><b>۵. امتیازدهی:</b> در صورت تحقق تعهد = ۱۰ × تعهد + دست‌های اضافه. در صورت باخت تعهد = منفی ۱۰ × تعهد.</p>
+<p><b>۶. هشت برتر:</b> تعهد حداقل ۸ دست و موفقیت در آن یک هشت برتر دارد. هشت‌های دو تیم همدیگر را خنثی می‌کنند. برای پیروزی نهایی به ۵۰۰ امتیاز و حداقل ۱ هشت خنثی‌نشده نیاز است.</p>
+<br>
+<button class="btn-action" style="width:100%;" onclick="closeRulesModal()">متوجه شدم</button>
+</div>
+</div>
+
+<!-- مودال گزارش پایان دور -->
+<div class="modal-backdrop" id="round-report-modal">
+<div class="modal-sheet">
+<h3 id="report-title" style="color:var(--gold); margin-bottom:10px;">نتیجهٔ دور</h3>
+<p id="report-body" style="font-size:13px; line-height:1.6; margin-bottom:16px;"></p>
+<button class="btn-action" onclick="nextRoundTrigger()">دور بعدی</button>
 </div>
 </div>
 
 <script>
-const SUITS = { SPADES: '♠', HEARTS: '♥', DIAMONDS: '♦', CLUBS: '♣' };
+const SUIT_ICONS = { SPADES: '♠', HEARTS: '♥', DIAMONDS: '♦', CLUBS: '♣' };
+const POS_MAP = { 0: 'bottom', 1: 'left', 2: 'top', 3: 'right' };
 
 let state = {
 rules: { minBid: 2, targetScore: 500, enableEight: true, eightThreshold: 8 },
@@ -276,335 +412,5 @@ teamEights: [0, 0],
 players: [
 { id: 0, name: 'شما', team: 0, hand: [], bid: 0, tricks: 0, isBot: false },
 { id: 1, name: 'رضا', team: 1, hand: [], bid: 0, tricks: 0, isBot: true },
-{ id: 2, name: 'مهدی', team: 0, hand: [], bid: 0, tricks: 0, isBot: true },
-{ id: 3, name: 'سینا', team: 1, hand: [], bid: 0, tricks: 0, isBot: true }
-],
-currentTurn: 0,
-dealer: 0,
-trick: [],
-leadSuit: null,
-blackJokerPlayed: false,
-phase: 'bidding',
-tempUserBid: 2
-};
 
-function sortHand(hand) {
-const suitOrder = { SPADES: 4, HEARTS: 3, CLUBS: 2, DIAMONDS: 1 };
-return hand.sort((a, b) => {
-if (a.type === 'colorJoker') return -1;
-if (b.type === 'colorJoker') return 1;
-if (a.type === 'blackJoker') return -1;
-if (b.type === 'blackJoker') return 1;
-
-if (suitOrder[a.suit] !== suitOrder[b.suit]) {
-return suitOrder[b.suit] - suitOrder[a.suit];
-}
-return b.rank - a.rank;
-});
-}
-
-function generateDeck() {
-let deck = [];
-const suits = ['SPADES', 'HEARTS', 'DIAMONDS', 'CLUBS'];
-suits.forEach(suit => {
-for (let r = 2; r <= 14; r++) {
-if ((suit === 'HEARTS' || suit === 'DIAMONDS') && r === 2) continue;
-deck.push({ id: `${suit}_${r}`, suit, rank: r, type: 'standard' });
-}
-});
-deck.push({ id: 'JOKER_BLACK', suit: null, rank: 98, type: 'blackJoker' });
-deck.push({ id: 'JOKER_COLOR', suit: null, rank: 99, type: 'colorJoker' });
-return deck.sort(() => Math.random() - 0.5);
-}
-
-function initGame() {
-startNewRound();
-}
-
-function startNewRound() {
-document.getElementById('round-modal').classList.add('hidden');
-const deck = generateDeck();
-for (let i = 0; i < 4; i++) {
-state.players[i].hand = sortHand(deck.slice(i * 13, (i + 1) * 13));
-state.players[i].bid = 0;
-state.players[i].tricks = 0;
-}
-state.blackJokerPlayed = false;
-state.trick = [];
-state.leadSuit = null;
-state.phase = 'bidding';
-state.currentTurn = (state.dealer + 1) % 4;
-state.tempUserBid = 2;
-
-updateUI();
-runBiddingPhase();
-}
-
-function runBiddingPhase() {
-updateUI();
-if (state.currentTurn === 0) {
-document.getElementById('bid-bar').classList.remove('hidden');
-document.getElementById('bid-val-display').innerText = state.tempUserBid;
-} else {
-document.getElementById('bid-bar').classList.add('hidden');
-setTimeout(() => {
-const p = state.players[state.currentTurn];
-p.bid = 2 + Math.floor(Math.random() * 2);
-nextBidTurn();
-}, 600);
-}
-}
-
-function stepBid(step) {
-state.tempUserBid = Math.max(state.rules.minBid, Math.min(state.tempUserBid + step, 13));
-document.getElementById('bid-val-display').innerText = state.tempUserBid;
-}
-
-function confirmUserBid() {
-state.players[0].bid = state.tempUserBid;
-document.getElementById('bid-bar').classList.add('hidden');
-nextBidTurn();
-}
-
-function nextBidTurn() {
-state.currentTurn = (state.currentTurn + 1) % 4;
-if (state.players.every(p => p.bid >= state.rules.minBid)) {
-state.phase = 'playing';
-state.currentTurn = (state.dealer + 1) % 4;
-updateUI();
-triggerTurn();
-} else {
-runBiddingPhase();
-}
-}
-
-function triggerTurn() {
-updateUI();
-if (state.phase !== 'playing') return;
-
-const p = state.players[state.currentTurn];
-if (p.isBot) {
-setTimeout(() => {
-const valids = getValidCards(state.currentTurn);
-const picked = valids[Math.floor(Math.random() * valids.length)];
-executePlay(state.currentTurn, picked);
-}, 700);
-}
-}
-
-function getValidCards(playerIdx) {
-const p = state.players[playerIdx];
-if (state.trick.length === 0) {
-return p.hand.filter(c => c.type === 'standard');
-}
-
-const hasLead = p.hand.some(c => c.suit === state.leadSuit);
-return p.hand.filter(c => {
-if (c.type === 'colorJoker') return state.blackJokerPlayed;
-if (c.type === 'blackJoker') return true;
-if (hasLead) return c.suit === state.leadSuit;
-return true;
-});
-}
-
-function userPlayCard(cardId) {
-if (state.currentTurn !== 0 || state.phase !== 'playing') return;
-const card = state.players[0].hand.find(c => c.id === cardId);
-const valids = getValidCards(0);
-if (!valids.some(c => c.id === cardId)) return;
-
-const hasBlack = state.players[0].hand.some(c => c.type === 'blackJoker');
-if (hasBlack && state.players[0].hand.length <= 3 && card.type !== 'blackJoker') {
-applyViolation(0);
-return;
-}
-
-executePlay(0, card);
-}
-
-function executePlay(playerIdx, card) {
-const p = state.players[playerIdx];
-p.hand = p.hand.filter(c => c.id !== card.id);
-
-if (card.type === 'blackJoker') state.blackJokerPlayed = true;
-if (state.trick.length === 0) state.leadSuit = card.suit;
-
-state.trick.push({ playerId: playerIdx, card });
-
-if (state.trick.length === 4) {
-updateUI();
-setTimeout(resolveTrick, 900);
-} else {
-state.currentTurn = (state.currentTurn + 1) % 4;
-triggerTurn();
-}
-}
-
-function resolveTrick() {
-let winObj = state.trick[0];
-for (let i = 1; i < 4; i++) {
-if (compareCards(state.trick[i].card, winObj.card, state.leadSuit) > 0) {
-winObj = state.trick[i];
-}
-}
-
-state.players[winObj.playerId].tricks++;
-state.currentTurn = winObj.playerId;
-state.trick = [];
-state.leadSuit = null;
-
-if (state.players[0].hand.length === 0) {
-resolveRoundEnd();
-} else {
-triggerTurn();
-}
-}
-
-function compareCards(c1, c2, lead) {
-if (c1.type === 'colorJoker') return 1;
-if (c2.type === 'colorJoker') return -1;
-if (c1.type === 'blackJoker') return 1;
-if (c2.type === 'blackJoker') return -1;
-
-const c1Tr = c1.suit === 'SPADES', c2Tr = c2.suit === 'SPADES';
-if (c1Tr && !c2Tr) return 1;
-if (!c1Tr && c2Tr) return -1;
-if (c1Tr && c2Tr) return c1.rank - c2.rank;
-
-const c1Ld = c1.suit === lead, c2Ld = c2.suit === lead;
-if (c1Ld && !c2Ld) return 1;
-if (!c1Ld && c2Ld) return -1;
-if (c1Ld && c2Ld) return c1.rank - c2.rank;
-
-return 0;
-}
-
-function applyViolation(teamId) {
-const opp = 1 - teamId;
-const violBid = state.players.filter(p => p.team === teamId).reduce((a,b)=>a+b.bid, 0);
-const oppBid = state.players.filter(p => p.team === opp).reduce((a,b)=>a+b.bid, 0);
-
-state.teamScores[teamId] -= (10 * violBid);
-state.teamScores[opp] += (10 * oppBid);
-
-showRoundModal("تخلف جوکر سیاه!", `عدم بازی جوکر سیاه تا برگ سوم. جریمه: ${-10 * violBid} امتیاز.`);
-}
-
-function resolveRoundEnd() {
-let report = "";
-for (let t = 0; t < 2; t++) {
-const bid = state.players.filter(p => p.team === t).reduce((a,b)=>a+b.bid, 0);
-const won = state.players.filter(p => p.team === t).reduce((a,b)=>a+b.tricks, 0);
-
-if (won >= bid) {
-const sc = (10 * bid) + (won - bid);
-state.teamScores[t] += sc;
-report += `تیم ${t === 0 ? 'ما' : 'حریف'}: تعهد ${bid}، دست ${won} ➔ ${sc} امتیاز مثبت.<br>`;
-if (state.rules.enableEight && bid >= state.rules.eightThreshold) {
-handleEight(t);
-report += `★ هشت برتر برای تیم ${t === 0 ? 'ما' : 'حریف'} ثبت شد!<br>`;
-}
-} else {
-const pen = -10 * bid;
-state.teamScores[t] += pen;
-report += `تیم ${t === 0 ? 'ما' : 'حریف'}: عدم تعهد (${won} از ${bid}) ➔ ${pen} امتیاز منفی.<br>`;
-}
-}
-
-state.dealer = (state.dealer + 1) % 4;
-showRoundModal("پایان دور", report);
-}
-
-function handleEight(teamId) {
-const opp = 1 - teamId;
-if (state.teamEights[opp] > 0) {
-state.teamEights[opp]--;
-} else {
-state.teamEights[teamId]++;
-}
-}
-
-function showRoundModal(title, text) {
-state.phase = 'ended';
-document.getElementById('round-title').innerText = title;
-document.getElementById('round-desc').innerHTML = text;
-document.getElementById('round-modal').classList.remove('hidden');
-updateUI();
-}
-
-function updateUI() {
-const t0Bid = state.players[0].bid + state.players[2].bid;
-const t1Bid = state.players[1].bid + state.players[3].bid;
-const t0Tr = state.players[0].tricks + state.players[2].tricks;
-const t1Tr = state.players[1].tricks + state.players[3].tricks;
-
-document.getElementById('score-t0').innerText = state.teamScores[0];
-document.getElementById('score-t1').innerText = state.teamScores[1];
-document.getElementById('meta-t0').innerText = `تعهد: ${t0Bid||'-'} | دست: ${t0Tr} | هشت: ${state.teamEights[0]}`;
-document.getElementById('meta-t1').innerText = `تعهد: ${t1Bid||'-'} | دست: ${t1Tr} | هشت: ${state.teamEights[1]}`;
-
-for(let i=1; i<=3; i++) {
-document.getElementById(`tricks-${i}`).innerText = state.players[i].tricks;
-document.getElementById(`bids-${i}`).innerText = state.players[i].bid ? `تعهد: ${state.players[i].bid}` : 'تعهد: ؟';
-document.getElementById(`seat-${i===1?'left':i===2?'top':'right'}`).classList.toggle('active', state.currentTurn === i);
-}
-
-const myBlack = state.players[0].hand.some(c => c.type === 'blackJoker');
-document.getElementById('warning-bar').style.display = (myBlack && state.players[0].hand.length <= 4) ? 'block' : 'none';
-
-const trickEl = document.getElementById('trick-area');
-trickEl.innerHTML = '';
-state.trick.forEach(t => {
-trickEl.appendChild(createCardUI(t.card, false));
-});
-
-const handEl = document.getElementById('my-hand');
-handEl.innerHTML = '';
-const valids = state.phase === 'playing' && state.currentTurn === 0 ? getValidCards(0) : [];
-
-state.players[0].hand.forEach(c => {
-const isLegal = state.phase === 'bidding' || valids.some(vc => vc.id === c.id);
-const cardNode = createCardUI(c, true, isLegal);
-if (state.phase === 'playing') {
-cardNode.onclick = () => userPlayCard(c.id);
-}
-handEl.appendChild(cardNode);
-});
-}
-
-function createCardUI(card, isHand, isLegal = true) {
-const el = document.createElement('div');
-el.className = 'card';
-if (!isLegal && isHand && state.phase === 'playing') el.classList.add('disabled');
-
-if (card.type === 'standard') {
-const isRed = card.suit === 'HEARTS' || card.suit === 'DIAMONDS';
-if (isRed) el.classList.add('red');
-const rName = card.rank === 14 ? 'A' : card.rank === 13 ? 'K' : card.rank === 12 ? 'Q' : card.rank === 11 ? 'J' : card.rank;
-el.innerHTML = `<div>${rName}</div><div style="font-size:16px; text-align:center;">${SUITS[card.suit]}</div><div style="text-align:left;">${rName}</div>`;
-} else if (card.type === 'blackJoker') {
-el.innerHTML = `<div style="font-size:9px;">جوکر</div><div style="font-size:11px; text-align:center;">★ سیاه</div><div style="font-size:9px; text-align:left;">JOKER</div>`;
-} else {
-el.classList.add('red');
-el.innerHTML = `<div style="font-size:9px;">جوکر</div><div style="font-size:11px; text-align:center;">★ رنگی</div><div style="font-size:9px; text-align:left;">JOKER</div>`;
-}
-return el;
-}
-
-function openShare() {
-if (navigator.share) {
-navigator.share({
-title: 'بازی شلم پیک',
-text: 'شلم پیک (نسخه اختصاصی شلم لاری)',
-url: window.location.href
-});
-} else {
-alert("لینک کپی شد: " + window.location.href);
-}
-}
-
-window.onload = initGame;
-</script>
-</body>
-</html>
 
