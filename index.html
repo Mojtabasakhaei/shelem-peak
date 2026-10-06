@@ -42,26 +42,26 @@ display: flex;
 flex-direction: column;
 align-items: center;
 justify-content: center;
-padding: 20px;
+padding: 16px;
 text-align: center;
 }
 .brand-title {
-font-size: 34px;
+font-size: 32px;
 font-weight: 900;
 color: var(--gold);
 text-shadow: 0 0 16px var(--gold-glow);
-margin-bottom: 4px;
+margin-bottom: 2px;
 }
-.brand-sub { font-size: 13px; color: #94a3b8; margin-bottom: 14px; }
+.brand-sub { font-size: 12px; color: #94a3b8; margin-bottom: 12px; }
 
 .lang-container {
 display: flex;
 flex-wrap: wrap;
 justify-content: center;
 gap: 5px;
-margin-bottom: 12px;
+margin-bottom: 10px;
 background: rgba(0, 0, 0, 0.5);
-padding: 5px 8px;
+padding: 4px 6px;
 border-radius: 20px;
 border: 1px solid rgba(255, 255, 255, 0.15);
 max-width: 320px;
@@ -85,7 +85,7 @@ background: #090d16;
 border: 1px solid #334155;
 border-radius: 10px;
 padding: 3px;
-margin: 4px 0 10px 0;
+margin: 4px 0 8px 0;
 }
 .bot-level-btn {
 flex: 1;
@@ -94,7 +94,7 @@ border: none;
 color: #94a3b8;
 font-size: 11px;
 font-weight: bold;
-padding: 6px 2px;
+padding: 5px 2px;
 border-radius: 8px;
 cursor: pointer;
 }
@@ -104,9 +104,9 @@ cursor: pointer;
 background: rgba(15, 23, 42, 0.95);
 border: 1px solid rgba(245, 158, 11, 0.3);
 border-radius: 16px;
-padding: 16px;
+padding: 14px;
 width: 100%;
-max-width: 330px;
+max-width: 320px;
 display: flex;
 flex-direction: column;
 gap: 8px;
@@ -160,7 +160,7 @@ gap: 8px;
 margin: 4px 0 8px 0;
 }
 .back-option {
-height: 64px;
+height: 60px;
 border-radius: 8px;
 border: 2px solid #334155;
 cursor: pointer;
@@ -179,8 +179,8 @@ background: #22c55e;
 color: #fff;
 font-size: 12px;
 font-weight: 900;
-width: 20px;
-height: 20px;
+width: 18px;
+height: 18px;
 border-radius: 50%;
 display: flex;
 align-items: center;
@@ -188,8 +188,8 @@ justify-content: center;
 }
 
 header {
-background: rgba(5, 10, 5, 0.92);
-padding: env(safe-area-inset-top, 6px) 12px 6px 12px;
+background: rgba(5, 10, 5, 0.95);
+padding: env(safe-area-inset-top, 6px) 10px 4px 10px;
 display: flex;
 justify-content: space-between;
 align-items: center;
@@ -197,11 +197,11 @@ font-size: 11px;
 border-bottom: 1px solid rgba(255, 215, 0, 0.2);
 z-index: 50;
 flex-shrink: 0;
-min-height: 44px;
+min-height: 42px;
 }
-.team-badge { display: flex; flex-direction: column; line-height: 1.3; }
-.team-score { font-size: 15px; font-weight: 800; color: var(--gold); }
-.trump-indicator { background: #000; color: var(--gold); border: 1px solid var(--gold); padding: 3px 8px; border-radius: 12px; font-weight: bold; font-size: 10px; }
+.team-badge { display: flex; flex-direction: column; line-height: 1.2; }
+.team-score { font-size: 14px; font-weight: 800; color: var(--gold); }
+.trump-indicator { background: #000; color: var(--gold); border: 1px solid var(--gold); padding: 2px 6px; border-radius: 12px; font-weight: bold; font-size: 10px; }
 .turn-timer { font-size: 10px; color: #38bdf8; background: #0f172a; padding: 2px 6px; border-radius: 8px; border: 1px solid #38bdf8; }
 
 #warning-strip {
@@ -218,50 +218,50 @@ flex-shrink: 0;
 
 /* محیط میز مسابقه */
 #table-arena {
-flex: 1;
+flex: 1 1 auto;
 background: var(--bg-felt);
 position: relative;
 display: flex;
 justify-content: center;
 align-items: center;
 overflow: hidden;
-min-height: 180px;
+min-height: 140px;
 }
 .seat-node { position: absolute; display: flex; flex-direction: column; align-items: center; z-index: 10; }
-#node-top { top: 6px; }
-#node-left { left: 8px; top: 38%; transform: translateY(-50%); }
-#node-right { right: 8px; top: 38%; transform: translateY(-50%); }
+#node-top { top: 4px; }
+#node-left { left: 6px; top: 38%; transform: translateY(-50%); }
+#node-right { right: 6px; top: 38%; transform: translateY(-50%); }
 
 .player-pill {
 background: rgba(0,0,0,0.7);
 border: 1px solid rgba(255,255,255,0.15);
 border-radius: 8px;
-padding: 3px 8px;
+padding: 2px 6px;
 font-size: 10px;
 text-align: center;
-line-height: 1.3;
-margin-bottom: 3px;
+line-height: 1.2;
+margin-bottom: 2px;
 }
 .seat-node.active .player-pill { border-color: var(--gold); background: rgba(245, 158, 11, 0.2); box-shadow: 0 0 8px var(--gold); }
-.other-player-card { width: 38px !important; height: 54px !important; border-radius: 5px; margin: 0 !important; box-shadow: 0 4px 8px rgba(0,0,0,0.4); }
+.other-player-card { width: 34px !important; height: 48px !important; border-radius: 4px; margin: 0 !important; box-shadow: 0 4px 8px rgba(0,0,0,0.4); }
 
-.table-center-tricks { width: 170px; height: 130px; position: relative; display: flex; justify-content: center; align-items: center; }
+.table-center-tricks { width: 150px; height: 110px; position: relative; display: flex; justify-content: center; align-items: center; }
 .trick-slot { position: absolute; }
-.trick-slot[data-pos="top"] { transform: translateY(-28px); }
-.trick-slot[data-pos="bottom"] { transform: translateY(28px); }
-.trick-slot[data-pos="left"] { transform: translateX(-34px); }
-.trick-slot[data-pos="right"] { transform: translateX(34px); }
+.trick-slot[data-pos="top"] { transform: translateY(-24px); }
+.trick-slot[data-pos="bottom"] { transform: translateY(24px); }
+.trick-slot[data-pos="left"] { transform: translateX(-28px); }
+.trick-slot[data-pos="right"] { transform: translateX(28px); }
 
-/* کادر ثبت تعهد (قرارگیری شناور در مرکز بالا و بدون پوشاندن کارت‌ها) */
+/* کادر ثبت تعهد */
 #bid-controller {
 position: absolute;
-top: 55%;
+top: 50%;
 left: 50%;
 transform: translate(-50%, -50%);
 background: rgba(15, 23, 42, 0.98);
 border: 2px solid var(--gold);
-border-radius: 20px;
-padding: 8px 18px;
+border-radius: 18px;
+padding: 8px 16px;
 display: none;
 align-items: center;
 gap: 12px;
@@ -269,8 +269,8 @@ z-index: 90;
 box-shadow: 0 10px 25px rgba(0,0,0,0.7);
 }
 .bid-btn-circle {
-width: 34px;
-height: 34px;
+width: 32px;
+height: 32px;
 border-radius: 50%;
 border: 1px solid #475569;
 background: #1e293b;
@@ -282,15 +282,15 @@ display: flex;
 align-items: center;
 justify-content: center;
 }
-#bid-val-num { font-size: 22px; font-weight: bold; color: var(--gold); min-width: 26px; text-align: center; }
+#bid-val-num { font-size: 20px; font-weight: bold; color: var(--gold); min-width: 24px; text-align: center; }
 
-/* تابلوی درشت، تمیز و خلوت وضعیت دست حاضر */
+/* تابلوی درشت دست حاضر */
 #round-status-bar {
-flex-shrink: 0;
+flex: 0 0 auto;
 width: 100%;
 background: rgba(15, 23, 42, 0.95);
 border-top: 1px solid rgba(245, 158, 11, 0.3);
-padding: 6px 14px;
+padding: 6px 12px;
 display: flex;
 justify-content: space-around;
 align-items: center;
@@ -299,19 +299,19 @@ font-weight: bold;
 color: #f1f5f9;
 z-index: 55;
 }
-.round-status-num { font-size: 17px; font-weight: 900; color: var(--gold); margin: 0 4px; }
+.round-status-num { font-size: 16px; font-weight: 900; color: var(--gold); margin: 0 4px; }
 
-/* سینی کارت‌های دست پایین بازیکن - تثبیت قطعی در دید آیفون */
+/* سینی کارت‌های دست پایین بازیکن */
 #user-hand-tray {
-flex-shrink: 0;
+flex: 0 0 auto;
 width: 100%;
 background: rgba(0, 0, 0, 0.85);
-padding: 4px 4px calc(env(safe-area-inset-bottom, 16px) + 4px) 4px;
+padding: 4px 4px calc(env(safe-area-inset-bottom, 14px) + 2px) 4px;
 display: flex;
 flex-direction: column;
 align-items: center;
 z-index: 60;
-min-height: 96px;
+min-height: 86px;
 }
 .hand-fan-container {
 display: flex;
@@ -319,13 +319,13 @@ justify-content: center;
 align-items: flex-end;
 width: 100%;
 max-width: 440px;
-height: 84px;
+height: 74px;
 padding: 0 4px;
 }
 
 .playing-card {
-width: 46px;
-height: 74px;
+width: 44px;
+height: 68px;
 background: var(--card-bg);
 border-radius: 5px;
 box-shadow: -2px 2px 6px rgba(0,0,0,0.5);
@@ -334,7 +334,7 @@ color: #0f172a;
 display: flex;
 flex-direction: column;
 justify-content: space-between;
-padding: 3px;
+padding: 2px;
 font-weight: 800;
 position: relative;
 cursor: pointer;
@@ -351,10 +351,10 @@ background-position: center;
 border: 1px solid #cbd5e1;
 }
 
-/* جوکرهای اصیل و دقیق */
+/* جوکرهای واقعی بر اساس عکس ارسالی */
 .joker-card {
 background: #fafafa !important;
-border: 1px solid #64748b !important;
+border: 1px solid #475569 !important;
 display: flex;
 flex-direction: column;
 justify-content: space-between;
@@ -366,7 +366,6 @@ font-size: 6px;
 font-family: serif;
 font-weight: 900;
 line-height: 1;
-letter-spacing: -0.2px;
 writing-mode: vertical-rl;
 text-orientation: upright;
 }
@@ -378,18 +377,19 @@ justify-content: center;
 width: 100%;
 }
 .joker-figure-wrapper svg {
-width: 32px;
-height: 52px;
+width: 28px;
+height: 46px;
 }
 
+/* پنجره‌های مدال */
 .modal-backdrop {
 position: fixed;
 inset: 0;
 background: rgba(0,0,0,0.88);
-display: none;
+z-index: 300;
+display: flex;
 justify-content: center;
 align-items: center;
-z-index: 300;
 padding: 16px;
 }
 .modal-sheet {
@@ -398,7 +398,7 @@ border: 1px solid var(--gold);
 border-radius: 16px;
 padding: 18px;
 width: 100%;
-max-width: 350px;
+max-width: 340px;
 text-align: inherit;
 max-height: 85vh;
 overflow-y: auto;
@@ -411,7 +411,7 @@ font-size: 11px;
 text-align: center;
 }
 .round-table-summary th { background: #1e293b; color: var(--gold); padding: 6px 4px; border: 1px solid #334155; }
-.round-table-summary td { padding: 7px 4px; border: 1px solid #334155; color: #e2e8f0; }
+.round-table-summary td { padding: 6px 4px; border: 1px solid #334155; color: #e2e8f0; }
 </style>
 
 <script>
@@ -538,8 +538,7 @@ document.documentElement.lang = lang;
 document.documentElement.dir = dict.dir;
 document.body.dir = dict.dir;
 
-var buttons = document.querySelectorAll('.lang-btn');
-for (var i = 0; i < buttons.length; i++) buttons[i].classList.remove('active');
+document.querySelectorAll('.lang-btn').forEach(function(b){ b.classList.remove('active'); });
 var activeBtn = document.getElementById('btn-' + lang);
 if (activeBtn) activeBtn.classList.add('active');
 
@@ -560,12 +559,19 @@ document.getElementById('txt-team0-lbl').innerText = dict.team0;
 document.getElementById('txt-team1-lbl').innerText = dict.team1;
 }
 
+/* توابع تضمینی باز و بسته شدن مودال‌ها */
 function openFeedbackModal() {
-document.getElementById('feedback-modal').style.display = 'flex';
+document.getElementById('feedback-modal').classList.remove('hidden');
 document.getElementById('fb-status').innerText = '';
 }
 function closeFeedbackModal() {
-document.getElementById('feedback-modal').style.display = 'none';
+document.getElementById('feedback-modal').classList.add('hidden');
+}
+function openRulesModal() {
+document.getElementById('rules-modal').classList.remove('hidden');
+}
+function closeRulesModal() {
+document.getElementById('rules-modal').classList.add('hidden');
 }
 
 function submitFeedbackForm() {
@@ -743,7 +749,7 @@ return deck.sort(function() { return Math.random() - 0.5; });
 }
 
 function startNewRoundCycle() {
-document.getElementById('round-report-modal').style.display = 'none';
+document.getElementById('round-report-modal').classList.add('hidden');
 var deck = createFreshDeck();
 for (var i = 0; i < 4; i++) {
 state.players[i].hand = sortPlayerHand(deck.slice(i * 13, (i + 1) * 13));
@@ -754,7 +760,7 @@ state.blackJokerPlayed = false;
 state.trick = [];
 state.leadSuit = null;
 state.phase = 'bidding';
-state.currentTurn = (state.dealer + 1) % 4;
+state.currentTurn = 0; // نوبت همیشه اول از بازیکن شما آغاز می‌شود
 state.tempUserBid = 2;
 
 renderView();
@@ -773,7 +779,7 @@ setTimeout(function() {
 var p = state.players[state.currentTurn];
 p.bid = calculateBotBid(p);
 advanceBiddingTurn();
-}, 600);
+}, 500);
 }
 }
 
@@ -850,7 +856,7 @@ return valids[0];
 
 function getLegalMoves(playerIndex) {
 var p = state.players[playerIndex];
-// در دست آخر هیچ محدودیتی نیست
+// در برگ آخر هیچ محدودیتی نیست
 if (p.hand.length === 1) return p.hand;
 
 if (state.trick.length === 0) {
@@ -1001,7 +1007,7 @@ function openReportModal(title, content) {
 state.phase = 'ended';
 document.getElementById('report-title').innerText = title;
 document.getElementById('report-body').innerHTML = content;
-document.getElementById('round-report-modal').style.display = 'flex';
+document.getElementById('round-report-modal').classList.remove('hidden');
 renderView();
 }
 
@@ -1051,7 +1057,7 @@ wrapper.appendChild(cNode);
 dropZone.appendChild(wrapper);
 });
 
-// رندر برگ‌های دست کاربر با تضمین دیده‌شدن
+// رندر قطعی و بدون افت برگ‌های دست کاربر
 var fanContainer = document.getElementById('user-cards-fan');
 fanContainer.innerHTML = '';
 var valids = (state.phase === 'playing' && state.currentTurn === 0) ? getLegalMoves(0) : [];
@@ -1160,8 +1166,8 @@ applyCardBack(currentCardBack);
 
 <button type="button" class="btn-action" id="txt-play4" onclick="openAuthOrLobby()">ورود به بازی (۴ نفره)</button>
 <button type="button" class="btn-action btn-secondary" id="txt-custom-btn" onclick="openCustomizeScreen()">طرح پشت کارت</button>
-<button type="button" class="btn-action btn-secondary" id="txt-play6" onclick="alert('نسخه ۶ نفره به‌‌زودی فعال می‌شود.')">شلم پیک (۶ نفره) - به‌زودی</button>
-<button type="button" class="btn-action btn-outline" id="txt-rules-btn" onclick="document.getElementById('rules-modal').style.display='flex'">راهنمای بازی و قوانین</button>
+<button type="button" class="btn-action btn-secondary" id="txt-play6" onclick="alert('نسخه ۶ نفره به‌زودی فعال می‌شود.')">شلم پیک (۶ نفره) - به‌زودی</button>
+<button type="button" class="btn-action btn-outline" id="txt-rules-btn" onclick="openRulesModal()">راهنمای بازی و قوانین</button>
 <button type="button" class="btn-action btn-feedback" id="txt-feedback-btn" onclick="openFeedbackModal()">✉ ارسال پیشنهاد به ادمین</button>
 </div>
 </div>
@@ -1231,7 +1237,7 @@ applyCardBack(currentCardBack);
 </div>
 </div>
 
-<!-- ۵. میز مسابقه -->
+<!-- ۵. میز مسابقه اصلی -->
 <header>
 <button type="button" class="btn-action btn-back" style="padding:4px 8px; font-size:10px;" onclick="handleInGameBack()">⇦ منو</button>
 <div class="team-badge">
@@ -1265,7 +1271,7 @@ applyCardBack(currentCardBack);
 <div class="playing-card back-cover other-player-card"></div>
 </div>
 
-<!-- فرم شناور ثبت تعهد (در مرکز میز) -->
+<!-- فرم شناور ثبت تعهد -->
 <div id="bid-controller">
 <span style="font-size:12px; color:var(--gold); font-weight:bold;">تعهد شما:</span>
 <button type="button" class="bid-btn-circle" onclick="changeBidStep(-1)">-</button>
@@ -1275,19 +1281,15 @@ applyCardBack(currentCardBack);
 </div>
 </div>
 
-<!-- نوار ساده و تمیز وضعیت دست‌های فعلی در بالای برگ‌های شما -->
+<!-- تابلوی افقی و درشت دست حاضر -->
 <div id="round-status-bar">
 <div>تیم ما: <span class="round-status-num" id="status-t0-tricks">۰ از ؟</span></div>
+<div style="color:rgba(255,255,255,0.2);">|</div>
 <div>تیم حریف: <span class="round-status-num" id="status-t1-tricks">۰ از ؟</span></div>
 </div>
 
-<!-- سینی برگ‌های دست بازیکن - فیکس شده در دید آیفون -->
+<!-- سینی کارت‌های دست کاربر با نمایش تضمین‌شده -->
 <div id="user-hand-tray">
-<div class="hand-fan-container" id="user-cards-fan"></div>
-</div>
-
-<!-- مدال نظر و پیشنهاد -->
-<div class="moda
 ...
 
 [Message clipped]  View entire message
