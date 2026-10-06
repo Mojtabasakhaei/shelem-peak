@@ -3,14 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>شلم پیک - Shelem Peak</title>
-<!-- ثبت رسمی و حقوقی مالکیت مادی و معنوی به نام مجتبی سخایی -->
+<title>شلم پیک - ورود و لابی مسابقه</title>
+
 <meta name="author" content="مجتبی سخایی">
-<meta name="copyright" content="تمامی حقوق مادی و معنوی، ساختار و ایده بازی شلم پیک متعلق به مجتبی سخایی است.">
-<meta name="developer" content="Mojtaba Sakhaei">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="شلم پیک">
+<meta name="copyright" content="تمامی حقوق مادی و معنوی شلم پیک محفوظ است.">
 
 <style>
 :root {
@@ -33,40 +29,10 @@ display: flex;
 flex-direction: column;
 position: relative;
 }
-
 .hidden { display: none !important; }
 
-/* سوئیچر چندزبانه */
-.lang-container {
-display: flex;
-flex-wrap: wrap;
-justify-content: center;
-gap: 5px;
-margin-bottom: 18px;
-background: rgba(0, 0, 0, 0.5);
-padding: 6px 10px;
-border-radius: 20px;
-border: 1px solid rgba(255, 255, 255, 0.15);
-max-width: 320px;
-z-index: 10;
-}
-.lang-btn {
-background: transparent;
-border: none;
-color: #94a3b8;
-font-size: 11px;
-font-weight: bold;
-padding: 5px 10px;
-border-radius: 12px;
-cursor: pointer;
-}
-.lang-btn.active {
-background: var(--gold);
-color: #000;
-}
-
-/* صفحه فرود */
-#welcome-screen {
+/* صفحه اصلی ورودی و ثبت کاربر */
+.view-screen {
 position: absolute;
 inset: 0;
 background: radial-gradient(circle at 50% 35%, #1e293b 0%, #090d16 100%);
@@ -79,30 +45,46 @@ padding: 20px;
 text-align: center;
 }
 .brand-title {
-font-size: 36px;
+font-size: 34px;
 font-weight: 900;
 color: var(--gold);
 text-shadow: 0 0 16px var(--gold-glow);
-margin-bottom: 6px;
+margin-bottom: 4px;
 }
-.brand-sub {
-font-size: 13px;
-color: #94a3b8;
-margin-bottom: 22px;
-line-height: 1.5;
-}
-.menu-group {
+.brand-sub { font-size: 13px; color: #94a3b8; margin-bottom: 20px; }
+
+.card-panel {
+background: rgba(15, 23, 42, 0.95);
+border: 1px solid rgba(245, 158, 11, 0.3);
+border-radius: 16px;
+padding: 20px;
+width: 100%;
+max-width: 320px;
 display: flex;
 flex-direction: column;
-gap: 10px;
-width: 100%;
-max-width: 270px;
+gap: 12px;
+box-shadow: 0 8px 24px rgba(0,0,0,0.5);
 }
+
+.input-field {
+width: 100%;
+background: #0f172a;
+border: 1px solid #334155;
+color: #fff;
+padding: 12px;
+border-radius: 10px;
+font-size: 14px;
+font-family: inherit;
+outline: none;
+text-align: center;
+}
+.input-field:focus { border-color: var(--gold); }
+
 .btn-action {
 background: var(--gold);
 color: #000;
 border: none;
-padding: 13px 16px;
+padding: 12px 16px;
 border-radius: 12px;
 font-weight: bold;
 font-size: 14px;
@@ -110,28 +92,41 @@ cursor: pointer;
 box-shadow: 0 4px 12px var(--gold-glow);
 }
 .btn-action:active { transform: scale(0.97); }
-.btn-action.btn-secondary {
-background: #1e293b;
-color: #cbd5e1;
-border: 1px solid #475569;
-box-shadow: none;
+.btn-secondary { background: #334155; color: #cbd5e1; box-shadow: none; }
+.btn-outline { background: transparent; border: 1px solid var(--gold); color: var(--gold); box-shadow: none; }
+
+/* صفحه تشکیل تیم و انتخاب یار و حریف */
+.lobby-slots {
+display: flex;
+flex-direction: column;
+gap: 10px;
+width: 100%;
+margin: 12px 0;
+text-align: right;
 }
-.btn-action.btn-outline {
-background: transparent;
-border: 1px solid var(--gold);
-color: var(--gold);
-box-shadow: none;
-}
-.btn-action.btn-feedback {
-background: #334155;
-color: #38bdf8;
-border: 1px dashed #38bdf8;
-box-shadow: none;
-font-size: 12px;
+.team-box {
+background: rgba(255, 255, 255, 0.05);
+border: 1px solid rgba(255, 255, 255, 0.1);
+border-radius: 10px;
 padding: 10px;
 }
+.team-title { font-size: 12px; font-weight: bold; color: var(--gold); margin-bottom: 6px; }
+.slot-row {
+display: flex;
+justify-content: space-between;
+align-items: center;
+background: #090d16;
+padding: 8px 12px;
+border-radius: 8px;
+font-size: 13px;
+margin-top: 4px;
+border: 1px dashed #334155;
+}
+.slot-row.filled { border-style: solid; border-color: #22c55e; }
+.slot-name { font-weight: bold; }
+.slot-tag { font-size: 10px; padding: 2px 6px; border-radius: 4px; background: #1e293b; color: #94a3b8; }
 
-/* هدر تابلوی امتیاز */
+/* میز بازی اصلی */
 header {
 background: rgba(5, 10, 5, 0.9);
 padding: env(safe-area-inset-top, 8px) 12px 6px 12px;
@@ -155,18 +150,6 @@ font-weight: bold;
 font-size: 10px;
 }
 
-#warning-strip {
-background: var(--danger);
-color: #fff;
-font-size: 11px;
-font-weight: bold;
-text-align: center;
-padding: 4px;
-display: none;
-z-index: 40;
-}
-
-/* میز مسابقه */
 #table-arena {
 flex: 1;
 background: var(--bg-felt);
@@ -176,13 +159,7 @@ justify-content: center;
 align-items: center;
 overflow: hidden;
 }
-.seat-node {
-position: absolute;
-display: flex;
-flex-direction: column;
-align-items: center;
-z-index: 10;
-}
+.seat-node { position: absolute; display: flex; flex-direction: column; align-items: center; z-index: 10; }
 #node-top { top: 8px; }
 #node-left { left: 8px; top: 38%; transform: translateY(-50%); }
 #node-right { right: 8px; top: 38%; transform: translateY(-50%); }
@@ -217,7 +194,6 @@ align-items: center;
 .trick-slot[data-pos="left"] { transform: translateX(-34px); }
 .trick-slot[data-pos="right"] { transform: translateX(34px); }
 
-/* کادر شناور تعهد */
 #bid-controller {
 position: absolute;
 bottom: 110px;
@@ -246,7 +222,6 @@ justify-content: center;
 }
 #bid-val-num { font-size: 20px; font-weight: bold; color: var(--gold); min-width: 24px; text-align: center; }
 
-/* دست بازیکن */
 #user-hand-tray {
 background: rgba(0, 0, 0, 0.65);
 border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -293,7 +268,6 @@ border: 2px solid #38bdf8;
 background-image: repeating-linear-gradient(45deg, #0f172a 0, #0f172a 4px, #1e293b 4px, #1e293b 8px);
 }
 
-/* مدال‌ها */
 .modal-backdrop {
 position: fixed;
 inset: 0;
@@ -312,370 +286,87 @@ padding: 20px;
 width: 100%;
 max-width: 360px;
 text-align: center;
-max-height: 85vh;
-overflow-y: auto;
-}
-.input-box {
-width: 100%;
-background: #1e293b;
-border: 1px solid #475569;
-color: #fff;
-padding: 10px;
-border-radius: 8px;
-margin: 8px 0;
-font-family: inherit;
-font-size: 13px;
 }
 </style>
 
 <script>
-/* ۱. ساختار چندزبانه بدون باگ BiDi */
-var I18N = {
-fa: {
-dir: 'rtl',
-title: 'شلم پیک',
-subtitle: 'نسخهٔ اختصاصی شلم لاری با حکم ثابت پیک',
-play4: 'ورود به بازی (۴ نفره)',
-play6: 'شلم پیک (۶ نفره) - به‌زودی',
-rulesBtn: 'راهنمای بازی و قوانین',
-feedbackBtn: '✉ ارسال پیشنهاد به ادمین',
-team0Lbl: 'تیم ما (شما و مهدی)',
-team1Lbl: 'تیم حریف',
-trumpBadge: 'حکم: پیک ♠',
-warningBlackJoker: 'هشدار: جوکر سیاه را حداکثر با ۳ برگ در دست باید بازی کنید!',
-bidLbl: 'تعهد',
-trickLbl: 'دست:',
-yourBid: 'تعهد شما:',
-bidSubmit: 'ثبت',
-handLabel: 'برگ‌های دست شما (۱۳ برگ):',
-jokerBlack: 'جوکر سیاه',
-jokerColor: 'جوکر رنگی',
-pTop: 'مهدی (یار)',
-pLeft: 'رضا',
-pRight: 'سینا',
-fbTitle: 'ارسال نظر به سازنده',
-fbDesc: 'پیشنهادها و گزارش‌های شما مستقیماً به پنل اختصاصی ادمین بازی منتقل می‌شود.',
-fbSenderPh: 'نام یا شناسه شما (اختیاری)',
-fbMsgPh: 'متن نظر یا پیشنهاد خود را اینجا بنویسید...',
-fbSendBtn: 'ارسال پیام',
-fbCancel: 'انصراف',
-fbSending: 'در حال ارسال به ادمین...',
-fbSuccess: 'پیشنهاد شما با موفقیت برای ادمین ارسال شد.',
-fbEmptyErr: 'لطفاً متن پیشنهاد خود را بنویسید.',
-rulesModalTitle: 'قوانین شلم پیک (۴ نفره)',
-rulesGotIt: 'متوجه شدم',
-sixTitle: 'شلم پیک (۶ نفره)',
-sixDesc: 'گزینه ۶ نفره ثبت گردید. پس از نهایی‌سازی آزمایش نسخه ۴ نفره، با دریافت قوانین اختصاصیِ شما فعال خواهد شد.',
-sixBack: 'بازگشت',
-roundReportTitle: 'نتیجه دور',
-nextRoundBtn: 'دور بعدی'
-},
-en: {
-dir: 'ltr',
-title: 'Shelem Peak',
-subtitle: 'Exclusive Shelem Lari with Permanent Spade Trump',
-play4: 'Enter Game (4 Players)',
-play6: 'Shelem Peak (6 Players) - Soon',
-rulesBtn: 'Game Rules & Guide',
-feedbackBtn: '✉ Send Feedback to Admin',
-team0Lbl: 'Our Team (You & Mehdi)',
-team1Lbl: 'Opponent Team',
-trumpBadge: 'Trump: Spades ♠',
-warningBlackJoker: 'Warning: Black Joker must be played with at least 3 cards left!',
-bidLbl: 'Bid',
-trickLbl: 'Tricks:',
-yourBid: 'Your Bid:',
-bidSubmit: 'Submit',
-handLabel: 'Your Hand (13 Cards):',
-jokerBlack: 'Black Joker',
-jokerColor: 'Color Joker',
-pTop: 'Mehdi (Partner)',
-pLeft: 'Reza',
-pRight: 'Sina',
-fbTitle: 'Send Feedback to Creator',
-fbDesc: 'Your suggestions will be securely delivered to the admin panel.',
-fbSenderPh: 'Your name or ID (Optional)',
-fbMsgPh: 'Write your suggestions or report here...',
-fbSendBtn: 'Send Message',
-fbCancel: 'Cancel',
-fbSending: 'Sending to Admin...',
-fbSuccess: 'Your message was successfully sent to the admin.',
-fbEmptyErr: 'Please enter your message.',
-rulesModalTitle: 'Shelem Peak Rules (4 Players)',
-rulesGotIt: 'Understood',
-sixTitle: 'Shelem Peak (6 Players)',
-sixDesc: '6-player mode is registered. It will be enabled with your custom rules after testing the 4-player version.',
-sixBack: 'Back',
-roundReportTitle: 'Round Result',
-nextRoundBtn: 'Next Round'
-},
-ar: {
-dir: 'rtl',
-title: 'شلم بيك',
-subtitle: 'النسخة الحصرية لشلم لاري مع حكم السبيت الدائم',
-play4: 'دخول اللعبة (٤ لاعبين)',
-play6: 'شلم بيك (٦ لاعبين) - قريباً',
-rulesBtn: 'دليل وقواعد اللعبة',
-feedbackBtn: '✉ إرسال اقتراح للمشرف',
-team0Lbl: 'فريقنا (أنت ومهدی)',
-team1Lbl: 'فريق الخصم',
-trumpBadge: 'الحكم: بيك ♠',
-warningBlackJoker: 'تحذير: يجب لعب الجوكر الأسود عندما يتبقى ۳ أوراق على الأقل!',
-bidLbl: 'التعهد',
-trickLbl: 'الجولات:',
-yourBid: 'تعهدك:',
-bidSubmit: 'تأكيد',
-handLabel: 'أوراق يدك (۱۳ ورقة):',
-jokerBlack: 'جوكر أسود',
-jokerColor: 'جوكر ملون',
-pTop: 'مهدي (شريك)',
-pLeft: 'رضا',
-pRight: 'سينا',
-fbTitle: 'إرسال اقتراح للمنشئ',
-fbDesc: 'سيتم إرسال اقتراحاتك وتقاريرك مباشرة وبشكل آمن إلى المشرف.',
-fbSenderPh: 'اسمك أو معرّفك (اختياري)',
-fbMsgPh: 'اكتب اقتراحك هنا...',
-fbSendBtn: 'إرسال الرسالة',
-fbCancel: 'إلغاء',
-fbSending: 'جاري الإرسال...',
-fbSuccess: 'تم إرسال اقتراحك بنجاح.',
-fbEmptyErr: 'يرجى كتابة نص الاقتراح.',
-rulesModalTitle: 'قواعد شلم بيك (٤ لاعبين)',
-rulesGotIt: 'فهمت ذلك',
-sixTitle: 'شلم بيك (٦ لاعبين)',
-sixDesc: 'تم تسجيل وضع ٦ لاعبين وسيتم تفعيله لاحقاً.',
-sixBack: 'رجوع',
-roundReportTitle: 'نتيجة الجولة',
-nextRoundBtn: 'الجولة التالية'
-},
-tr: {
-dir: 'ltr',
-title: 'Shelem Pik',
-subtitle: 'Sabit Maça Kozu ile Özel Shelem Lari',
-play4: 'Oyuna Başla (4 Oyunculu)',
-play6: 'Shelem Pik (6 Oyunculu) - Yakında',
-rulesBtn: 'Oyun Kuralları ve Rehber',
-feedbackBtn: '✉ Yöneticiye Öneri Gönder',
-team0Lbl: 'Takımımız (Siz ve Mehdi)',
-team1Lbl: 'Rakip Takım',
-trumpBadge: 'Koz: Maça ♠',
-warningBlackJoker: 'Uyarı: Siyah Joker elinizde en az 3 kart varken oynanmalıdır!',
-bidLbl: 'Teklif',
-trickLbl: 'El:',
-yourBid: 'Teklifiniz:',
-bidSubmit: 'Onayla',
-handLabel: 'Elinizdeki Kartlar (13 Kart):',
-jokerBlack: 'Siyah Joker',
-jokerColor: 'Renkli Joker',
-pTop: 'Mehdi (Ortak)',
-pLeft: 'Rıza',
-pRight: 'Sina',
-fbTitle: 'Yöneticiye Mesaj Gönder',
-fbDesc: 'Görüş ve önerileriniz doğrudan sistem yöneticisine iletilir.',
-fbSenderPh: 'Adınız veya ID (İsteğe bağlı)',
-fbMsgPh: 'Önerinizi buraya yazın...',
-fbSendBtn: 'Gönder',
-fbCancel: 'İptal',
-fbSending: 'Gönderiliyor...',
-fbSuccess: 'Mesajınız başarıyla iletildi.',
-fbEmptyErr: 'Lütfen bir mesaj yazın.',
-rulesModalTitle: 'Shelem Pik Kuralları (4 Oyunculu)',
-rulesGotIt: 'Anladım',
-sixTitle: 'Shelem Pik (6 Oyunculu)',
-sixDesc: '6 oyunculu mod kaydedildi. 4 oyunculu testlerden sonra aktif olacaktır.',
-sixBack: 'Geri',
-roundReportTitle: 'Tur Sonucu',
-nextRoundBtn: 'Sonraki Tur'
-},
-de: {
-dir: 'ltr',
-title: 'Shelem Pik',
-subtitle: 'Exklusives Shelem Lari mit permanentem Pik-Trumpf',
-play4: 'Spiel Starten (4 Spieler)',
-play6: 'Shelem Pik (6 Spieler) - Demnächst',
-rulesBtn: 'Spielregeln & Anleitung',
-feedbackBtn: '✉ Feedback an Admin senden',
-team0Lbl: 'Unser Team (Sie & Mehdi)',
-team1Lbl: 'Gegnerisches Team',
-trumpBadge: 'Trumpf: Pik ♠',
-warningBlackJoker: 'Achtung: Schwarzer Joker muss mit mind. 3 Handkarten gespielt werden!',
-bidLbl: 'Gebot',
-trickLbl: 'Stiche:',
-yourBid: 'Ihr Gebot:',
-bidSubmit: 'Bestätigen',
-handLabel: 'Ihre Karten (13 Karten):',
-jokerBlack: 'Schwarzer Joker',
-jokerColor: 'Farbiger Joker',
-pTop: 'Mehdi (Partner)',
-pLeft: 'Reza',
-pRight: 'Sina',
-fbTitle: 'Feedback an Entwickler',
-fbDesc: 'Ihre Vorschläge werden sicher an das Admin-Panel übermittelt.',
-fbSenderPh: 'Ihr Name oder ID (optional)',
-fbMsgPh: 'Schreiben Sie hier Ihre Vorschläge...',
-fbSendBtn: 'Nachricht Senden',
-fbCancel: 'Abbrechen',
-fbSending: 'Wird gesendet...',
-fbSuccess: 'Nachricht erfolgreich gesendet.',
-fbEmptyErr: 'Bitte Nachricht eingeben.',
-rulesModalTitle: 'Shelem Pik Regeln (4 Spieler)',
-rulesGotIt: 'Verstanden',
-sixTitle: 'Shelem Pik (6 Spieler)',
-sixDesc: '6-Spieler-Modus ist vorgemerkt und wird nach dem 4-Spieler-Test freigeschaltet.',
-sixBack: 'Zurück',
-roundReportTitle: 'Rundenergebnis',
-nextRoundBtn: 'Nächste Runde'
-}
+var currentUser = localStorage.getItem('shelem_user') || '';
+var lobby = {
+p0: '', // شما
+p2: 'مهدی (یار)', // هم‌تیمی روبه‌رو
+p1: 'رضا (حریف چپ)', // حریف ۱
+p3: 'سینا (حریف راست)' // حریف ۲
 };
 
-var curLang = 'fa';
-
-function setAppLanguage(lang) {
-if (!I18N[lang]) return;
-curLang = lang;
-var dict = I18N[lang];
-
-document.documentElement.lang = lang;
-document.documentElement.dir = dict.dir;
-document.body.dir = dict.dir;
-
-var buttons = document.querySelectorAll('.lang-btn');
-for (var i = 0; i < buttons.length; i++) {
-buttons[i].classList.remove('active');
+function initAuth() {
+if (currentUser) {
+lobby.p0 = currentUser;
+showLobbyScreen();
+} else {
+document.getElementById('auth-screen').classList.remove('hidden');
 }
-var activeBtn = document.getElementById('btn-' + lang);
-if (activeBtn) activeBtn.classList.add('active');
-
-document.getElementById('txt-title').innerText = dict.title;
-document.getElementById('txt-subtitle').innerText = dict.subtitle;
-document.getElementById('txt-play4').innerText = dict.play4;
-document.getElementById('txt-play6').innerText = dict.play6;
-document.getElementById('txt-rules-btn').innerText = dict.rulesBtn;
-document.getElementById('txt-feedback-btn').innerText = dict.feedbackBtn;
-document.getElementById('txt-team0-lbl').innerText = dict.team0Lbl;
-document.getElementById('txt-team1-lbl').innerText = dict.team1Lbl;
-document.getElementById('txt-trump-badge').innerText = dict.trumpBadge;
-document.getElementById('warning-strip').innerText = dict.warningBlackJoker;
-document.getElementById('txt-your-bid').innerText = dict.yourBid;
-document.getElementById('txt-bid-submit').innerText = dict.bidSubmit;
-document.getElementById('txt-hand-label').innerText = dict.handLabel;
-
-document.getElementById('pname-2').innerText = dict.pTop;
-document.getElementById('pname-1').innerText = dict.pLeft;
-document.getElementById('pname-3').innerText = dict.pRight;
-
-document.getElementById('txt-fb-title').innerText = dict.fbTitle;
-document.getElementById('txt-fb-desc').innerText = dict.fbDesc;
-document.getElementById('fb-sender').placeholder = dict.fbSenderPh;
-document.getElementById('fb-message').placeholder = dict.fbMsgPh;
-document.getElementById('btn-submit-feedback').innerText = dict.fbSendBtn;
-document.getElementById('txt-fb-cancel').innerText = dict.fbCancel;
-
-document.getElementById('txt-rules-modal-title').innerText = dict.rulesModalTitle;
-document.getElementById('txt-rules-gotit').innerText = dict.rulesGotIt;
-
-document.getElementById('txt-six-title').innerText = dict.sixTitle;
-document.getElementById('txt-six-desc').innerText = dict.sixDesc;
-document.getElementById('txt-six-back').innerText = dict.sixBack;
-
-document.getElementById('report-title').innerText = dict.roundReportTitle;
-document.getElementById('txt-next-round-btn').innerText = dict.nextRoundBtn;
 }
 
-/* ۲. توابع ورود و باز کردن مودال‌ها */
-function appStartGame4() {
-var scr = document.getElementById('welcome-screen');
-if (scr) scr.classList.add('hidden');
-startNewRoundCycle();
-}
-function appOpenSixModal() {
-document.getElementById('six-modal').style.display = 'flex';
-}
-function appCloseSixModal() {
-document.getElementById('six-modal').style.display = 'none';
-}
-function appOpenRulesModal() {
-document.getElementById('rules-modal').style.display = 'flex';
-}
-function appCloseRulesModal() {
-document.getElementById('rules-modal').style.display = 'none';
-}
-function appOpenFeedbackModal() {
-document.getElementById('feedback-modal').style.display = 'flex';
-document.getElementById('fb-status').innerText = '';
-}
-function appCloseFeedbackModal() {
-document.getElementById('feedback-modal').style.display = 'none';
-}
-function appNextRound() {
-startNewRoundCycle();
-}
-
-/* ۳. ارسال پیام بدون نمایش ایمیل شما */
-function submitFeedbackForm() {
-var dict = I18N[curLang];
-var msg = document.getElementById('fb-message').value.trim();
-var sender = document.getElementById('fb-sender').value.trim() || 'Player';
-var status = document.getElementById('fb-status');
-var submitBtn = document.getElementById('btn-submit-feedback');
-
-if (!msg) {
-status.style.color = 'var(--danger)';
-status.innerText = dict.fbEmptyErr;
+function handleRegisterUser() {
+var name = document.getElementById('username-input').value.trim();
+if (!name) {
+alert('لطفاً نام یا شناسه خود را وارد کنید.');
 return;
 }
-
-status.style.color = 'var(--gold)';
-status.innerText = dict.fbSending;
-submitBtn.disabled = true;
-
-fetch("https://formspree.io/f/mqaeovzn", {
-method: "POST",
-headers: { "Content-Type": "application/json", "Accept": "application/json" },
-body: JSON.stringify({
-sender: sender,
-message: msg,
-project: "بازی شلم پیک",
-language: curLang
-})
-})
-.then(function(res) {
-status.style.color = '#38bdf8';
-status.innerText = dict.fbSuccess;
-document.getElementById('fb-message').value = '';
-setTimeout(function() {
-appCloseFeedbackModal();
-submitBtn.disabled = false;
-}, 1400);
-})
-.catch(function(err) {
-status.style.color = 'var(--danger)';
-status.innerText = 'Error! Retry.';
-submitBtn.disabled = false;
-});
+currentUser = name;
+localStorage.setItem('shelem_user', name);
+lobby.p0 = name;
+document.getElementById('auth-screen').classList.add('hidden');
+showLobbyScreen();
 }
 
-/* ۴. منطق بازی شلم لاری */
+function showLobbyScreen() {
+document.getElementById('lobby-screen').classList.remove('hidden');
+document.getElementById('slot-p0-name').innerText = lobby.p0 + ' (شما)';
+document.getElementById('slot-p2-name').innerText = lobby.p2;
+document.getElementById('slot-p1-name').innerText = lobby.p1;
+document.getElementById('slot-p3-name').innerText = lobby.p3;
+}
+
+function changeSlotPlayer(slotKey, defaultLabel) {
+var currentVal = lobby[slotKey];
+var newName = prompt('نام بازیکن جدید را وارد کنید (یا خالی برای هوش مصنوعی):', currentVal);
+if (newName !== null) {
+lobby[slotKey] = newName.trim() || defaultLabel;
+showLobbyScreen();
+}
+}
+
+function startLobbyGame() {
+document.getElementById('lobby-screen').classList.add('hidden');
+state.players[0].name = lobby.p0;
+state.players[2].name = lobby.p2;
+state.players[1].name = lobby.p1;
+state.players[3].name = lobby.p3;
+
+document.getElementById('pname-2').innerText = lobby.p2;
+document.getElementById('pname-1').innerText = lobby.p1;
+document.getElementById('pname-3').innerText = lobby.p3;
+document.getElementById('txt-team0-lbl').innerText = 'تیم ما (' + lobby.p0 + ' و ' + lobby.p2 + ')';
+
+startNewRoundCycle();
+}
+
+/* موتور بازی شلم لاری */
 var SUIT_ICONS = { SPADES: '♠', HEARTS: '♥', DIAMONDS: '♦', CLUBS: '♣' };
 var POS_MAP = { 0: 'bottom', 1: 'left', 2: 'top', 3: 'right' };
 
 var state = {
 rules: { minBid: 2, targetScore: 500, enableEight: true, eightThreshold: 8 },
-teamScores: [0, 0],
-teamEights: [0, 0],
+teamScores: [0, 0], teamEights: [0, 0],
 players: [
-{ id: 0, name: 'شما', team: 0, hand: [], bid: 0, tricks: 0, isBot: false },
-{ id: 1, name: 'رضا', team: 1, hand: [], bid: 0, tricks: 0, isBot: true },
-{ id: 2, name: 'مهدی', team: 0, hand: [], bid: 0, tricks: 0, isBot: true },
-{ id: 3, name: 'سینا', team: 1, hand: [], bid: 0, tricks: 0, isBot: true }
+{ id: 0, name: '', team: 0, hand: [], bid: 0, tricks: 0, isBot: false },
+{ id: 1, name: '', team: 1, hand: [], bid: 0, tricks: 0, isBot: true },
+{ id: 2, name: '', team: 0, hand: [], bid: 0, tricks: 0, isBot: true },
+{ id: 3, name: '', team: 1, hand: [], bid: 0, tricks: 0, isBot: true }
 ],
-currentTurn: 0,
-dealer: 0,
-trick: [],
-leadSuit: null,
-blackJokerPlayed: false,
-phase: 'bidding',
-tempUserBid: 2
+currentTurn: 0, dealer: 0, trick: [], leadSuit: null, blackJokerPlayed: false,
+phase: 'bidding', tempUserBid: 2
 };
 
 function sortPlayerHand(hand) {
@@ -685,9 +376,7 @@ if (a.type === 'colorJoker') return -1;
 if (b.type === 'colorJoker') return 1;
 if (a.type === 'blackJoker') return -1;
 if (b.type === 'blackJoker') return 1;
-if (suitWeights[a.suit] !== suitWeights[b.suit]) {
-return suitWeights[b.suit] - suitWeights[a.suit];
-}
+if (suitWeights[a.suit] !== suitWeights[b.suit]) return suitWeights[b.suit] - suitWeights[a.suit];
 return b.rank - a.rank;
 });
 }
@@ -721,7 +410,6 @@ state.leadSuit = null;
 state.phase = 'bidding';
 state.currentTurn = (state.dealer + 1) % 4;
 state.tempUserBid = 2;
-
 renderView();
 runBiddingRoutine();
 }
@@ -737,7 +425,7 @@ setTimeout(function() {
 var p = state.players[state.currentTurn];
 p.bid = 2 + Math.floor(Math.random() * 2);
 advanceBiddingTurn();
-}, 450);
+}, 400);
 }
 }
 
@@ -768,14 +456,13 @@ runBiddingRoutine();
 function triggerRoundPlay() {
 renderView();
 if (state.phase !== 'playing') return;
-
 var p = state.players[state.currentTurn];
 if (p.isBot) {
 setTimeout(function() {
 var valids = getLegalMoves(state.currentTurn);
 var pick = valids[Math.floor(Math.random() * valids.length)];
 executeMove(state.currentTurn, pick);
-}, 550);
+}, 500);
 }
 }
 
@@ -810,15 +497,12 @@ executeMove(0, card);
 function executeMove(playerIndex, card) {
 var p = state.players[playerIndex];
 p.hand = p.hand.filter(function(c) { return c.id !== card.id; });
-
 if (card.type === 'blackJoker') state.blackJokerPlayed = true;
 if (state.trick.length === 0) state.leadSuit = card.suit;
-
 state.trick.push({ playerId: playerIndex, card: card });
-
 if (state.trick.length === 4) {
 renderView();
-setTimeout(settleTrickWinner, 750);
+setTimeout(settleTrickWinner, 700);
 } else {
 state.currentTurn = (state.currentTurn + 1) % 4;
 triggerRoundPlay();
@@ -832,12 +516,10 @@ if (evaluateCardDominance(state.trick[i].card, winningObj.card, state.leadSuit) 
 winningObj = state.trick[i];
 }
 }
-
 state.players[winningObj.playerId].tricks++;
 state.currentTurn = winningObj.playerId;
 state.trick = [];
 state.leadSuit = null;
-
 if (state.players[0].hand.length === 0) {
 completeRoundScoring();
 } else {
@@ -850,17 +532,14 @@ if (c1.type === 'colorJoker') return 1;
 if (c2.type === 'colorJoker') return -1;
 if (c1.type === 'blackJoker') return 1;
 if (c2.type === 'blackJoker') return -1;
-
 var c1Trump = c1.suit === 'SPADES', c2Trump = c2.suit === 'SPADES';
 if (c1Trump && !c2Trump) return 1;
 if (!c1Trump && c2Trump) return -1;
 if (c1Trump && c2Trump) return c1.rank - c2.rank;
-
 var c1Lead = c1.suit === lead, c2Lead = c2.suit === lead;
 if (c1Lead && !c2Lead) return 1;
 if (!c1Lead && c2Lead) return -1;
 if (c1Lead && c2Lead) return c1.rank - c2.rank;
-
 return 0;
 }
 
@@ -868,24 +547,20 @@ function applyBlackJokerPenalty(violatingTeam) {
 var opp = 1 - violatingTeam;
 var violBid = state.players.filter(function(p) { return p.team === violatingTeam; }).reduce(function(a,b){ return a + b.bid; }, 0);
 var oppBid = state.players.filter(function(p) { return p.team === opp; }).reduce(function(a,b){ return a + b.bid; }, 0);
-
 state.teamScores[violatingTeam] -= (10 * violBid);
 state.teamScores[opp] += (10 * oppBid);
-
 openReportModal("تخلف جوکر سیاه!", "به دلیل نگه‌داشتن جوکر سیاه در دو برگ آخر، دور متوقف و تیم متخلف جریمه شد.");
 }
 
 function completeRoundScoring() {
-var dict = I18N[curLang];
 var reportTxt = "";
 for (var t = 0; t < 2; t++) {
 var bid = state.players.filter(function(p) { return p.team === t; }).reduce(function(a,b){ return a + b.bid; }, 0);
 var won = state.players.filter(function(p) { return p.team === t; }).reduce(function(a,b){ return a + b.tricks; }, 0);
-
 if (won >= bid) {
 var sc = (10 * bid) + (won - bid);
 state.teamScores[t] += sc;
-reportTxt += (t === 0 ? dict.team0Lbl : dict.team1Lbl) + ": " + dict.bidLbl + " " + bid + " | " + dict.trickLbl + " " + won + " ➔ " + sc + " pts.<br>";
+reportTxt += (t === 0 ? 'تیم ما' : 'تیم حریف') + ": تعهد " + bid + " | دست " + won + " ➔ " + sc + " امتیاز.<br>";
 if (state.rules.enableEight && bid >= state.rules.eightThreshold) {
 applyEightSuperior(t);
 reportTxt += "★ ثبت هشت برتر!<br>";
@@ -893,21 +568,17 @@ reportTxt += "★ ثبت هشت برتر!<br>";
 } else {
 var pen = -10 * bid;
 state.teamScores[t] += pen;
-reportTxt += (t === 0 ? dict.team0Lbl : dict.team1Lbl) + ": " + pen + " pts.<br>";
+reportTxt += (t === 0 ? 'تیم ما' : 'تیم حریف') + ": عدم تعهد ➔ " + pen + " امتیاز.<br>";
 }
 }
-
 state.dealer = (state.dealer + 1) % 4;
-openReportModal(dict.roundReportTitle, reportTxt);
+openReportModal("نتیجه دور", reportTxt);
 }
 
 function applyEightSuperior(teamId) {
 var opp = 1 - teamId;
-if (state.teamEights[opp] > 0) {
-state.teamEights[opp]--;
-} else {
-state.teamEights[teamId]++;
-}
+if (state.teamEights[opp] > 0) state.teamEights[opp]--;
+else state.teamEights[teamId]++;
 }
 
 function openReportModal(title, content) {
@@ -919,7 +590,6 @@ renderView();
 }
 
 function renderView() {
-var dict = I18N[curLang];
 var t0Bid = state.players[0].bid + state.players[2].bid;
 var t1Bid = state.players[1].bid + state.players[3].bid;
 var t0Tr = state.players[0].tricks + state.players[2].tricks;
@@ -927,19 +597,15 @@ var t1Tr = state.players[1].tricks + state.players[3].tricks;
 
 document.getElementById('score-t0').innerText = state.teamScores[0];
 document.getElementById('score-t1').innerText = state.teamScores[1];
-document.getElementById('meta-t0').innerText = dict.bidLbl + ": " + (t0Bid||'-') + " | " + dict.trickLbl + " " + t0Tr + " | 8: " + state.teamEights[0];
-document.getElementById('meta-t1').innerText = dict.bidLbl + ": " + (t1Bid||'-') + " | " + dict.trickLbl + " " + t1Tr + " | 8: " + state.teamEights[1];
+document.getElementById('meta-t0').innerText = "تعهد: " + (t0Bid||'-') + " | دست: " + t0Tr + " | هشت: " + state.teamEights[0];
+document.getElementById('meta-t1').innerText = "تعهد: " + (t1Bid||'-') + " | دست: " + t1Tr + " | هشت: " + state.teamEights[1];
 
 for (var i = 1; i <= 3; i++) {
 document.getElementById('tricks-' + i).innerText = state.players[i].tricks;
-document.getElementById('bid-lbl-' + i).innerText = state.players[i].bid ? (dict.bidLbl + ': ' + state.players[i].bid) : (dict.bidLbl + ': ?');
-document.getElementById('trick-lbl-' + i).innerText = dict.trickLbl;
+document.getElementById('bid-lbl-' + i).innerText = state.players[i].bid ? ('تعهد: ' + state.players[i].bid) : 'تعهد: ؟';
 var node = document.getElementById(i === 1 ? 'node-left' : i === 2 ? 'node-top' : 'node-right');
 if (node) node.classList.toggle('active', state.currentTurn === i && state.phase === 'playing');
 }
-
-var myBlack = state.players[0].hand.some(function(c) { return c.type === 'blackJoker'; });
-document.getElementById('warning-strip').style.display = (myBlack && state.players[0].hand.length <= 4) ? 'block' : 'none';
 
 var dropZone = document.getElementById('trick-drop-zone');
 dropZone.innerHTML = '';
@@ -968,7 +634,6 @@ fanContainer.appendChild(cardEl);
 }
 
 function buildCardVisual(card, isHand, isLegal) {
-var dict = I18N[curLang];
 var node = document.createElement('div');
 node.className = 'playing-card';
 if (!isLegal && isHand && state.phase === 'playing') node.classList.add('disabled');
@@ -981,286 +646,120 @@ node.innerHTML = '<div style="font-size:10px; line-height:1;">' + rankTxt + '</d
 '<div style="font-size:15px; text-align:center; line-height:1;">' + SUIT_ICONS[card.suit] + '</div>' +
 '<div style="font-size:10px; line-height:1; text-align:inherit;">' + rankTxt + '</div>';
 } else if (card.type === 'blackJoker') {
-node.innerHTML = '<div style="font-size:7px;">' + dict.jokerBlack + '</div>' +
-'<div style="font-size:11px; text-align:center;">★</div>' +
-'<div style="font-size:7px; text-align:inherit;">JKR</div>';
+node.innerHTML = '<div style="font-size:7px;">جوکر سیاه</div><div style="font-size:11px; text-align:center;">★</div><div style="font-size:7px; text-align:inherit;">JKR</div>';
 } else {
 node.classList.add('red');
-node.innerHTML = '<div style="font-size:7px;">' + dict.jokerColor + '</div>' +
-'<div style="font-size:11px; text-align:center;">★</div>' +
-'<div style="font-size:7px; text-align:inherit;">JKR</div>';
+node.innerHTML = '<div style="font-size:7px;">جوکر رنگی</div><div style="font-size:11px; text-align:center;">★</div><div style="font-size:7px; text-align:inherit;">JKR</div>';
 }
 return node;
 }
+
+window.onload = initAuth;
 </script>
 </head>
 <body>
 
-<!-- صفحه ورودی با ۵ زبان (فارسی، انگلیسی، عربی، ترکی، آلمانی) -->
-<div id="welcome-screen">
-<div class="lang-container">
-<button type="button" class="lang-btn active" id="btn-fa" onclick="setAppLanguage('fa')">فارسی</button>
-<button type="button" class="lang-btn" id="btn-en" onclick="setAppLanguage('en')">English</button>
-<button type="button" class="lang-btn" id="btn-ar" onclick="setAppLanguage('ar')">العربية</button>
-<button type="button" class="lang-btn" id="btn-tr" onclick="setAppLanguage('tr')">Türkçe</button>
-<button type="button" class="lang-btn" id="btn-de" onclick="setAppLanguage('de')">Deutsch</button>
-</div>
+<!-- صفحه ثبت کاربری -->
+<div class="view-screen hidden" id="auth-screen">
+<div style="font-size:46px; margin-bottom:4px;">♠</div>
+<h1 class="brand-title">شلم پیک</h1>
+<p class="brand-sub">ثبت هویت بازیکن</p>
 
-<div style="font-size:46px; margin-bottom:6px;">♠</div>
-<h1 class="brand-title" id="txt-title">شلم پیک</h1>
-<p class="brand-sub" id="txt-subtitle">نسخهٔ اختصاصی شلم لاری با حکم ثابت پیک</p>
-
-<div class="menu-group">
-<button type="button" class="btn-action" id="txt-play4" onclick="appStartGame4()">ورود به بازی (۴ نفره)</button>
-<button type="button" class="btn-action btn-secondary" id="txt-play6" onclick="appOpenSixModal()">شلم پیک (۶ نفره) - به‌زودی</button>
-<button type="button" class="btn-action btn-outline" id="txt-rules-btn" onclick="appOpenRulesModal()">راهنمای بازی و قوانین</button>
-<button type="button" class="btn-action btn-feedback" id="txt-feedback-btn" onclick="appOpenFeedbackModal()">✉ ارسال پیشنهاد به ادمین</button>
+<div class="card-panel">
+<input type="text" id="username-input" class="input-field" placeholder="نام یا نام‌مستعار شما" maxlength="15">
+<button type="button" class="btn-action" onclick="handleRegisterUser()">ثبت و ورود به بازی</button>
 </div>
 </div>
 
-<!-- هدر تابلوی امتیاز -->
+<!-- صفحه لابی انتخاب هم‌تیمی و حریفان -->
+<div class="view-screen hidden" id="lobby-screen">
+<h2 class="brand-title" style="font-size:26px;">میز اختصاصی مسابقه</h2>
+<p class="brand-sub">تنظیم ترکیب تیم‌ها و بازیکنان</p>
+
+<div class="card-panel" style="max-width:340px;">
+<div class="lobby-slots">
+<div class="team-box">
+<div class="team-title">تیم اول (شما و هم‌تیمی)</div>
+<div class="slot-row filled">
+<span class="slot-name" id="slot-p0-name">شما</span>
+<span class="slot-tag">میزبان</span>
+</div>
+<div class="slot-row" onclick="changeSlotPlayer('p2', 'مهدی (یار)')">
+<span class="slot-name" id="slot-p2-name">مهدی (یار)</span>
+<span class="slot-tag" style="color:var(--gold); cursor:pointer;">تغییر ✎</span>
+</div>
+</div>
+
+<div class="team-box">
+<div class="team-title">تیم حریف (دو بازیکن)</div>
+<div class="slot-row" onclick="changeSlotPlayer('p1', 'رضا (حریف چپ)')">
+<span class="slot-name" id="slot-p1-name">رضا</span>
+<span class="slot-tag" style="color:var(--gold); cursor:pointer;">تغییر ✎</span>
+</div>
+<div class="slot-row" onclick="changeSlotPlayer('p3', 'سینا (حریف راست)')">
+<span class="slot-name" id="slot-p3-name">سینا</span>
+<span class="slot-tag" style="color:var(--gold); cursor:pointer;">تغییر ✎</span>
+</div>
+</div>
+</div>
+
+<button type="button" class="btn-action" onclick="startLobbyGame()">شروع مسابقه با این ترکیب</button>
+</div>
+</div>
+
+<!-- نوار بالای تابلوی امتیاز -->
 <header>
 <div class="team-badge">
-<span id="txt-team0-lbl">تیم ما (شما و مهدی)</span>
+<span id="txt-team0-lbl">تیم ما</span>
 <span class="team-score" id="score-t0">۰</span>
 <span style="font-size:9px;" id="meta-t0">تعهد: - | دست: ۰ | هشت: ۰</span>
 </div>
-<div class="trump-indicator" id="txt-trump-badge">حکم: پیک ♠</div>
+<div class="trump-indicator">حکم: پیک ♠</div>
 <div class="team-badge" style="text-align: left;">
-<span id="txt-team1-lbl">تیم حریف</span>
+<span>تیم حریف</span>
 <span class="team-score" id="score-t1">۰</span>
 <span style="font-size:9px;" id="meta-t1">تعهد: - | دست: ۰ | هشت: ۰</span>
 </div>
 </header>
 
-<div id="warning-strip">هشدار: جوکر سیاه را حداکثر با ۳ برگ در دست باید بازی کنید!</div>
-
 <!-- میز مسابقه -->
 <div id="table-arena">
 <div class="seat-node" id="node-top">
-<div class="player-pill" id="pill-2"><span id="pname-2">مهدی (یار)</span><br><span id="bid-lbl-2">تعهد: ؟</span> | <span id="trick-lbl-2">دست:</span> <span id="tricks-2">۰</span></div>
+<div class="player-pill" id="pill-2"><span id="pname-2">مهدی</span><br><span id="bid-lbl-2">تعهد: ؟</span> | دست: <span id="tricks-2">۰</span></div>
 <div class="playing-card back-cover" style="width:28px; height:40px; margin:0;"></div>
 </div>
-
 <div class="seat-node" id="node-left">
-<div class="player-pill" id="pill-1"><span id="pname-1">رضا</span><br><span id="bid-lbl-1">تعهد: ؟</span> | <span id="trick-lbl-1">دست:</span> <span id="tricks-1">۰</span></div>
+<div class="player-pill" id="pill-1"><span id="pname-1">رضا</span><br><span id="bid-lbl-1">تعهد: ؟</span> | دست: <span id="tricks-1">۰</span></div>
 <div class="playing-card back-cover" style="width:28px; height:40px; margin:0;"></div>
 </div>
-
 <div class="table-center-tricks" id="trick-drop-zone"></div>
-
 <div class="seat-node" id="node-right">
-<div class="player-pill" id="pill-3"><span id="pname-3">سینا</span><br><span id="bid-lbl-3">تعهد: ؟</span> | <span id="trick-lbl-3">دست:</span> <span id="tricks-3">۰</span></div>
+<div class="player-pill" id="pill-3"><span id="pname-3">سینا</span><br><span id="bid-lbl-3">تعهد: ؟</span> | دست: <span id="tricks-3">۰</span></div>
 <div class="playing-card back-cover" style="width:28px; height:40px; margin:0;"></div>
 </div>
-
 <div id="bid-controller">
-<span style="font-size:11px; color:var(--gold);" id="txt-your-bid">تعهد شما:</span>
+<span style="font-size:11px; color:var(--gold);">تعهد شما:</span>
 <button type="button" class="bid-btn-circle" onclick="changeBidStep(-1)">-</button>
 <span id="bid-val-num">۲</span>
 <button type="button" class="bid-btn-circle" onclick="changeBidStep(1)">+</button>
-<button type="button" class="btn-action" style="padding:6px 14px; font-size:11px; margin:0;" id="txt-bid-submit" onclick="confirmUserBid()">ثبت</button>
+<button type="button" class="btn-action" style="padding:6px 14px; font-size:11px; margin:0;" onclick="confirmUserBid()">ثبت</button>
 </div>
 </div>
 
 <div id="user-hand-tray">
-<div style="font-size:10px; color:#cbd5e1; margin-bottom:2px; width:100%; text-align:right; padding-right:8px;" id="txt-hand-label">
-برگ‌های دست شما (۱۳ برگ):
-</div>
+<div style="font-size:10px; color:#cbd5e1; margin-bottom:2px; width:100%; text-align:right; padding-right:8px;">برگ‌های دست شما (۱۳ برگ):</div>
 <div class="hand-fan-container" id="user-cards-fan"></div>
 </div>
 
-<!-- مدال ارسال نظر به ادمین -->
-<div class="modal-backdrop" id="feedback-modal">
-<div class="modal-sheet" style="text-align: inherit;">
-<h3 style="color:var(--gold); text-align:center; margin-bottom:8px;" id="txt-fb-title">ارسال نظر به سازنده</h3>
-<p style="font-size:12px; color:#94a3b8; margin-bottom:12px; line-height:1.5;" id="txt-fb-desc">
-پیشنهادها مستقیماً به پنل اختصاصی ادمین بازی ارسال می‌شوند.
-</p>
-<input type="text" id="fb-sender" class="input-box" placeholder="نام شما (اختیاری)">
-<textarea id="fb-message" class="input-box" rows="4" placeholder="متن نظر یا پیشنهاد خود را اینجا بنویسید..."></textarea>
-<div id="fb-status" style="font-size:11px; margin-bottom:8px; text-align:center;"></div>
-<button type="button" class="btn-action" style="width:100%;" id="btn-submit-feedback" onclick="submitFeedbackForm()">ارسال پیام</button>
-<button type="button" class="btn-action btn-secondary" style="width:100%; margin-top:6px;" id="txt-fb-cancel" onclick="appCloseFeedbackModal()">انصراف</button>
-</div>
-</div>
-
-<!-- مدال قوانین بازی -->
-<div class="modal-backdrop" id="rules-modal">
-<div class="modal-sheet" style="text-align: right; font-size:12px; line-height:1.7;">
-<h3 style="color:var(--gold); text-align:center; margin-bottom:12px;" id="txt-rules-modal-title">قوانین شلم پیک (۴ نفره)</h3>
-<div>
-<p><b>۱. برگ‌ها:</b> دسته ۵۲ تایی؛ ۲ دل و ۲ خشت حذف و دو جوکر اضافه شده‌اند[span_1](start_span)[span_1](end_span).</p>
-<p><b>۲. حکم ثابت:</b> پیک همواره حکم است و نیازی به انتخاب ندارد[span_2](start_span)[span_2](end_span).</p>
-<p><b>۳. تعهد:</b> حداقل تعهد هر بازیکن ۲ دست است[span_3](start_span)[span_3](end_span). تعهد تیم = جمع تعهد دو یار[span_4](start_span)[span_4](end_span).</p>
-<p><b>۴. قواعد جوکر:</b>
-<br>• جوکر رنگی سرور تمام کارت‌ها است[span_5](start_span)[span_5](end_span).
-<br>• جوکر سیاه از آس پیک بالاتر است[span_6](start_span)[span_6](end_span).
-<br>• جوکر رنگی فقط پس از بازی‌شدن جوکر سیاه مجاز می‌شود[span_7](start_span)[span_7](end_span).
-<br>• دارنده جوکر سیاه باید حداکثر زمانی که ۳ برگ در دست دارد آن را بازی کند و نباید به دو برگ پایانی برسد[span_8](start_span)[span_8](end_span).</p>
-<p><b>۵. امتیازدهی:</b> موفقیت = ۱۰ × تعهد + دست‌های اضافه[span_9](start_span)[span_9](end_span). نرسیدن به تعهد = منفی ۱۰ × تعهد[span_10](start_span)[span_10](end_span).</p>
-<p><b>۶. هشت برتر:</b> تعهد ۸ و موفقیت در آن یک هشت برتر ثبت می‌کند[span_11](start_span)[span_11](end_span). هشت‌های دو تیم همدیگر را خنثی می‌کنند[span_12](start_span)[span_12](end_span). برای برد به ۵۰۰ امتیاز و حداقل ۱ هشت خنثی‌نشده نیاز است[span_13](start_span)[span_13](end_span).</p>
-</div>
-<br>
-<button type="button" class="btn-action" style="width:100%;" id="txt-rules-gotit" onclick="appCloseRulesModal()">متوجه شدم</button>
-</div>
-</div>
-
-<!-- مدال ۶ نفره -->
-<div class="modal-backdrop" id="six-modal">
-<div class="modal-sheet">
-<h3 style="color:var(--gold); margin-bottom:10px;" id="txt-six-title">شلم پیک (۶ نفره)</h3>
-<p style="font-size:13px; line-height:1.6; color:#cbd5e1; margin-bottom:16px;" id="txt-six-desc">
-گزینه ۶ نفره ثبت گردید. پس از نهایی‌سازی آزمایش نسخه ۴ نفره، با دریافت قوانین اختصاصیِ شما فعال خواهد شد.
-</p>
-<button type="button" class="btn-action" id="txt-six-back" onclick="appCloseSixModal()">بازگشت</button>
-</div>
-</div>
-
-<!-- مدال گزارش پایان دور -->
+<!-- مدال گزارش دور -->
 <div class="modal-backdrop" id="round-report-modal">
 <div class="modal-sheet">
 <h3 id="report-title" style="color:var(--gold); margin-bottom:10px;">نتیجه دور</h3>
 <p id="report-body" style="font-size:13px; line-height:1.6; margin-bottom:16px;"></p>
-<button type="button" class="btn-action" id="txt-next-round-btn" onclick="appNextRound()">دور بعدی</button>
+<button type="button" class="btn-action" onclick="startNewRoundCycle()">دور بعدی</button>
 </div>
 </div>
 
 </body>
 </html>
-<!DOCTYPE html>
-<html lang="fa" dir="rtl">
-<head>
-<meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>شلم پیک - Shelem Peak</title>
-
-<meta name="author" content="مجتبی سخایی">
-<meta name="copyright" content="تمامی حقوق مادی و معنوی، ساختار و ایده بازی شلم پیک متعلق به مجتبی سخایی است.">
-<meta name="developer" content="Mojtaba Sakhaei">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="apple-mobile-web-app-title" content="شلم پیک">
-
-<style>
-:root {
---bg-felt: radial-gradient(circle at center, #1b5e20 0%, #0d3813 85%, #051a08 100%);
---gold: #f59e0b;
---gold-glow: rgba(245, 158, 11, 0.4);
---danger: #dc2626;
---card-bg: #ffffff;
---text-main: #f8fafc;
-}
-* { box-sizing: border-box; margin: 0; padding: 0; -webkit-tap-highlight-color: transparent; }
-body {
-font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Vazirmatn", Tahoma, sans-serif;
-background: #051a08;
-color: var(--text-main);
-height: 100vh;
-height: 100dvh;
-overflow: hidden;
-display: flex;
-flex-direction: column;
-position: relative;
-}
-.hidden { display: none !important; }
-.lang-container {
-display: flex; flex-wrap: wrap; justify-content: center; gap: 5px;
-margin-bottom: 18px; background: rgba(0, 0, 0, 0.5); padding: 6px 10px;
-border-radius: 20px; border: 1px solid rgba(255, 255, 255, 0.15); max-width: 340px; z-index: 10;
-}
-.lang-btn {
-background: transparent; border: none; color: #94a3b8; font-size: 11px;
-font-weight: bold; padding: 5px 10px; border-radius: 12px; cursor: pointer;
-}
-.lang-btn.active { background: var(--gold); color: #000; }
-#welcome-screen {
-position: absolute; inset: 0;
-background: radial-gradient(circle at 50% 35%, #1e293b 0%, #090d16 100%);
-z-index: 200; display: flex; flex-direction: column; align-items: center;
-justify-content: center; padding: 20px; text-align: center;
-}
-.brand-title { font-size: 36px; font-weight: 900; color: var(--gold); text-shadow: 0 0 16px var(--gold-glow); margin-bottom: 6px; }
-.brand-sub { font-size: 13px; color: #94a3b8; margin-bottom: 22px; line-height: 1.5; }
-.menu-group { display: flex; flex-direction: column; gap: 10px; width: 100%; max-width: 270px; }
-.btn-action {
-background: var(--gold); color: #000; border: none; padding: 13px 16px;
-border-radius: 12px; font-weight: bold; font-size: 14px; cursor: pointer;
-box-shadow: 0 4px 12px var(--gold-glow);
-}
-.btn-action:active { transform: scale(0.97); }
-.btn-action.btn-secondary { background: #1e293b; color: #cbd5e1; border: 1px solid #475569; box-shadow: none; }
-.btn-action.btn-outline { background: transparent; border: 1px solid var(--gold); color: var(--gold); box-shadow: none; }
-.btn-action.btn-feedback { background: #334155; color: #38bdf8; border: 1px dashed #38bdf8; box-shadow: none; font-size: 12px; padding: 10px; }
-header {
-background: rgba(5, 10, 5, 0.9); padding: env(safe-area-inset-top, 8px) 12px 6px 12px;
-display: flex; justify-content: space-between; align-items: center; font-size: 11px;
-border-bottom: 1px solid rgba(255, 215, 0, 0.2); z-index: 50; min-height: 48px;
-}
-.team-badge { display: flex; flex-direction: column; line-height: 1.3; }
-.team-score { font-size: 15px; font-weight: 800; color: var(--gold); }
-.trump-indicator { background: #000; color: var(--gold); border: 1px solid var(--gold); padding: 3px 8px; border-radius: 12px; font-weight: bold; font-size: 10px; }
-#warning-strip { background: var(--danger); color: #fff; font-size: 11px; font-weight: bold; text-align: center; padding: 4px; display: none; z-index: 40; }
-#table-arena { flex: 1; background: var(--bg-felt); position: relative; display: flex; justify-content: center; align-items: center; overflow: hidden; }
-.seat-node { position: absolute; display: flex; flex-direction: column; align-items: center; z-index: 10; }
-#node-top { top: 8px; }
-#node-left { left: 8px; top: 38%; transform: translateY(-50%); }
-#node-right { right: 8px; top: 38%; transform: translateY(-50%); }
-.player-pill {
-background: rgba(0,0,0,0.7); border: 1px solid rgba(255,255,255,0.15); border-radius: 8px;
-padding: 3px 8px; font-size: 10px; text-align: center; line-height: 1.3; margin-bottom: 3px;
-}
-.seat-node.active .player-pill { border-color: var(--gold); background: rgba(245, 158, 11, 0.2); box-shadow: 0 0 8px var(--gold); }
-.table-center-tricks { width: 170px; height: 130px; position: relative; display: flex; justify-content: center; align-items: center; }
-.trick-slot { position: absolute; }
-.trick-slot[data-pos="top"] { transform: translateY(-28px); }
-.trick-slot[data-pos="bottom"] { transform: translateY(28px); }
-.trick-slot[data-pos="left"] { transform: translateX(-34px); }
-.trick-slot[data-pos="right"] { transform: translateX(34px); }
-#bid-controller {
-position: absolute; bottom: 110px; background: rgba(15, 23, 42, 0.95);
-border: 1px solid var(--gold); border-radius: 20px; padding: 6px 14px;
-display: none; align-items: center; gap: 12px; z-index: 80;
-}
-.bid-btn-circle {
-width: 32px; height: 32px; border-radius: 50%; border: 1px solid #475569;
-background: #1e293b; color: #fff; font-size: 18px; font-weight: bold; cursor: pointer;
-display: flex; align-items: center; justify-content: center;
-}
-#bid-val-num { font-size: 20px; font-weight: bold; color: var(--gold); min-width: 24px; text-align: center; }
-#user-hand-tray {
-background: rgba(0, 0, 0, 0.65); border-top: 1px solid rgba(255, 255, 255, 0.1);
-padding: 6px 4px calc(env(safe-area-inset-bottom, 12px) + 4px) 4px;
-display: flex; flex-direction: column; align-items: center; z-index: 60;
-}
-.hand-fan-container { display: flex; justify-content: center; align-items: flex-end; width: 100%; max-width: 440px; height: 84px; padding: 0 4px; }
-.playing-card {
-width: 46px; height: 72px; background: var(--card-bg); border-radius: 5px;
-box-shadow: -2px 2px 6px rgba(0,0,0,0.45); border: 1px solid #cbd5e1;
-color: #0f172a; display: flex; flex-direction: column; justify-content: space-between;
-padding: 3px; font-weight: 800; position: relative; cursor: pointer; margin-left: -20px;
-}
-.playing-card:first-child { margin-left: 0; }
-.playing-card.selectable:active { transform: translateY(-16px); }
-.playing-card.disabled { opacity: 0.38; cursor: not-allowed; }
-.playing-card.red { color: #dc2626; }
-.playing-card.back-cover {
-background: #1e293b; border: 2px solid #38bdf8;
-background-image: repeating-linear-gradient(45deg, #0f172a 0, #0f172a 4px, #1e293b 4px, #1e293b 8px);
-}
-.modal-backdrop {
-position: fixed; inset: 0; background: rgba(0,0,0,0.88);
-display: none; justify-content: center; align-items: center; z-index: 300; padding: 16px;
-}
-.modal-sheet {
-background: #0f172a; border: 1px solid var(--gold); border-radius: 16px;
-padding: 20px; width: 100%; max-width: 360px; text-align: center; max-height: 85vh; overflow-y: auto;
-}
-.input-box {
-width: 100%; background: #1e293b; border: 1px solid #475569; color: #fff;
-padding: 10px; border-radius: 8px; margin: 8px 0; font-family: inherit; font-size: 13px;
-}
-</style>
-
-
 
