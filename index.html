@@ -1,0 +1,569 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+<title>شلم پیک - بازی اختصاصی شلم لاری</title>
+
+<!-- ثبت حق مالکیت و امتیاز اثر -->
+<meta name="author" content="صاحب امتیاز و طراح: کاربر محترم پروژه شلم پیک">
+<meta name="copyright" content="تمامی حقوق مادی و معنوی، قوانین و ایده شلم پیک متعلق به سازنده است.">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="شلم پیک">
+
+<style>
+:root {
+--bg-felt: #14532d;
+--card-bg: #f8fafc;
+--gold: #f59e0b;
+--danger: #ef4444;
+--panel-bg: rgba(15, 23, 42, 0.95);
+}
+* { box-sizing: border-box; user-select: none; -webkit-user-select: none; margin: 0; padding: 0; }
+body {
+font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Tahoma, sans-serif;
+background: var(--bg-felt);
+color: #fff;
+height: 100vh;
+overflow: hidden;
+display: flex;
+flex-direction: column;
+}
+/* هدر و تابلوی امتیاز */
+header {
+background: rgba(0, 0, 0, 0.6);
+padding: 8px 14px;
+display: flex;
+justify-content: space-between;
+align-items: center;
+font-size: 13px;
+border-bottom: 1px solid rgba(255,255,255,0.1);
+}
+.score-badge { display: flex; flex-direction: column; }
+.score-val { font-weight: bold; font-size: 15px; color: var(--gold); }
+.trump-pill { background: #000; padding: 4px 10px; border-radius: 12px; border: 1px solid var(--gold); }
+
+/* هشدار جوکر سیاه */
+#warning-bar {
+background: var(--danger);
+color: #fff;
+text-align: center;
+padding: 4px;
+font-size: 12px;
+font-weight: bold;
+display: none;
+}
+
+/* میز بازی */
+#table {
+flex: 1;
+position: relative;
+display: flex;
+justify-content: center;
+align-items: center;
+}
+.seat {
+position: absolute;
+display: flex;
+flex-direction: column;
+align-items: center;
+font-size: 12px;
+}
+#seat-top { top: 10px; }
+#seat-left { left: 10px; }
+#seat-right { right: 10px; }
+
+.player-badge {
+background: rgba(0,0,0,0.5);
+padding: 4px 8px;
+border-radius: 8px;
+margin-bottom: 4px;
+border: 1px solid transparent;
+}
+.seat.active .player-badge { border-color: var(--gold); }
+
+.trick-area {
+display: flex;
+gap: 10px;
+min-height: 90px;
+align-items: center;
+justify-content: center;
+}
+
+/* کارت‌ها */
+.card {
+width: 58px;
+height: 84px;
+background: var(--card-bg);
+border-radius: 6px;
+border: 1px solid #cbd5e1;
+color: #0f172a;
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+padding: 4px;
+font-weight: bold;
+box-shadow: 0 4px 6px rgba(0,0,0,0.3);
+cursor: pointer;
+position: relative;
+touch-action: manipulation;
+}
+.card.red { color: #dc2626; }
+.card.disabled { opacity: 0.35; cursor: not-allowed; }
+.card-back {
+background: #1e293b;
+border: 2px solid #38bdf8;
+background-image: repeating-linear-gradient(45deg, #0f172a 0, #0f172a 5px, #1e293b 5px, #1e293b 10px);
+}
+
+/* دست بازیکن پایین */
+#my-hand {
+background: rgba(0, 0, 0, 0.4);
+padding: 10px 4px 20px 4px;
+display: flex;
+overflow-x: auto;
+gap: 4px;
+justify-content: center;
+min-height: 110px;
+}
+
+/* مدال‌ها و پنجره‌ها */
+.modal {
+position: fixed;
+inset: 0;
+background: rgba(0,0,0,0.85);
+display: flex;
+justify-content: center;
+align-items: center;
+z-index: 100;
+padding: 20px;
+}
+.modal-box {
+background: #0f172a;
+border: 1px solid var(--gold);
+border-radius: 12px;
+padding: 20px;
+width: 100%;
+max-width: 380px;
+text-align: center;
+}
+.btn {
+background: var(--gold);
+color: #000;
+border: none;
+padding: 10px 18px;
+border-radius: 8px;
+font-weight: bold;
+margin: 6px 4px;
+cursor: pointer;
+}
+.btn-danger { background: var(--danger); color: #fff; }
+.input-field {
+width: 80%;
+padding: 8px;
+border-radius: 6px;
+border: 1px solid #475569;
+background: #1e293b;
+color: #fff;
+margin: 10px 0;
+text-align: center;
+font-size: 16px;
+}
+.hidden { display: none !important; }
+</style>
+</head>
+<body>
+
+<!-- هدر امتیازها -->
+<header>
+<div class="score-badge">
+<span>تیم ما (شما و یار)</span>
+<span class="score-val" id="score-t0">۰</span>
+<span style="font-size:11px;" id="meta-t0">تعهد: - | دست: ۰ | هشت: ۰</span>
+</div>
+<div class="trump-pill">حکم: پیک ♠</div>
+<div class="score-badge" style="text-align: left;">
+<span>تیم حریف</span>
+<span class="score-val" id="score-t1">۰</span>
+<span style="font-size:11px;" id="meta-t1">تعهد: - | دست: ۰ | هشت: ۰</span>
+</div>
+</header>
+
+<!-- نوار اعلان تخلف -->
+<div id="warning-bar">هشدار: جوکر سیاه را حداکثر با ۳ برگ در دست باید بازی کنید!</div>
+
+<!-- میز بازی -->
+<div id="table">
+<!-- حریف روبرو (یار) -->
+<div class="seat" id="seat-top">
+<div class="player-badge" id="badge-2">مهدی (یار) [دست: <span id="tricks-2">۰</span>]</div>
+<div class="card card-back" style="width:36px; height:50px;"></div>
+</div>
+
+<!-- حریف چپ -->
+<div class="seat" id="seat-left">
+<div class="player-badge" id="badge-1">رضا (حریف) [دست: <span id="tricks-1">۰</span>]</div>
+<div class="card card-back" style="width:36px; height:50px;"></div>
+</div>
+
+<!-- میانه میز: کارتهای بازی‌شده -->
+<div class="trick-area" id="trick-area"></div>
+
+<!-- حریف راست -->
+<div class="seat" id="seat-right">
+<div class="player-badge" id="badge-3">سینا (حریف) [دست: <span id="tricks-3">۰</span>]</div>
+<div class="card card-back" style="width:36px; height:50px;"></div>
+</div>
+</div>
+
+<!-- دست کاربر -->
+<div id="my-hand"></div>
+
+<!-- دیالوگ ثبت تعهد -->
+<div class="modal hidden" id="bid-modal">
+<div class="modal-box">
+<h3 style="color:var(--gold); margin-bottom:12px;">اعلام تعهد دور</h3>
+<p style="font-size:13px; margin-bottom:12px;">حداقل تعهد ۲ دست است.</p>
+<input type="number" id="bid-input" class="input-field" min="2" max="13" value="3">
+<br>
+<button class="btn" onclick="submitUserBid()">ثبت تعهد</button>
+</div>
+</div>
+
+<!-- دیالوگ پایان دور / مسابقه -->
+<div class="modal hidden" id="round-modal">
+<div class="modal-box">
+<h3 id="round-title" style="color:var(--gold); margin-bottom:12px;">نتیجه دور</h3>
+<p id="round-desc" style="font-size:14px; line-height:1.6; margin-bottom:16px;"></p>
+<button class="btn" onclick="startNewRound()">شروع دور بعد</button>
+<button class="btn btn-danger" onclick="openShare()">اشتراک‌گذاری بازی</button>
+</div>
+</div>
+
+<script>
+/**
+* موتور بازی شلم پیک (نسخه تک‌فایل)
+* پیاده‌سازی کلیه قوانین اختصاصی: ۵۲ برگ، حذف ۲ دل و خشت، پیک حکم دائمی
+*/
+const SUITS = { SPADES: '♠', HEARTS: '♥', DIAMONDS: '♦', CLUBS: '♣' };
+
+// مدل داده بازی
+let state = {
+rules: { minBid: 2, targetScore: 500, enableEight: true, eightThreshold: 8 },
+teamScores: [0, 0],
+teamEights: [0, 0],
+players: [
+{ id: 0, name: 'شما', team: 0, hand: [], bid: 0, tricks: 0, isBot: false },
+{ id: 1, name: 'رضا', team: 1, hand: [], bid: 0, tricks: 0, isBot: true },
+{ id: 2, name: 'مهدی', team: 0, hand: [], bid: 0, tricks: 0, isBot: true },
+{ id: 3, name: 'سینا', team: 1, hand: [], bid: 0, tricks: 0, isBot: true }
+],
+currentTurn: 0,
+dealer: 0,
+trick: [], // { playerId, card }
+leadSuit: null,
+blackJokerPlayed: false,
+phase: 'bidding'
+};
+
+// ایجاد ۵۲ کارت استاندارد طبق سند (حذف ۲ دل و ۲ خشت، درج جوکر سیاه و رنگی)
+function generateDeck() {
+let deck = [];
+const suits = ['SPADES', 'HEARTS', 'DIAMONDS', 'CLUBS'];
+suits.forEach(suit => {
+for (let r = 2; r <= 14; r++) {
+if ((suit === 'HEARTS' || suit === 'DIAMONDS') && r === 2) continue; // حذف طبق قاعده
+deck.push({ id: `${suit}_${r}`, suit, rank: r, type: 'standard' });
+}
+});
+deck.push({ id: 'JOKER_BLACK', suit: null, rank: 98, type: 'blackJoker' });
+deck.push({ id: 'JOKER_COLOR', suit: null, rank: 99, type: 'colorJoker' });
+return deck.sort(() => Math.random() - 0.5);
+}
+
+function initGame() {
+startNewRound();
+}
+
+function startNewRound() {
+document.getElementById('round-modal').classList.add('hidden');
+const deck = generateDeck();
+for (let i = 0; i < 4; i++) {
+state.players[i].hand = deck.slice(i * 13, (i + 1) * 13);
+state.players[i].bid = 0;
+state.players[i].tricks = 0;
+}
+state.blackJokerPlayed = false;
+state.trick = [];
+state.leadSuit = null;
+state.phase = 'bidding';
+state.currentTurn = (state.dealer + 1) % 4;
+
+updateUI();
+runBiddingPhase();
+}
+
+function runBiddingPhase() {
+if (state.currentTurn === 0) {
+document.getElementById('bid-modal').classList.remove('hidden');
+} else {
+// هوش مصنوعی ساده برای تعهد ربات‌ها
+const p = state.players[state.currentTurn];
+p.bid = 2 + Math.floor(Math.random() * 2);
+nextBidTurn();
+}
+}
+
+function submitUserBid() {
+const val = parseInt(document.getElementById('bid-input').value) || 2;
+state.players[0].bid = Math.max(state.rules.minBid, Math.min(val, 13));
+document.getElementById('bid-modal').classList.add('hidden');
+nextBidTurn();
+}
+
+function nextBidTurn() {
+state.currentTurn = (state.currentTurn + 1) % 4;
+if (state.players.every(p => p.bid >= state.rules.minBid)) {
+state.phase = 'playing';
+state.currentTurn = (state.dealer + 1) % 4;
+updateUI();
+triggerTurn();
+} else {
+runBiddingPhase();
+}
+}
+
+function triggerTurn() {
+updateUI();
+if (state.phase !== 'playing') return;
+
+const p = state.players[state.currentTurn];
+if (p.isBot) {
+setTimeout(() => {
+const valids = getValidCards(state.currentTurn);
+const picked = valids[Math.floor(Math.random() * valids.length)];
+executePlay(state.currentTurn, picked);
+}, 700);
+}
+}
+
+function getValidCards(playerIdx) {
+const p = state.players[playerIdx];
+// شروع‌کننده دست مجاز به شروع با جوکر نیست
+if (state.trick.length === 0) {
+return p.hand.filter(c => c.type === 'standard');
+}
+
+const hasLead = p.hand.some(c => c.suit === state.leadSuit);
+return p.hand.filter(c => {
+if (c.type === 'colorJoker') return state.blackJokerPlayed;
+if (c.type === 'blackJoker') return true;
+if (hasLead) return c.suit === state.leadSuit;
+return true; // رد دادن آزاد است
+});
+}
+
+function userPlayCard(cardId) {
+if (state.currentTurn !== 0 || state.phase !== 'playing') return;
+const card = state.players[0].hand.find(c => c.id === cardId);
+const valids = getValidCards(0);
+if (!valids.some(c => c.id === cardId)) return;
+
+// بررسی تخلف جوکر سیاه (نگه داشتن در ۲ برگ پایانی)
+const hasBlack = state.players[0].hand.some(c => c.type === 'blackJoker');
+if (hasBlack && state.players[0].hand.length <= 3 && card.type !== 'blackJoker') {
+applyViolation(0);
+return;
+}
+
+executePlay(0, card);
+}
+
+function executePlay(playerIdx, card) {
+const p = state.players[playerIdx];
+p.hand = p.hand.filter(c => c.id !== card.id);
+
+if (card.type === 'blackJoker') state.blackJokerPlayed = true;
+if (state.trick.length === 0) state.leadSuit = card.suit;
+
+state.trick.push({ playerId: playerIdx, card });
+
+if (state.trick.length === 4) {
+updateUI();
+setTimeout(resolveTrick, 900);
+} else {
+state.currentTurn = (state.currentTurn + 1) % 4;
+triggerTurn();
+}
+}
+
+function resolveTrick() {
+let winObj = state.trick[0];
+for (let i = 1; i < 4; i++) {
+if (compareCards(state.trick[i].card, winObj.card, state.leadSuit) > 0) {
+winObj = state.trick[i];
+}
+}
+
+state.players[winObj.playerId].tricks++;
+state.currentTurn = winObj.playerId;
+state.trick = [];
+state.leadSuit = null;
+
+if (state.players[0].hand.length === 0) {
+resolveRoundEnd();
+} else {
+triggerTurn();
+}
+}
+
+function compareCards(c1, c2, lead) {
+if (c1.type === 'colorJoker') return 1;
+if (c2.type === 'colorJoker') return -1;
+if (c1.type === 'blackJoker') return 1;
+if (c2.type === 'blackJoker') return -1;
+
+const c1Tr = c1.suit === 'SPADES', c2Tr = c2.suit === 'SPADES';
+if (c1Tr && !c2Tr) return 1;
+if (!c1Tr && c2Tr) return -1;
+if (c1Tr && c2Tr) return c1.rank - c2.rank;
+
+const c1Ld = c1.suit === lead, c2Ld = c2.suit === lead;
+if (c1Ld && !c2Ld) return 1;
+if (!c1Ld && c2Ld) return -1;
+if (c1Ld && c2Ld) return c1.rank - c2.rank;
+
+return 0;
+}
+
+function applyViolation(teamId) {
+const opp = 1 - teamId;
+const violBid = state.players.filter(p => p.team === teamId).reduce((a,b)=>a+b.bid, 0);
+const oppBid = state.players.filter(p => p.team === opp).reduce((a,b)=>a+b.bid, 0);
+
+state.teamScores[teamId] -= (10 * violBid);
+state.teamScores[opp] += (10 * oppBid);
+
+showRoundModal("تخلف جوکر سیاه!", `تیم متخلف با عدم بازی جوکر سیاه تا برگ سوم، جریمه شد (${-10 * violBid} امتیاز).`);
+}
+
+function resolveRoundEnd() {
+let report = "";
+for (let t = 0; t < 2; t++) {
+const bid = state.players.filter(p => p.team === t).reduce((a,b)=>a+b.bid, 0);
+const won = state.players.filter(p => p.team === t).reduce((a,b)=>a+b.tricks, 0);
+
+if (won >= bid) {
+const sc = (10 * bid) + (won - bid);
+state.teamScores[t] += sc;
+report += `تیم ${t === 0 ? 'ما' : 'حریف'}: تعهد ${bid}، دست ${won} ➔ ${sc} امتیاز مثبت.<br>`;
+if (state.rules.enableEight && bid >= state.rules.eightThreshold) {
+handleEight(t);
+report += `★ هشت برتر برای تیم ${t === 0 ? 'ما' : 'حریف'} ثبت شد!<br>`;
+}
+} else {
+const pen = -10 * bid;
+state.teamScores[t] += pen;
+report += `تیم ${t === 0 ? 'ما' : 'حریف'}: عدم تعهد (${won} از ${bid}) ➔ ${pen} امتیاز منفی.<br>`;
+}
+}
+
+state.dealer = (state.dealer + 1) % 4;
+showRoundModal("پایان دور", report);
+}
+
+function handleEight(teamId) {
+const opp = 1 - teamId;
+if (state.teamEights[opp] > 0) {
+state.teamEights[opp]--; // خنثی‌سازی بلادرنگ
+} else {
+state.teamEights[teamId]++;
+}
+}
+
+function showRoundModal(title, text) {
+state.phase = 'ended';
+document.getElementById('round-title').innerText = title;
+document.getElementById('round-desc').innerHTML = text;
+document.getElementById('round-modal').classList.remove('hidden');
+updateUI();
+}
+
+function updateUI() {
+// بروزرسانی امتیازات
+const t0Bid = state.players[0].bid + state.players[2].bid;
+const t1Bid = state.players[1].bid + state.players[3].bid;
+const t0Tr = state.players[0].tricks + state.players[2].tricks;
+const t1Tr = state.players[1].tricks + state.players[3].tricks;
+
+document.getElementById('score-t0').innerText = state.teamScores[0];
+document.getElementById('score-t1').innerText = state.teamScores[1];
+document.getElementById('meta-t0').innerText = `تعهد: ${t0Bid||'-'} | دست: ${t0Tr} | هشت: ${state.teamEights[0]}`;
+document.getElementById('meta-t1').innerText = `تعهد: ${t1Bid||'-'} | دست: ${t1Tr} | هشت: ${state.teamEights[1]}`;
+
+for(let i=1; i<=3; i++) {
+document.getElementById(`tricks-${i}`).innerText = state.players[i].tricks;
+document.getElementById(`seat-${i===1?'left':i===2?'top':'right'}`).classList.toggle('active', state.currentTurn === i);
+}
+
+// هشدار جوکر سیاه
+const myBlack = state.players[0].hand.some(c => c.type === 'blackJoker');
+document.getElementById('warning-bar').style.display = (myBlack && state.players[0].hand.length <= 4) ? 'block' : 'none';
+
+// رندر میانه میز
+const trickEl = document.getElementById('trick-area');
+trickEl.innerHTML = '';
+state.trick.forEach(t => {
+trickEl.appendChild(createCardUI(t.card, false));
+});
+
+// رندر دست بازیکن
+const handEl = document.getElementById('my-hand');
+handEl.innerHTML = '';
+const valids = state.phase === 'playing' && state.currentTurn === 0 ? getValidCards(0) : [];
+
+state.players[0].hand.forEach(c => {
+const isLegal = valids.some(vc => vc.id === c.id);
+const cardNode = createCardUI(c, true, isLegal);
+cardNode.onclick = () => userPlayCard(c.id);
+handEl.appendChild(cardNode);
+});
+}
+
+function createCardUI(card, isHand, isLegal = true) {
+const el = document.createElement('div');
+el.className = 'card';
+if (!isLegal && isHand) el.classList.add('disabled');
+
+if (card.type === 'standard') {
+const isRed = card.suit === 'HEARTS' || card.suit === 'DIAMONDS';
+if (isRed) el.classList.add('red');
+const rName = card.rank === 14 ? 'A' : card.rank === 13 ? 'K' : card.rank === 12 ? 'Q' : card.rank === 11 ? 'J' : card.rank;
+el.innerHTML = `<div>${rName}</div><div style="font-size:18px; text-align:center;">${SUITS[card.suit]}</div><div style="text-align:left;">${rName}</div>`;
+} else if (card.type === 'blackJoker') {
+el.innerHTML = `<div style="font-size:10px;">جوکر</div><div style="font-size:12px; text-align:center;">★ سیاه</div><div style="font-size:10px; text-align:left;">JOKER</div>`;
+} else {
+el.classList.add('red');
+el.innerHTML = `<div style="font-size:10px;">جوکر</div><div style="font-size:12px; text-align:center;">★ رنگی</div><div style="font-size:10px; text-align:left;">JOKER</div>`;
+}
+return el;
+}
+
+function openShare() {
+if (navigator.share) {
+navigator.share({
+title: 'بازی شلم پیک',
+text: 'دعوت به آزمایش بازی اختصاصی شلم پیک (شلم لاری با حکم ثابت)',
+url: window.location.href
+});
+} else {
+alert("لینک صفحه را کپی کرده و برای تسترها ارسال فرمایید.");
+}
+}
+
+window.onload = initGame;
+</script>
+</body>
+</html>
+
