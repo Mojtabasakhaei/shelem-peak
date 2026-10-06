@@ -98,10 +98,7 @@ padding: 6px 2px;
 border-radius: 8px;
 cursor: pointer;
 }
-.bot-level-btn.active {
-background: var(--gold);
-color: #000;
-}
+.bot-level-btn.active { background: var(--gold); color: #000; }
 
 .card-panel {
 background: rgba(15, 23, 42, 0.95);
@@ -191,7 +188,7 @@ justify-content: center;
 }
 
 header {
-background: rgba(5, 10, 5, 0.9);
+background: rgba(5, 10, 5, 0.92);
 padding: env(safe-area-inset-top, 6px) 12px 6px 12px;
 display: flex;
 justify-content: space-between;
@@ -219,16 +216,16 @@ z-index: 40;
 flex-shrink: 0;
 }
 
-/* محیط میز بازی */
+/* محیط میز مسابقه */
 #table-arena {
-flex: 1 1 auto;
+flex: 1;
 background: var(--bg-felt);
 position: relative;
 display: flex;
 justify-content: center;
 align-items: center;
 overflow: hidden;
-min-height: 0;
+min-height: 180px;
 }
 .seat-node { position: absolute; display: flex; flex-direction: column; align-items: center; z-index: 10; }
 #node-top { top: 6px; }
@@ -255,21 +252,25 @@ margin-bottom: 3px;
 .trick-slot[data-pos="left"] { transform: translateX(-34px); }
 .trick-slot[data-pos="right"] { transform: translateX(34px); }
 
+/* کادر ثبت تعهد (قرارگیری شناور در مرکز بالا و بدون پوشاندن کارت‌ها) */
 #bid-controller {
 position: absolute;
-bottom: 8px;
-background: rgba(15, 23, 42, 0.95);
-border: 1px solid var(--gold);
+top: 55%;
+left: 50%;
+transform: translate(-50%, -50%);
+background: rgba(15, 23, 42, 0.98);
+border: 2px solid var(--gold);
 border-radius: 20px;
-padding: 6px 14px;
+padding: 8px 18px;
 display: none;
 align-items: center;
 gap: 12px;
-z-index: 80;
+z-index: 90;
+box-shadow: 0 10px 25px rgba(0,0,0,0.7);
 }
 .bid-btn-circle {
-width: 32px;
-height: 32px;
+width: 34px;
+height: 34px;
 border-radius: 50%;
 border: 1px solid #475569;
 background: #1e293b;
@@ -281,15 +282,15 @@ display: flex;
 align-items: center;
 justify-content: center;
 }
-#bid-val-num { font-size: 20px; font-weight: bold; color: var(--gold); min-width: 24px; text-align: center; }
+#bid-val-num { font-size: 22px; font-weight: bold; color: var(--gold); min-width: 26px; text-align: center; }
 
 /* تابلوی درشت، تمیز و خلوت وضعیت دست حاضر */
 #round-status-bar {
-flex: 0 0 auto;
+flex-shrink: 0;
 width: 100%;
 background: rgba(15, 23, 42, 0.95);
 border-top: 1px solid rgba(245, 158, 11, 0.3);
-padding: 6px 16px;
+padding: 6px 14px;
 display: flex;
 justify-content: space-around;
 align-items: center;
@@ -298,18 +299,19 @@ font-weight: bold;
 color: #f1f5f9;
 z-index: 55;
 }
-.round-status-num { font-size: 16px; font-weight: 900; color: var(--gold); margin: 0 4px; }
+.round-status-num { font-size: 17px; font-weight: 900; color: var(--gold); margin: 0 4px; }
 
-/* سینی کارت‌های دست پایین بازیکن - همیشه قابل مشاهده */
+/* سینی کارت‌های دست پایین بازیکن - تثبیت قطعی در دید آیفون */
 #user-hand-tray {
-flex: 0 0 auto;
+flex-shrink: 0;
 width: 100%;
 background: rgba(0, 0, 0, 0.85);
-padding: 4px 4px calc(env(safe-area-inset-bottom, 14px) + 2px) 4px;
+padding: 4px 4px calc(env(safe-area-inset-bottom, 16px) + 4px) 4px;
 display: flex;
 flex-direction: column;
 align-items: center;
 z-index: 60;
+min-height: 96px;
 }
 .hand-fan-container {
 display: flex;
@@ -317,16 +319,16 @@ justify-content: center;
 align-items: flex-end;
 width: 100%;
 max-width: 440px;
-height: 78px;
+height: 84px;
 padding: 0 4px;
 }
 
 .playing-card {
 width: 46px;
-height: 72px;
+height: 74px;
 background: var(--card-bg);
 border-radius: 5px;
-box-shadow: -2px 2px 6px rgba(0,0,0,0.45);
+box-shadow: -2px 2px 6px rgba(0,0,0,0.5);
 border: 1px solid #cbd5e1;
 color: #0f172a;
 display: flex;
@@ -340,7 +342,7 @@ margin-left: -20px;
 }
 .playing-card:first-child { margin-left: 0; }
 .playing-card.selectable:active { transform: translateY(-16px); }
-.playing-card.disabled { opacity: 0.38; cursor: not-allowed; }
+.playing-card.disabled { opacity: 0.35; cursor: not-allowed; }
 .playing-card.red { color: #dc2626; }
 .playing-card.back-cover {
 background: var(--card-back-style);
@@ -771,7 +773,7 @@ setTimeout(function() {
 var p = state.players[state.currentTurn];
 p.bid = calculateBotBid(p);
 advanceBiddingTurn();
-}, 900);
+}, 600);
 }
 }
 
@@ -848,6 +850,7 @@ return valids[0];
 
 function getLegalMoves(playerIndex) {
 var p = state.players[playerIndex];
+// در دست آخر هیچ محدودیتی نیست
 if (p.hand.length === 1) return p.hand;
 
 if (state.trick.length === 0) {
@@ -1024,6 +1027,7 @@ var node = document.getElementById(i === 1 ? 'node-left' : i === 2 ? 'node-top' 
 if (node) node.classList.toggle('active', state.currentTurn === i && state.phase === 'playing');
 }
 
+// هشدار دست ۱۰ و جوکر سیاه
 var myBlack = state.players[0].hand.some(function(c) { return c.type === 'blackJoker'; });
 var warn = document.getElementById('warning-strip');
 if (myBlack && state.players[0].hand.length === 4) {
@@ -1047,7 +1051,7 @@ wrapper.appendChild(cNode);
 dropZone.appendChild(wrapper);
 });
 
-// رندر برگ‌های دست کاربر
+// رندر برگ‌های دست کاربر با تضمین دیده‌شدن
 var fanContainer = document.getElementById('user-cards-fan');
 fanContainer.innerHTML = '';
 var valids = (state.phase === 'playing' && state.currentTurn === 0) ? getLegalMoves(0) : [];
@@ -1156,7 +1160,7 @@ applyCardBack(currentCardBack);
 
 <button type="button" class="btn-action" id="txt-play4" onclick="openAuthOrLobby()">ورود به بازی (۴ نفره)</button>
 <button type="button" class="btn-action btn-secondary" id="txt-custom-btn" onclick="openCustomizeScreen()">طرح پشت کارت</button>
-<button type="button" class="btn-action btn-secondary" id="txt-play6" onclick="alert('نسخه ۶ نفره به‌زودی فعال می‌شود.')">شلم پیک (۶ نفره) - به‌زودی</button>
+<button type="button" class="btn-action btn-secondary" id="txt-play6" onclick="alert('نسخه ۶ نفره به‌‌زودی فعال می‌شود.')">شلم پیک (۶ نفره) - به‌زودی</button>
 <button type="button" class="btn-action btn-outline" id="txt-rules-btn" onclick="document.getElementById('rules-modal').style.display='flex'">راهنمای بازی و قوانین</button>
 <button type="button" class="btn-action btn-feedback" id="txt-feedback-btn" onclick="openFeedbackModal()">✉ ارسال پیشنهاد به ادمین</button>
 </div>
@@ -1227,7 +1231,7 @@ applyCardBack(currentCardBack);
 </div>
 </div>
 
-<!-- ۵. میز مسابقه اصلی -->
+<!-- ۵. میز مسابقه -->
 <header>
 <button type="button" class="btn-action btn-back" style="padding:4px 8px; font-size:10px;" onclick="handleInGameBack()">⇦ منو</button>
 <div class="team-badge">
@@ -1261,32 +1265,29 @@ applyCardBack(currentCardBack);
 <div class="playing-card back-cover other-player-card"></div>
 </div>
 
+<!-- فرم شناور ثبت تعهد (در مرکز میز) -->
 <div id="bid-controller">
-<span style="font-size:11px; color:var(--gold);">تعهد شما:</span>
+<span style="font-size:12px; color:var(--gold); font-weight:bold;">تعهد شما:</span>
 <button type="button" class="bid-btn-circle" onclick="changeBidStep(-1)">-</button>
 <span id="bid-val-num">۲</span>
 <button type="button" class="bid-btn-circle" onclick="changeBidStep(1)">+</button>
-<button type="button" class="btn-action" style="padding:6px 14px; font-size:11px; margin:0;" onclick="confirmUserBid()">ثبت</button>
+<button type="button" class="btn-action" style="padding:6px 14px; font-size:12px; margin:0;" onclick="confirmUserBid()">ثبت</button>
 </div>
 </div>
 
-<!-- تابلوی افقی و درشت دست حاضر -->
+<!-- نوار ساده و تمیز وضعیت دست‌های فعلی در بالای برگ‌های شما -->
 <div id="round-status-bar">
 <div>تیم ما: <span class="round-status-num" id="status-t0-tricks">۰ از ؟</span></div>
-<div style="color:rgba(255,255,255,0.2);">|</div>
 <div>تیم حریف: <span class="round-status-num" id="status-t1-tricks">۰ از ؟</span></div>
 </div>
 
-<!-- سینی کارت‌های دست کاربر -->
+<!-- سینی برگ‌های دست بازیکن - فیکس شده در دید آیفون -->
 <div id="user-hand-tray">
 <div class="hand-fan-container" id="user-cards-fan"></div>
 </div>
 
 <!-- مدال نظر و پیشنهاد -->
-<div class="modal-backdrop" id="feedback-modal">
-<div class="modal-sheet" style="text-align: inherit;">
-<h3 style="color:var(--gold); text-align:center; margin-bottom:8px;">ارسال نظر به سازنده</h3>
-<p style="font-size:12px; color:#94a3b8; margin-bottom:12px; line-height:1.5;">پیشنهادها مستقیماً به ادمین ارسال می‌شوند.</p>
+<div class="moda
 ...
 
 [Message clipped]  View entire message
