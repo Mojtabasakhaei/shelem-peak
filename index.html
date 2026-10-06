@@ -35,7 +35,6 @@ flex-direction: column;
 position: relative;
 }
 
-/* صفحه فرود و انتخاب حالت بازی */
 #welcome-screen {
 position: absolute;
 inset: 0;
@@ -80,7 +79,7 @@ cursor: pointer;
 box-shadow: 0 4px 12px var(--gold-glow);
 touch-action: manipulation;
 }
-.btn-action:active { transform: scale(0.97); }
+.btn-action:active { transform: scale(0.96); opacity: 0.9; }
 .btn-action.btn-secondary {
 background: #1e293b;
 color: #cbd5e1;
@@ -95,7 +94,6 @@ box-shadow: none;
 margin-top: 6px;
 }
 
-/* هدر تابلوی امتیاز */
 header {
 background: rgba(5, 10, 5, 0.9);
 padding: env(safe-area-inset-top, 8px) 12px 6px 12px;
@@ -130,7 +128,6 @@ display: none;
 z-index: 40;
 }
 
-/* میز مسابقه */
 #table-arena {
 flex: 1;
 background: var(--bg-felt);
@@ -181,7 +178,6 @@ align-items: center;
 .trick-slot[data-pos="left"] { transform: translateX(-34px); }
 .trick-slot[data-pos="right"] { transform: translateX(34px); }
 
-/* کنترلر شناور تعهد */
 #bid-controller {
 position: absolute;
 bottom: 110px;
@@ -210,7 +206,6 @@ justify-content: center;
 }
 #bid-val-num { font-size: 20px; font-weight: bold; color: var(--gold); min-width: 24px; text-align: center; }
 
-/* دست بازیکن */
 #user-hand-tray {
 background: rgba(0, 0, 0, 0.65);
 border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -230,7 +225,6 @@ height: 84px;
 padding: 0 4px;
 }
 
-/* ظاهر کارت */
 .playing-card {
 width: 46px;
 height: 72px;
@@ -259,7 +253,6 @@ border: 2px solid #38bdf8;
 background-image: repeating-linear-gradient(45deg, #0f172a 0, #0f172a 4px, #1e293b 4px, #1e293b 8px);
 }
 
-/* مدال‌ها */
 .modal-backdrop {
 position: fixed;
 inset: 0;
@@ -285,20 +278,20 @@ overflow-y: auto;
 </head>
 <body>
 
-<!-- صفحه ورودی با دو مدل بازی -->
+<!-- صفحه ورودی -->
 <div id="welcome-screen">
 <div style="font-size:46px; margin-bottom:6px;">♠</div>
 <h1 class="brand-title">شلم پیک</h1>
 <p class="brand-sub">نسخهٔ اختصاصی شلم لاری با حکم ثابت پیک</p>
 
 <div class="menu-group">
-<button class="btn-action" id="btn-play-4">ورود به بازی (۴ نفره)</button>
-<button class="btn-action btn-secondary" id="btn-play-6">شلم پیک (۶ نفره) - به‌زودی</button>
-<button class="btn-action btn-outline" id="btn-open-rules">راهنمای بازی و قوانین</button>
+<button class="btn-action" onclick="appStartGame4()">ورود به بازی (۴ نفره)</button>
+<button class="btn-action btn-secondary" onclick="appOpenSixModal()">شلم پیک (۶ نفره) - به‌زودی</button>
+<button class="btn-action btn-outline" onclick="appOpenRulesModal()">راهنمای بازی و قوانین</button>
 </div>
 </div>
 
-<!-- هدر امتیاز -->
+<!-- هدر تابلوی امتیاز -->
 <header>
 <div class="team-badge">
 <span>تیم ما (شما و مهدی)</span>
@@ -315,7 +308,7 @@ overflow-y: auto;
 
 <div id="warning-strip">هشدار: جوکر سیاه را حداکثر با ۳ برگ در دست باید بازی کنید!</div>
 
-<!-- میز مسابقه -->
+<!-- میز بازی -->
 <div id="table-arena">
 <div class="seat-node" id="node-top">
 <div class="player-pill" id="pill-2">مهدی (یار)<br><span id="bid-lbl-2">تعهد: ؟</span> | دست: <span id="tricks-2">۰</span></div>
@@ -336,10 +329,10 @@ overflow-y: auto;
 
 <div id="bid-controller">
 <span style="font-size:11px; color:var(--gold);">تعهد شما:</span>
-<button class="bid-btn-circle" id="btn-bid-dec">-</button>
+<button class="bid-btn-circle" onclick="changeBidStep(-1)">-</button>
 <span id="bid-val-num">۲</span>
-<button class="bid-btn-circle" id="btn-bid-inc">+</button>
-<button class="btn-action" style="padding:6px 14px; font-size:11px; margin:0;" id="btn-bid-ok">ثبت</button>
+<button class="bid-btn-circle" onclick="changeBidStep(1)">+</button>
+<button class="btn-action" style="padding:6px 14px; font-size:11px; margin:0;" onclick="confirmUserBid()">ثبت</button>
 </div>
 </div>
 
@@ -350,22 +343,22 @@ overflow-y: auto;
 <div class="hand-fan-container" id="user-cards-fan"></div>
 </div>
 
-<!-- مدال قوانین -->
+<!-- راهنمای قوانین -->
 <div class="modal-backdrop" id="rules-modal">
 <div class="modal-sheet" style="text-align: right; font-size:12px; line-height:1.7;">
 <h3 style="color:var(--gold); text-align:center; margin-bottom:12px;">قوانین شلم پیک (۴ نفره)</h3>
-<p><b>۱. برگ‌ها:</b> دستهٔ ۵۲ تایی؛ ۲ دل و ۲ خشت حذف و دو جوکر اضافه شده‌اند.</p>
+<p><b>۱. برگ‌ها:</b> دسته ۵۲ تایی؛ ۲ دل و ۲ خشت حذف و دو جوکر اضافه شده‌اند.</p>
 <p><b>۲. حکم ثابت:</b> پیک همواره حکم است و نیازی به انتخاب ندارد.</p>
 <p><b>۳. تعهد:</b> حداقل تعهد هر بازیکن ۲ دست است. تعهد تیم = جمع تعهد دو یار.</p>
 <p><b>۴. قواعد جوکر:</b>
-<br>• جوکر رنگی سرور تمام کارت‌ها است.
+<br>• جوکر رنگی بالاتر از تمام کارت‌ها است.
 <br>• جوکر سیاه از آس پیک بالاتر است.
 <br>• جوکر رنگی فقط پس از بازی‌شدن جوکر سیاه مجاز می‌شود.
-<br>• دارندهٔ جوکر سیاه باید حداکثر زمانی که ۳ برگ در دست دارد آن را بازی کند و نباید به دو برگ پایانی برسد.</p>
+<br>• دارنده جوکر سیاه باید حداکثر زمانی که ۳ برگ در دست دارد آن را بازی کند و نباید به دو برگ پایانی برسد.</p>
 <p><b>۵. امتیازدهی:</b> موفقیت = ۱۰ × تعهد + دست‌های اضافه. نرسیدن به تعهد = منفی ۱۰ × تعهد.</p>
 <p><b>۶. هشت برتر:</b> تعهد ۸ و موفقیت در آن یک هشت برتر ثبت می‌کند. هشت‌های دو تیم همدیگر را خنثی می‌کنند. برای برد به ۵۰۰ امتیاز و حداقل ۱ هشت خنثی‌نشده نیاز است.</p>
 <br>
-<button class="btn-action" style="width:100%;" id="btn-close-rules">متوجه شدم</button>
+<button class="btn-action" style="width:100%;" onclick="appCloseRulesModal()">متوجه شدم</button>
 </div>
 </div>
 
@@ -374,18 +367,18 @@ overflow-y: auto;
 <div class="modal-sheet">
 <h3 style="color:var(--gold); margin-bottom:10px;">شلم پیک (۶ نفره)</h3>
 <p style="font-size:13px; line-height:1.6; color:#cbd5e1; margin-bottom:16px;">
-گزینهٔ ۶ نفره ثبت گردید. پس از نهایی‌سازی آزمایش نسخهٔ ۴ نفره، با دریافت قوانین اختصاصیِ شما فعال خواهد شد.
+گزینه ۶ نفره ثبت گردید. پس از نهایی‌سازی آزمایش نسخه ۴ نفره، با دریافت قوانین اختصاصیِ شما فعال خواهد شد.
 </p>
-<button class="btn-action" id="btn-close-six">بازگشت</button>
+<button class="btn-action" onclick="appCloseSixModal()">بازگشت</button>
 </div>
 </div>
 
-<!-- مدال گزارش دور -->
+<!-- گزارش پایان دور -->
 <div class="modal-backdrop" id="round-report-modal">
 <div class="modal-sheet">
-<h3 id="report-title" style="color:var(--gold); margin-bottom:10px;">نتیجهٔ دور</h3>
+<h3 id="report-title" style="color:var(--gold); margin-bottom:10px;">نتیجه دور</h3>
 <p id="report-body" style="font-size:13px; line-height:1.6; margin-bottom:16px;"></p>
-<button class="btn-action" id="btn-next-round">دور بعدی</button>
+<button class="btn-action" onclick="appNextRound()">دور بعدی</button>
 </div>
 </div>
 
@@ -412,259 +405,10 @@ phase: 'bidding',
 tempUserBid: 2
 };
 
-function bindTouchClick(elementId, callback) {
-const el = document.getElementById(elementId);
-if (!el) return;
-el.addEventListener('click', (e) => { e.preventDefault(); callback(); });
-}
-
-function initPageListeners() {
-bindTouchClick('btn-play-4', () => {
+function appStartGame4() {
 document.getElementById('welcome-screen').style.display = 'none';
 startNewRoundCycle();
-});
-
-bindTouchClick('btn-play-6', () => {
-document.getElementById('six-modal').style.display = 'flex';
-});
-
-bindTouchClick('btn-close-six', () => {
-document.getElementById('six-modal').style.display = 'none';
-});
-
-bindTouchClick('btn-open-rules', () => {
-document.getElementById('rules-modal').style.display = 'flex';
-});
-
-bindTouchClick('btn-close-rules', () => {
-document.getElementById('rules-modal').style.display = 'none';
-});
-
-bindTouchClick('btn-bid-dec', () => changeBidStep(-1));
-bindTouchClick('btn-bid-inc', () => changeBidStep(1));
-bindTouchClick('btn-bid-ok', () => confirmUserBid());
-bindTouchClick('btn-next-round', () => startNewRoundCycle());
 }
-
-function sortPlayerHand(hand) {
-const suitWeights = { SPADES: 4, HEARTS: 3, CLUBS: 2, DIAMONDS: 1 };
-return hand.sort((a, b) => {
-if (a.type === 'colorJoker') return -1;
-if (b.type === 'colorJoker') return 1;
-if (a.type === 'blackJoker') return -1;
-if (b.type === 'blackJoker') return 1;
-
-if (suitWeights[a.suit] !== suitWeights[b.suit]) {
-return suitWeights[b.suit] - suitWeights[a.suit];
-}
-return b.rank - a.rank;
-});
-}
-
-function createFreshDeck() {
-let deck = [];
-const suits = ['SPADES', 'HEARTS', 'DIAMONDS', 'CLUBS'];
-suits.forEach(suit => {
-for (let r = 2; r <= 14; r++) {
-if ((suit === 'HEARTS' || suit === 'DIAMONDS') && r === 2) continue;
-deck.push({ id: `${suit}_${r}`, suit, rank: r, type: 'standard' });
-}
-});
-deck.push({ id: 'JOKER_BLACK', suit: null, rank: 98, type: 'blackJoker' });
-deck.push({ id: 'JOKER_COLOR', suit: null, rank: 99, type: 'colorJoker' });
-return deck.sort(() => Math.random() - 0.5);
-}
-
-function startNewRoundCycle() {
-document.getElementById('round-report-modal').style.display = 'none';
-const deck = createFreshDeck();
-for (let i = 0; i < 4; i++) {
-state.players[i].hand = sortPlayerHand(deck.slice(i * 13, (i + 1) * 13));
-state.players[i].bid = 0;
-state.players[i].tricks = 0;
-}
-state.blackJokerPlayed = false;
-state.trick = [];
-state.leadSuit = null;
-state.phase = 'bidding';
-state.currentTurn = (state.dealer + 1) % 4;
-state.tempUserBid = 2;
-
-renderView();
-runBiddingRoutine();
-}
-
-function runBiddingRoutine() {
-renderView();
-if (state.currentTurn === 0) {
-document.getElementById('bid-controller').style.display = 'flex';
-document.getElementById('bid-val-num').innerText = state.tempUserBid;
-} else {
-document.getElementById('bid-controller').style.display = 'none';
-setTimeout(() => {
-const p = state.players[state.currentTurn];
-p.bid = 2 + Math.floor(Math.random() * 2);
-advanceBiddingTurn();
-}, 500);
-}
-}
-
-function changeBidStep(delta) {
-state.tempUserBid = Math.max(state.rules.minBid, Math.min(state.tempUserBid + delta, 13));
-document.getElementById('bid-val-num').innerText = state.tempUserBid;
-}
-
-function confirmUserBid() {
-state.players[0].bid = state.tempUserBid;
-document.getElementById('bid-controller').style.display = 'none';
-advanceBiddingTurn();
-}
-
-function advanceBiddingTurn() {
-state.currentTurn = (state.currentTurn + 1) % 4;
-if (state.players.every(p => p.bid >= state.rules.minBid)) {
-state.phase = 'playing';
-state.currentTurn = (state.dealer + 1) % 4;
-renderView();
-triggerRoundPlay();
-} else {
-runBiddingRoutine();
-}
-}
-
-function triggerRoundPlay() {
-renderView();
-if (state.phase !== 'playing') return;
-
-const p = state.players[state.currentTurn];
-if (p.isBot) {
-setTimeout(() => {
-const valids = getLegalMoves(state.currentTurn);
-const pick = valids[Math.floor(Math.random() * valids.length)];
-executeMove(state.currentTurn, pick);
-}, 600);
-}
-}
-
-function getLegalMoves(playerIndex) {
-const p = state.players[playerIndex];
-if (state.trick.length === 0) {
-return p.hand.filter(c => c.type === 'standard');
-}
-
-const hasLead = p.hand.some(c => c.suit === state.leadSuit);
-return p.hand.filter(c => {
-if (c.type === 'colorJoker') return state.blackJokerPlayed;
-if (c.type === 'blackJoker') return true;
-if (hasLead) return c.suit === state.leadSuit;
-return true;
-});
-}
-
-function userPickCard(cardId) {
-if (state.currentTurn !== 0 || state.phase !== 'playing') return;
-const card = state.players[0].hand.find(c => c.id === cardId);
-const valids = getLegalMoves(0);
-if (!valids.some(c => c.id === cardId)) return;
-
-const hasBlack = state.players[0].hand.some(c => c.type === 'blackJoker');
-if (hasBlack && state.players[0].hand.length <= 3 && card.type !== 'blackJoker') {
-applyBlackJokerPenalty(0);
-return;
-}
-
-executeMove(0, card);
-}
-
-function executeMove(playerIndex, card) {
-const p = state.players[playerIndex];
-p.hand = p.hand.filter(c => c.id !== card.id);
-
-if (card.type === 'blackJoker') state.blackJokerPlayed = true;
-if (state.trick.length === 0) state.leadSuit = card.suit;
-
-state.trick.push({ playerId: playerIndex, card });
-
-if (state.trick.length === 4) {
-renderView();
-setTimeout(settleTrickWinner, 800);
-} else {
-state.currentTurn = (state.currentTurn + 1) % 4;
-triggerRoundPlay();
-}
-}
-
-function settleTrickWinner() {
-let winningObj = state.trick[0];
-for (let i = 1; i < 4; i++) {
-if (evaluateCardDominance(state.trick[i].card, winningObj.card, state.leadSuit) > 0) {
-winningObj = state.trick[i];
-}
-}
-
-state.players[winningObj.playerId].tricks++;
-state.currentTurn = winningObj.playerId;
-state.trick = [];
-state.leadSuit = null;
-
-if (state.players[0].hand.length === 0) {
-completeRoundScoring();
-} else {
-triggerRoundPlay();
-}
-}
-
-function evaluateCardDominance(c1, c2, lead) {
-if (c1.type === 'colorJoker') return 1;
-if (c2.type === 'colorJoker') return -1;
-if (c1.type === 'blackJoker') return 1;
-if (c2.type === 'blackJoker') return -1;
-
-const c1Trump = c1.suit === 'SPADES', c2Trump = c2.suit === 'SPADES';
-if (c1Trump && !c2Trump) return 1;
-if (!c1Trump && c2Trump) return -1;
-if (c1Trump && c2Trump) return c1.rank - c2.rank;
-
-const c1Lead = c1.suit === lead, c2Lead = c2.suit === lead;
-if (c1Lead && !c2Lead) return 1;
-if (!c1Lead && c2Lead) return -1;
-if (c1Lead && c2Lead) return c1.rank - c2.rank;
-
-return 0;
-}
-
-function applyBlackJokerPenalty(violatingTeam) {
-const opp = 1 - violatingTeam;
-const violBid = state.players.filter(p => p.team === violatingTeam).reduce((a,b)=>a+b.bid, 0);
-const oppBid = state.players.filter(p => p.team === opp).reduce((a,b)=>a+b.bid, 0);
-
-state.teamScores[violatingTeam] -= (10 * violBid);
-state.teamScores[opp] += (10 * oppBid);
-
-openReportModal("باخت تخلف جوکر سیاه!", `به دلیل نگه‌داشتن جوکر سیاه در دو برگ پایانی، دور متوقف شد و تیم متخلف ${-10 * violBid} امتیاز جریمه گردید.`);
-}
-
-function completeRoundScoring() {
-let reportTxt = "";
-for (let t = 0; t < 2; t++) {
-const bid = state.players.filter(p => p.team === t).reduce((a,b)=>a+b.bid, 0);
-const won = state.players.filter(p => p.team === t).reduce((a,b)=>a+b.tricks, 0);
-
-if (won >= bid) {
-const sc = (10 * bid) + (won - bid);
-state.teamScores[t] += sc;
-reportTxt += `تیم ${t === 0 ? 'ما' : 'حریف'}: تعهد ${bid}، دست ${won} ➔ ${sc} امتیاز.<br>`;
-if (state.rules.enableEight && bid >= state.rules.eightThreshold) {
-applyEightSuperior(t);
-reportTxt += `★ ثبت هشت برتر برای تیم ${t === 0 ? 'ما' : 'حریف'}.<br>`;
-}
-} else {
-const pen = -10 * bid;
-state.teamScores[t] += pen;
-reportTxt += `تیم ${t === 0 ? 'ما' : 'حریف'}: عدم تعهد (${won} از ${bid}) ➔ ${pen} امتیاز منفی.<br>`;
-}
-}
-
-state.dealer = (state.dealer + 1) % 4;
-openReportModal("
+function appOpenSixModal() {
+document.getElementById('six-modal
 
