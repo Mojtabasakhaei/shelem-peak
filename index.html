@@ -32,7 +32,6 @@ position: relative;
 }
 .hidden { display: none !important; }
 
-/* صفحه منو و فرود */
 .view-screen {
 position: absolute;
 inset: 0;
@@ -52,14 +51,14 @@ color: var(--gold);
 text-shadow: 0 0 16px var(--gold-glow);
 margin-bottom: 4px;
 }
-.brand-sub { font-size: 13px; color: #94a3b8; margin-bottom: 16px; }
+.brand-sub { font-size: 13px; color: #94a3b8; margin-bottom: 14px; }
 
 .lang-container {
 display: flex;
 flex-wrap: wrap;
 justify-content: center;
 gap: 5px;
-margin-bottom: 14px;
+margin-bottom: 12px;
 background: rgba(0, 0, 0, 0.5);
 padding: 5px 8px;
 border-radius: 20px;
@@ -78,6 +77,32 @@ cursor: pointer;
 }
 .lang-btn.active { background: var(--gold); color: #000; }
 
+/* سطح هوش مصنوعی */
+.bot-level-container {
+display: flex;
+justify-content: space-between;
+background: #090d16;
+border: 1px solid #334155;
+border-radius: 10px;
+padding: 3px;
+margin: 4px 0 10px 0;
+}
+.bot-level-btn {
+flex: 1;
+background: transparent;
+border: none;
+color: #94a3b8;
+font-size: 11px;
+font-weight: bold;
+padding: 6px 2px;
+border-radius: 8px;
+cursor: pointer;
+}
+.bot-level-btn.active {
+background: var(--gold);
+color: #000;
+}
+
 .card-panel {
 background: rgba(15, 23, 42, 0.95);
 border: 1px solid rgba(245, 158, 11, 0.3);
@@ -87,7 +112,7 @@ width: 100%;
 max-width: 330px;
 display: flex;
 flex-direction: column;
-gap: 9px;
+gap: 8px;
 box-shadow: 0 8px 24px rgba(0,0,0,0.5);
 text-align: inherit;
 }
@@ -104,7 +129,6 @@ font-family: inherit;
 outline: none;
 text-align: center;
 }
-.input-field:focus { border-color: var(--gold); }
 
 .btn-action {
 background: var(--gold);
@@ -116,7 +140,6 @@ font-weight: bold;
 font-size: 13px;
 cursor: pointer;
 box-shadow: 0 4px 12px var(--gold-glow);
-touch-action: manipulation;
 }
 .btn-action:active { transform: scale(0.97); }
 .btn-secondary { background: #1e293b; color: #cbd5e1; border: 1px solid #475569; box-shadow: none; }
@@ -131,14 +154,7 @@ font-size: 12px;
 padding: 9px;
 }
 
-/* پشت کارت */
-.theme-category-title {
-font-size: 11px;
-color: var(--gold);
-font-weight: bold;
-margin-top: 6px;
-text-align: right;
-}
+/* ۹ طرح پشت کارت */
 .card-back-grid {
 display: grid;
 grid-template-columns: repeat(3, 1fr);
@@ -157,10 +173,7 @@ display: flex;
 align-items: center;
 justify-content: center;
 }
-.back-option.active {
-border-color: #22c55e;
-box-shadow: 0 0 10px rgba(34, 197, 94, 0.6);
-}
+.back-option.active { border-color: #22c55e; box-shadow: 0 0 10px rgba(34, 197, 94, 0.6); }
 .back-option.active::after {
 content: '✔';
 position: absolute;
@@ -176,7 +189,6 @@ align-items: center;
 justify-content: center;
 }
 
-/* هدر تابلوی امتیاز */
 header {
 background: rgba(5, 10, 5, 0.9);
 padding: env(safe-area-inset-top, 8px) 12px 6px 12px;
@@ -190,22 +202,20 @@ min-height: 48px;
 }
 .team-badge { display: flex; flex-direction: column; line-height: 1.3; }
 .team-score { font-size: 15px; font-weight: 800; color: var(--gold); }
-.trump-indicator {
-background: #000;
-color: var(--gold);
-border: 1px solid var(--gold);
-padding: 3px 8px;
-border-radius: 12px;
+.trump-indicator { background: #000; color: var(--gold); border: 1px solid var(--gold); padding: 3px 8px; border-radius: 12px; font-weight: bold; font-size: 10px; }
+.turn-timer { font-size: 10px; color: #38bdf8; background: #0f172a; padding: 2px 6px; border-radius: 8px; border: 1px solid #38bdf8; }
+
+/* هشدار هوشمند جوکر سیاه */
+#warning-strip {
+background: var(--danger);
+color: #fff;
+font-size: 11px;
 font-weight: bold;
-font-size: 10px;
-}
-.turn-timer {
-font-size: 10px;
-color: #38bdf8;
-background: #0f172a;
-padding: 2px 6px;
-border-radius: 8px;
-border: 1px solid #38bdf8;
+text-align: center;
+padding: 5px;
+display: none;
+z-index: 40;
+box-shadow: 0 2px 6px rgba(0,0,0,0.4);
 }
 
 #table-arena {
@@ -232,28 +242,10 @@ text-align: center;
 line-height: 1.3;
 margin-bottom: 3px;
 }
-.seat-node.active .player-pill {
-border-color: var(--gold);
-background: rgba(245, 158, 11, 0.2);
-box-shadow: 0 0 8px var(--gold);
-}
+.seat-node.active .player-pill { border-color: var(--gold); background: rgba(245, 158, 11, 0.2); box-shadow: 0 0 8px var(--gold); }
+.other-player-card { width: 40px !important; height: 58px !important; border-radius: 5px; margin: 0 !important; box-shadow: 0 4px 8px rgba(0,0,0,0.4); }
 
-.other-player-card {
-width: 40px !important;
-height: 58px !important;
-border-radius: 5px;
-margin: 0 !important;
-box-shadow: 0 4px 8px rgba(0,0,0,0.4);
-}
-
-.table-center-tricks {
-width: 170px;
-height: 130px;
-position: relative;
-display: flex;
-justify-content: center;
-align-items: center;
-}
+.table-center-tricks { width: 170px; height: 130px; position: relative; display: flex; justify-content: center; align-items: center; }
 .trick-slot { position: absolute; }
 .trick-slot[data-pos="top"] { transform: translateY(-28px); }
 .trick-slot[data-pos="bottom"] { transform: translateY(28px); }
@@ -262,7 +254,7 @@ align-items: center;
 
 #bid-controller {
 position: absolute;
-bottom: 110px;
+bottom: 140px;
 background: rgba(15, 23, 42, 0.95);
 border: 1px solid var(--gold);
 border-radius: 20px;
@@ -288,10 +280,27 @@ justify-content: center;
 }
 #bid-val-num { font-size: 20px; font-weight: bold; color: var(--gold); min-width: 24px; text-align: center; }
 
+/* نتیجه بازی در جریان با سایز درشت بالای برگ‌ها */
+#live-scoreboard-bar {
+width: 100%;
+background: rgba(15, 23, 42, 0.9);
+border-top: 1px solid rgba(245, 158, 11, 0.3);
+padding: 4px 10px;
+display: flex;
+justify-content: space-around;
+align-items: center;
+font-size: 12px;
+font-weight: bold;
+color: #e2e8f0;
+z-index: 55;
+}
+.live-score-item { display: flex; align-items: center; gap: 5px; }
+.live-score-num { font-size: 15px; font-weight: 900; color: var(--gold); }
+
+/* دست بازیکن */
 #user-hand-tray {
-background: rgba(0, 0, 0, 0.65);
-border-top: 1px solid rgba(255, 255, 255, 0.1);
-padding: 6px 4px calc(env(safe-area-inset-bottom, 12px) + 4px) 4px;
+background: rgba(0, 0, 0, 0.7);
+padding: 4px 4px calc(env(safe-area-inset-bottom, 12px) + 4px) 4px;
 display: flex;
 flex-direction: column;
 align-items: center;
@@ -307,7 +316,6 @@ height: 84px;
 padding: 0 4px;
 }
 
-/* کارت‌ها و طراحی ظاهری جوکر واقعی */
 .playing-card {
 width: 46px;
 height: 72px;
@@ -336,39 +344,35 @@ background-position: center;
 border: 1px solid #cbd5e1;
 }
 
-/* طراحی واقعی جوکر */
+/* گرافیک دقیق و باکیفیت جوکر برگرفته از عکس ارسالی */
 .joker-card {
-background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%) !important;
-border: 1.5px solid #0f172a !important;
+background: #fafafa !important;
+border: 1px solid #64748b !important;
 display: flex;
 flex-direction: column;
 justify-content: space-between;
 align-items: center;
 padding: 2px !important;
 }
-.joker-card.color-joker {
-border-color: #b91c1c !important;
-background: linear-gradient(135deg, #fffbeb 0%, #fee2e2 100%) !important;
-}
-.joker-index {
-font-size: 7px;
+.joker-card-side-text {
+font-size: 6px;
+font-family: serif;
 font-weight: 900;
-letter-spacing: 0.5px;
 line-height: 1;
-width: 100%;
-display: flex;
-justify-content: space-between;
+letter-spacing: -0.2px;
+writing-mode: vertical-rl;
+text-orientation: upright;
 }
-.joker-art {
+.joker-figure-wrapper {
+flex: 1;
 display: flex;
-flex-direction: column;
 align-items: center;
 justify-content: center;
-flex: 1;
+width: 100%;
 }
-.joker-art svg {
-width: 26px;
-height: 26px;
+.joker-figure-wrapper svg {
+width: 32px;
+height: 52px;
 }
 
 .modal-backdrop {
@@ -392,8 +396,6 @@ text-align: inherit;
 max-height: 85vh;
 overflow-y: auto;
 }
-
-/* جدول گزارش پایانی مرحله */
 .round-table-summary {
 width: 100%;
 border-collapse: collapse;
@@ -401,17 +403,8 @@ margin: 12px 0;
 font-size: 11px;
 text-align: center;
 }
-.round-table-summary th {
-background: #1e293b;
-color: var(--gold);
-padding: 6px 4px;
-border: 1px solid #334155;
-}
-.round-table-summary td {
-padding: 7px 4px;
-border: 1px solid #334155;
-color: #e2e8f0;
-}
+.round-table-summary th { background: #1e293b; color: var(--gold); padding: 6px 4px; border: 1px solid #334155; }
+.round-table-summary td { padding: 7px 4px; border: 1px solid #334155; color: #e2e8f0; }
 </style>
 
 <script>
@@ -421,66 +414,42 @@ dir: 'rtl', title: 'شلم پیک', subtitle: 'نسخهٔ اختصاصی شلم 
 play4: 'ورود به بازی (۴ نفره)', play6: 'شلم پیک (۶ نفره) - به‌زودی',
 rulesBtn: 'راهنمای بازی و قوانین', customizeBtn: 'طرح پشت کارت',
 feedbackBtn: '✉ ارسال پیشنهاد به ادمین',
-bidLbl: 'تعهد', trickLbl: 'دست:', trumpBadge: 'حکم: پیک ♠',
-fbTitle: 'ارسال نظر به سازنده',
-fbDesc: 'پیشنهادها مستقیماً به ادمین ارسال می‌شوند.',
-fbSenderPh: 'نام یا شناسه شما', fbMsgPh: 'متن نظر خود را بنویسید...',
-fbSendBtn: 'ارسال پیام', fbCancel: 'انصراف', fbSending: 'در حال ارسال...',
-fbSuccess: 'پیام شما ارسال شد.', fbEmptyErr: 'لطفاً متن پیام را بنویسید.'
+bidLbl: 'تعهد', trickLbl: 'دست:', trumpBadge: 'حکم: پیک ♠'
 },
 en: {
 dir: 'ltr', title: 'Shelem Peak', subtitle: 'Exclusive Shelem Lari with Spade Trump',
 play4: 'Play Game (4 Players)', play6: 'Shelem Peak (6 Players) - Soon',
 rulesBtn: 'Game Rules', customizeBtn: 'Card Back Design',
 feedbackBtn: '✉ Feedback to Admin',
-bidLbl: 'Bid', trickLbl: 'Tricks:', trumpBadge: 'Trump: Spades ♠',
-fbTitle: 'Feedback to Creator',
-fbDesc: 'Your notes are sent directly to the admin.',
-fbSenderPh: 'Your Name / ID', fbMsgPh: 'Type your message...',
-fbSendBtn: 'Send Message', fbCancel: 'Cancel', fbSending: 'Sending...',
-fbSuccess: 'Message sent successfully.', fbEmptyErr: 'Message is empty.'
+bidLbl: 'Bid', trickLbl: 'Tricks:', trumpBadge: 'Trump: Spades ♠'
 },
 ar: {
-dir: 'rtl', title: 'شلم بيك', subtitle: 'نسخة شلم لاري الحصرية مع حکم السبيت الدائم',
+dir: 'rtl', title: 'شلم بيك', subtitle: 'نسخة شلم لاري الحصرية مع حكم السبيت الدائم',
 play4: 'دخول اللعبة (٤ لاعبين)', play6: 'شلم بيك (٦ لاعبين) - قريباً',
 rulesBtn: 'قواعد اللعبة', customizeBtn: 'تصميم ظهر البطاقة',
 feedbackBtn: '✉ إرسال اقتراح للمشرف',
-bidLbl: 'التعهد', trickLbl: 'الجولات:', trumpBadge: 'الحكم: بيك ♠',
-fbTitle: 'إرسال اقتراح للمنشئ',
-fbDesc: 'سيتم إرسال تقريرك إلى المشرف مباشرة.',
-fbSenderPh: 'الاسم أو المعرّف', fbMsgPh: 'اكتب اقتراحك هنا...',
-fbSendBtn: 'إرسال الرسالة', fbCancel: 'إلغاء', fbSending: 'جاري الإرسال...',
-fbSuccess: 'تم الإرسال بنجاح.', fbEmptyErr: 'يرجى كتابة نص الاقتراح.'
+bidLbl: 'التعهد', trickLbl: 'الجولات:', trumpBadge: 'الحكم: بيك ♠'
 },
 tr: {
 dir: 'ltr', title: 'Shelem Pik', subtitle: 'Sabit Maça Kozu ile Özel Shelem Lari',
 play4: 'Oyuna Başla (4 Oyunculu)', play6: 'Shelem Pik (6 Oyunculu) - Yakında',
 rulesBtn: 'Oyun Kuralları', customizeBtn: 'Kart Arkası Tasarımı',
 feedbackBtn: '✉ Yöneticiye Mesaj',
-bidLbl: 'Teklif', trickLbl: 'El:', trumpBadge: 'Koz: Maça ♠',
-fbTitle: 'Yöneticiye Mesaj Gönder',
-fbDesc: 'Önerileriniz doğrudan yöneticiye iletilir.',
-fbSenderPh: 'Adınız veya ID', fbMsgPh: 'Mesajınızı yazın...',
-fbSendBtn: 'Gönder', fbCancel: 'İptal', fbSending: 'Gönderiliyor...',
-fbSuccess: 'Mesaj başarıyla iletildi.', fbEmptyErr: 'Lütfen mesaj yazın.'
+bidLbl: 'Teklif', trickLbl: 'El:', trumpBadge: 'Koz: Maça ♠'
 },
 de: {
 dir: 'ltr', title: 'Shelem Pik', subtitle: 'Shelem Lari mit permanentem Pik-Trumpf',
 play4: 'Spiel Starten (4 Spieler)', play6: 'Shelem Pik (6 Spieler) - Demnächst',
 rulesBtn: 'Spielregeln', customizeBtn: 'Kartenrücken-Design',
 feedbackBtn: '✉ Feedback an Admin',
-bidLbl: 'Gebot', trickLbl: 'Stiche:', trumpBadge: 'Trumpf: Pik ♠',
-fbTitle: 'Feedback an Entwickler',
-fbDesc: 'Ihre Vorschläge werden sicher an das Admin-Panel übermittelt.',
-fbSenderPh: 'Ihr Name oder ID', fbMsgPh: 'Schreiben Sie hier Ihre Vorschläge...',
-fbSendBtn: 'Nachricht Senden', fbCancel: 'Abbrechen', fbSending: 'Wird gesendet...',
-fbSuccess: 'Nachricht erfolgreich gesendet.', fbEmptyErr: 'Bitte Nachricht eingeben.'
+bidLbl: 'Gebot', trickLbl: 'Stiche:', trumpBadge: 'Trumpf: Pik ♠'
 }
 };
 
 var curLang = 'fa';
 var registeredUsers = JSON.parse(localStorage.getItem('shelem_all_users') || '["مهدی", "رضا", "سینا"]');
 var currentUser = localStorage.getItem('shelem_current_user') || '';
+var aiDifficulty = 'medium'; // سطوح: easy, medium, hard
 var turnCountdown = 15;
 var turnTimerInterval = null;
 
@@ -498,6 +467,13 @@ var cardBacks = [
 
 var currentCardBackId = localStorage.getItem('shelem_card_back_id') || 'b_l1';
 var currentCardBack = localStorage.getItem('shelem_card_back') || cardBacks[0].style;
+
+function setAiDifficulty(diff) {
+aiDifficulty = diff;
+document.querySelectorAll('.bot-level-btn').forEach(function(b){ b.classList.remove('active'); });
+var btn = document.getElementById('btn-diff-' + diff);
+if (btn) btn.classList.add('active');
+}
 
 function selectCardBack(idx) {
 var item = cardBacks[idx];
@@ -563,7 +539,6 @@ document.getElementById('feedback-modal').style.display = 'none';
 }
 
 function submitFeedbackForm() {
-var dict = I18N[curLang];
 var msg = document.getElementById('fb-message').value.trim();
 var sender = document.getElementById('fb-sender').value.trim() || 'Player';
 var status = document.getElementById('fb-status');
@@ -571,11 +546,11 @@ var submitBtn = document.getElementById('btn-submit-feedback');
 
 if (!msg) {
 status.style.color = 'var(--danger)';
-status.innerText = dict.fbEmptyErr;
+status.innerText = 'لطفاً پیام را بنویسید.';
 return;
 }
 status.style.color = 'var(--gold)';
-status.innerText = dict.fbSending;
+status.innerText = 'در حال ارسال...';
 submitBtn.disabled = true;
 
 fetch("https://formspree.io/f/mqaeovzn", {
@@ -585,21 +560,20 @@ body: JSON.stringify({ sender: sender, message: msg, project: "شلم پیک", l
 })
 .then(function(res) {
 status.style.color = '#38bdf8';
-status.innerText = dict.fbSuccess;
+status.innerText = 'پیام شما ارسال شد.';
 document.getElementById('fb-message').value = '';
 setTimeout(function() { closeFeedbackModal(); submitBtn.disabled = false; }, 1400);
 })
 .catch(function(err) {
 status.style.color = 'var(--danger)';
-status.innerText = 'Error! Retry.';
+status.innerText = 'خطا در ارسال.';
 submitBtn.disabled = false;
 });
 }
 
 function openAuthOrLobby() {
-if (currentUser) {
-openLobby();
-} else {
+if (currentUser) openLobby();
+else {
 document.getElementById('welcome-screen').classList.add('hidden');
 document.getElementById('auth-screen').classList.remove('hidden');
 }
@@ -608,19 +582,12 @@ document.getElementById('auth-screen').classList.remove('hidden');
 function registerNewUser() {
 var name = document.getElementById('username-input').value.trim();
 var errEl = document.getElementById('auth-error');
-if (!name) {
-errEl.innerText = 'لطفاً نام کاربری را وارد کنید.';
-return;
-}
-if (registeredUsers.indexOf(name) !== -1) {
-errEl.innerText = 'این نام کاربری قبلاً ثبت شده است. نام دیگری انتخاب کنید.';
-return;
-}
+if (!name) { errEl.innerText = 'لطفاً نام را وارد کنید.'; return; }
+if (registeredUsers.indexOf(name) !== -1) { errEl.innerText = 'این نام قبلاً ثبت شده است.'; return; }
 registeredUsers.push(name);
 localStorage.setItem('shelem_all_users', JSON.stringify(registeredUsers));
 currentUser = name;
 localStorage.setItem('shelem_current_user', name);
-
 document.getElementById('auth-screen').classList.add('hidden');
 openLobby();
 }
@@ -681,9 +648,7 @@ if (valids.length > 0) userPickCard(valids[0].id);
 
 function handleInGameBack() {
 var confirmLeave = confirm('فرصت شما برای بازگشت به اندازه زمان نوبت است. آیا موقتاً به منو بازمی‌گردید؟');
-if (confirmLeave) {
-document.getElementById('welcome-screen').classList.remove('hidden');
-}
+if (confirmLeave) document.getElementById('welcome-screen').classList.remove('hidden');
 }
 
 var SUIT_ICONS = { SPADES: '♠', HEARTS: '♥', DIAMONDS: '♦', CLUBS: '♣' };
@@ -699,7 +664,7 @@ players: [
 { id: 3, name: 'سینا', team: 1, hand: [], bid: 0, tricks: 0, isBot: true }
 ],
 currentTurn: 0, dealer: 0, trick: [], leadSuit: null, blackJokerPlayed: false,
-phase: 'bidding', tempUserBid: 2
+phase: 'bidding', tempUserBid: 2, roundNumber: 1
 };
 
 function startLobbyGame() {
@@ -708,7 +673,7 @@ var p1 = document.getElementById('select-p1').value;
 var p3 = document.getElementById('select-p3').value;
 
 if (p2 === p1 || p2 === p3 || p1 === p3) {
-alert('یک بازیکن نمی‌تواند در دو جایگاه مختلف قرار گیرد!');
+alert('یک بازیکن نمی‌‌تواند در دو جایگاه مختلف باشد!');
 return;
 }
 
@@ -781,13 +746,26 @@ document.getElementById('bid-val-num').innerText = state.tempUserBid;
 startTurnTimer();
 } else {
 document.getElementById('bid-controller').style.display = 'none';
-/* سرعت معتدل برای اعلام تعهد ربات (۱ ثانیه) */
 setTimeout(function() {
 var p = state.players[state.currentTurn];
-p.bid = 2 + Math.floor(Math.random() * 2);
+p.bid = calculateBotBid(p);
 advanceBiddingTurn();
-}, 1000);
+}, 900);
 }
+}
+
+function calculateBotBid(player) {
+if (aiDifficulty === 'easy') {
+return 2;
+}
+var countSpades = player.hand.filter(function(c){ return c.suit === 'SPADES'; }).length;
+var hasBlack = player.hand.some(function(c){ return c.type === 'blackJoker'; });
+var hasColor = player.hand.some(function(c){ return c.type === 'colorJoker'; });
+var highCards = player.hand.filter(function(c){ return c.rank >= 13; }).length;
+
+var power = Math.floor(countSpades * 0.7) + (hasBlack ? 2 : 0) + (hasColor ? 2 : 0) + Math.floor(highCards * 0.5);
+if (aiDifficulty === 'hard') power += 1;
+return Math.max(2, Math.min(power, 8));
 }
 
 function changeBidStep(delta) {
@@ -820,25 +798,56 @@ renderView();
 if (state.phase !== 'playing') return;
 var p = state.players[state.currentTurn];
 if (p.isBot) {
-/* سرعت کمتر و ملایم‌تر برای انداختن برگ توسط ربات‌ها (۱۲۰۰ میلی‌ثانیه) */
 setTimeout(function() {
 var valids = getLegalMoves(state.currentTurn);
-var pick = valids[Math.floor(Math.random() * valids.length)];
+var pick = selectSmartBotCard(state.currentTurn, valids);
 executeMove(state.currentTurn, pick);
-}, 1200);
+}, 1100);
 } else {
 startTurnTimer();
 }
 }
 
+/* موتور هوش مصنوعی با ۳ سطح */
+function selectSmartBotCard(playerIdx, valids) {
+if (aiDifficulty === 'easy' || valids.length === 1) {
+return valids[Math.floor(Math.random() * valids.length)];
+}
+
+var p = state.players[playerIdx];
+// در صورت دارا بودن جوکر سیاه و قرار داشتن در دست ۱۰ به بعد، ربات باید از جریمه فرار کند
+var black = valids.find(function(c){ return c.type === 'blackJoker'; });
+if (black && p.hand.length <= 4) return black;
+
+if (aiDifficulty === 'hard') {
+// بازی پیشرفته: آس انداختن در شروع دست، یا بریدن با پیک کوچک
+if (state.trick.length === 0) {
+var ace = valids.find(function(c){ return c.rank === 14; });
+if (ace) return ace;
+} else {
+var trump = valids.filter(function(c){ return c.suit === 'SPADES'; }).sort(function(a,b){ return a.rank - b.rank; })[0];
+if (trump && state.leadSuit !== 'SPADES') return trump;
+}
+}
+return valids[0];
+}
+
+/* قانون آزادی کامل برگ آخر و استثنائات */
 function getLegalMoves(playerIndex) {
 var p = state.players[playerIndex];
+// قانون دست سیزدهم (برگ آخر): هیچ محدودیتی نیست و هر برگی آزاد است
+if (p.hand.length === 1) return p.hand;
+
 if (state.trick.length === 0) {
 return p.hand.filter(function(c) { return c.type === 'standard'; });
 }
+
 var hasLead = p.hand.some(function(c) { return c.suit === state.leadSuit; });
 return p.hand.filter(function(c) {
-if (c.type === 'colorJoker') return state.blackJokerPlayed;
+if (c.type === 'colorJoker') {
+// جوکر رنگی همیشه با بازی جوکر سیاه آزاد است؛ در برگ آخر نیز کاملاً آزاد است
+return state.blackJokerPlayed || p.hand.length === 1;
+}
 if (c.type === 'blackJoker') return true;
 if (hasLead) return c.suit === state.leadSuit;
 return true;
@@ -853,6 +862,7 @@ if (!valids.some(function(c) { return c.id === cardId; })) return;
 
 clearInterval(turnTimerInterval);
 var hasBlack = state.players[0].hand.some(function(c) { return c.type === 'blackJoker'; });
+// تخلف مهلت جوکر سیاه فقط در صورتی است که بازیکن جوکر سیاه داشته و با داشتن ۳ برگ یا کمتر، کارت دیگری بازی کند
 if (hasBlack && state.players[0].hand.length <= 3 && card.type !== 'blackJoker') {
 applyBlackJokerPenalty(0);
 return;
@@ -869,8 +879,7 @@ state.trick.push({ playerId: playerIndex, card: card });
 
 if (state.trick.length === 4) {
 renderView();
-/* افزایش مکث دیدن دست آخر تا ۱۵۰۰ میلی‌ثانیه برای فهمیدن برنده */
-setTimeout(settleTrickWinner, 1500);
+setTimeout(settleTrickWinner, 1400);
 } else {
 state.currentTurn = (state.currentTurn + 1) % 4;
 triggerRoundPlay();
@@ -917,7 +926,7 @@ var violBid = state.players.filter(function(p) { return p.team === violatingTeam
 var oppBid = state.players.filter(function(p) { return p.team === opp; }).reduce(function(a,b){ return a + b.bid; }, 0);
 state.teamScores[violatingTeam] -= (10 * violBid);
 state.teamScores[opp] += (10 * oppBid);
-openReportModal("تخلف جوکر سیاه!", "به دلیل نگه‌داشتن جوکر سیاه در دو برگ آخر، دور متوقف و تیم متخلف جریمه شد.");
+openReportModal("تخلف جوکر سیاه!", "به دلیل نگه‌داشتن جوکر سیاه برای دو برگ آخر، دور متوقف و تیم متخلف جریمه شد.");
 }
 
 function completeRoundScoring() {
@@ -937,14 +946,13 @@ if (t0Bid >= state.rules.eightThreshold && t0Won >= t0Bid) applyEightSuperior(0)
 if (t1Bid >= state.rules.eightThreshold && t1Won >= t1Bid) applyEightSuperior(1);
 }
 
-/* جدول کامل با جزئیات این دور + جمع کل امتیازات تا این مرحله */
 var reportHtml = '' +
 '<table class="round-table-summary">' +
 '<tr>' +
 '<th>تیم</th>' +
 '<th>تعهد</th>' +
 '<th>دست</th>' +
-'<th>امتیاز دور</th>' +
+'<th>امتیاز این دور</th>' +
 '<th>مجموع کل</th>' +
 '</tr>' +
 '<tr>' +
@@ -963,11 +971,12 @@ var reportHtml = '' +
 '</tr>' +
 '</table>' +
 '<div style="font-size:11px; color:#94a3b8; margin:8px 0;">' +
-'هشت‌های فعال: تیم ما (' + state.teamEights[0] + ') | تیم حریف (' + state.teamEights[1] + ')' +
+'هشت‌های برتر فعال: تیم ما (' + state.teamEights[0] + ') | تیم حریف (' + state.teamEights[1] + ')' +
 '</div>';
 
 state.dealer = (state.dealer + 1) % 4;
-openReportModal("نتیجه دور و جدول کل مسابقه", reportHtml);
+state.roundNumber++;
+openReportModal("نتیجه دور و تابلوی کل بازی", reportHtml);
 }
 
 function applyEightSuperior(teamId) {
@@ -995,11 +1004,30 @@ document.getElementById('score-t1').innerText = state.teamScores[1];
 document.getElementById('meta-t0').innerText = "تعهد: " + (t0Bid||'-') + " | دست: " + t0Tr + " | هشت: " + state.teamEights[0];
 document.getElementById('meta-t1').innerText = "تعهد: " + (t1Bid||'-') + " | دست: " + t1Tr + " | هشت: " + state.teamEights[1];
 
+// نوار زنده و بزرگ بالای دست کاربر
+document.getElementById('live-t0-pts').innerText = state.teamScores[0];
+document.getElementById('live-t1-pts').innerText = state.teamScores[1];
+document.getElementById('live-t0-tricks').innerText = t0Tr + ' از ' + (t0Bid||'؟');
+document.getElementById('live-t1-tricks').innerText = t1Tr + ' از ' + (t1Bid||'؟');
+
 for (var i = 1; i <= 3; i++) {
 document.getElementById('tricks-' + i).innerText = state.players[i].tricks;
 document.getElementById('bid-lbl-' + i).innerText = state.players[i].bid ? ('تعهد: ' + state.players[i].bid) : 'تعهد: ؟';
 var node = document.getElementById(i === 1 ? 'node-left' : i === 2 ? 'node-top' : 'node-right');
 if (node) node.classList.toggle('active', state.currentTurn === i && state.phase === 'playing');
+}
+
+// سیستم هشدار هوشمند دست ۱۰ و جوکر سیاه
+var myBlack = state.players[0].hand.some(function(c) { return c.type === 'blackJoker'; });
+var warn = document.getElementById('warning-strip');
+if (myBlack && state.players[0].hand.length === 4) {
+warn.innerText = 'هشدار دست ۱۰: تا پایان این دست باید از جوکر سیاه استفاده کنید!';
+warn.style.display = 'block';
+} else if (myBlack && state.players[0].hand.length <= 3) {
+warn.innerText = 'اخطار جدی: همین حالا باید جوکر سیاه را بازی کنید!';
+warn.style.display = 'block';
+} else {
+warn.style.display = 'none';
 }
 
 var dropZone = document.getElementById('trick-drop-zone');
@@ -1028,7 +1056,45 @@ fanContainer.appendChild(cardEl);
 });
 }
 
-/* گرافیک واقعی جوکر و کارت‌ها */
+/* تولید SVG واقعی کاراکتر ژستر (دلقک شلم) از عکس‌های ارسالی */
+function getJokerSvg(isColor) {
+var hatColor = isColor ? "#f59e0b" : "#475569";
+var skirtColor = isColor ? "#eab308" : "#64748b";
+var strokeColor = isColor ? "#991b1b" : "#0f172a";
+var stripeColor = isColor ? "#b91c1c" : "#1e293b";
+
+return '<svg viewBox="0 0 100 160" width="100%" height="100%">' +
+// کلاه زنگوله‌دار
+'<path d="M35,42 Q40,15 15,22 Q30,30 38,45 Z" fill="' + hatColor + '" stroke="' + strokeColor + '" stroke-width="2"/>' +
+'<circle cx="15" cy="22" r="4" fill="#b91c1c"/>' +
+'<path d="M35,38 Q50,22 62,40 Z" fill="' + stripeColor + '"/>' +
+// چهره
+'<circle cx="50" cy="48" r="14" fill="#fff" stroke="' + strokeColor + '" stroke-width="2"/>' +
+'<circle cx="45" cy="46" r="1.5" fill="#000"/><circle cx="55" cy="46" r="1.5" fill="#000"/>' +
+'<path d="M44,53 Q50,59 56,53" fill="none" stroke="#b91c1c" stroke-width="2" stroke-linecap="round"/>' +
+// یقه چین‌دار
+'<path d="M36,60 Q50,70 64,60 Q50,65 36,60 Z" fill="' + hatColor + '" stroke="' + strokeColor + '"/>' +
+// تنه و راه‌راه‌ها
+'<path d="M38,62 L62,62 L58,95 L42,95 Z" fill="#fff" stroke="' + strokeColor + '" stroke-width="2"/>' +
+'<line x1="39" y1="70" x2="61" y2="70" stroke="' + stripeColor + '" stroke-width="3"/>' +
+'<line x1="40" y1="78" x2="60" y2="78" stroke="' + stripeColor + '" stroke-width="3"/>' +
+'<line x1="41" y1="86" x2="59" y2="86" stroke="' + stripeColor + '" stroke-width="3"/>' +
+// دامنک دلقک
+'<path d="M35,95 Q50,110 65,95 L68,105 L50,115 L32,105 Z" fill="' + skirtColor + '" stroke="' + strokeColor + '" stroke-width="2"/>' +
+// دست راست و چپ در حالت رقص
+'<path d="M38,65 Q20,75 22,95 Q25,85 36,75" fill="' + stripeColor + '"/>' +
+'<path d="M62,65 Q80,50 78,35 Q73,45 60,72" fill="' + stripeColor + '"/>' +
+// شلوار راه‌راه رقصنده
+'<path d="M42,105 Q35,130 46,145" stroke="' + stripeColor + '" stroke-width="7" fill="none" stroke-linecap="round"/>' +
+'<path d="M58,105 Q70,120 62,135" stroke="' + stripeColor + '" stroke-width="7" fill="none" stroke-linecap="round"/>' +
+// کفش زنگوله‌دار
+'<path d="M46,145 Q36,148 32,143" stroke="' + strokeColor + '" stroke-width="3" fill="none"/>' +
+'<circle cx="32" cy="143" r="3" fill="#b91c1c"/>' +
+'<path d="M62,135 Q70,140 76,134" stroke="' + strokeColor + '" stroke-width="3" fill="none"/>' +
+'<circle cx="76" cy="134" r="3" fill="#b91c1c"/>' +
+'</svg>';
+}
+
 function buildCardVisual(card, isHand, isLegal) {
 var node = document.createElement('div');
 node.className = 'playing-card';
@@ -1044,41 +1110,19 @@ node.innerHTML = '<div style="font-size:10px; line-height:1;">' + rankTxt + '</d
 } else if (card.type === 'blackJoker') {
 node.className += ' joker-card';
 node.innerHTML = '' +
-'<div class="joker-index" style="color:#0f172a;"><span>J</span><span>★</span></div>' +
-'<div class="joker-art">' +
-'<svg viewBox="0 0 64 64" fill="none" stroke="#0f172a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">' +
-'<path d="M16 48 C16 32 48 32 48 48 Z" fill="#334155"/>' +
-'<circle cx="32" cy="28" r="10" fill="#f8fafc"/>' +
-'<path d="M22 24 C14 12 28 6 32 14 C36 6 50 12 42 24 Z" fill="#0f172a"/>' +
-'<circle cx="16" cy="12" r="3" fill="#f59e0b"/>' +
-'<circle cx="32" cy="6" r="3" fill="#f59e0b"/>' +
-'<circle cx="48" cy="12" r="3" fill="#f59e0b"/>' +
-'<circle cx="28" cy="28" r="1.5" fill="#000"/>' +
-'<circle cx="36" cy="28" r="1.5" fill="#000"/>' +
-'<path d="M28 33 Q32 37 36 33" stroke="#000" stroke-width="2"/>' +
-'</svg>' +
-'<span style="font-size:8px; font-weight:900; color:#0f172a; margin-top:1px;">JOKER</span>' +
-'</div>' +
-'<div class="joker-index" style="color:#0f172a; transform:rotate(180deg);"><span>J</span><span>★</span></div>';
+'<div style="width:100%; display:flex; justify-content:space-between; height:100%; align-items:center;">' +
+'<div class="joker-card-side-text" style="color:#0f172a;">JOKER</div>' +
+'<div class="joker-figure-wrapper">' + getJokerSvg(false) + '</div>' +
+'<div class="joker-card-side-text" style="color:#0f172a; transform:rotate(180deg);">JOKER</div>' +
+'</div>';
 } else {
-node.className += ' joker-card color-joker';
+node.className += ' joker-card';
 node.innerHTML = '' +
-'<div class="joker-index" style="color:#b91c1c;"><span>J</span><span style="color:#f59e0b;">★</span></div>' +
-'<div class="joker-art">' +
-'<svg viewBox="0 0 64 64" fill="none" stroke="#b91c1c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">' +
-'<path d="M16 48 C16 32 48 32 48 48 Z" fill="#b91c1c"/>' +
-'<circle cx="32" cy="28" r="10" fill="#fef3c7"/>' +
-'<path d="M22 24 C14 12 28 6 32 14 C36 6 50 12 42 24 Z" fill="#dc2626"/>' +
-'<circle cx="16" cy="12" r="3.5" fill="#f59e0b"/>' +
-'<circle cx="32" cy="6" r="3.5" fill="#f59e0b"/>' +
-'<circle cx="48" cy="12" r="3.5" fill="#f59e0b"/>' +
-'<circle cx="28" cy="28" r="1.5" fill="#b91c1c"/>' +
-'<circle cx="36" cy="28" r="1.5" fill="#b91c1c"/>' +
-'<path d="M27 32 Q32 38 37 32" stroke="#b91c1c" stroke-width="2.2"/>' +
-'</svg>' +
-'<span style="font-size:8px; font-weight:900; color:#b91c1c; margin-top:1px;">JOKER</span>' +
-'</div>' +
-'<div class="joker-index" style="color:#b91c1c; transform:rotate(180deg);"><span>J</span><span style="color:#f59e0b;">★</span></div>';
+'<div style="width:100%; display:flex; justify-content:space-between; height:100%; align-items:center;">' +
+'<div class="joker-card-side-text" style="color:#b91c1c;">JOKER</div>' +
+'<div class="joker-figure-wrapper">' + getJokerSvg(true) + '</div>' +
+'<div class="joker-card-side-text" style="color:#b91c1c; transform:rotate(180deg);">JOKER</div>' +
+'</div>';
 }
 return node;
 }
@@ -1100,14 +1144,22 @@ applyCardBack(currentCardBack);
 <button type="button" class="lang-btn" id="btn-de" onclick="setAppLanguage('de')">Deutsch</button>
 </div>
 
-<div style="font-size:46px; margin-bottom:6px;">♠</div>
+<div style="font-size:46px; margin-bottom:4px;">♠</div>
 <h1 class="brand-title" id="txt-title">شلم پیک</h1>
 <p class="brand-sub" id="txt-subtitle">نسخهٔ اختصاصی شلم لاری با حکم ثابت پیک</p>
 
 <div class="card-panel">
+<!-- انتخاب سطح هوش مصنوعی -->
+<div style="font-size:11px; color:#cbd5e1; text-align:right;">سطح هوش مصنوعی ربات‌ها:</div>
+<div class="bot-level-container">
+<button type="button" class="bot-level-btn" id="btn-diff-easy" onclick="setAiDifficulty('easy')">ساده</button>
+<button type="button" class="bot-level-btn active" id="btn-diff-medium" onclick="setAiDifficulty('medium')">متوسط</button>
+<button type="button" class="bot-level-btn" id="btn-diff-hard" onclick="setAiDifficulty('hard')">قوی (حرفه‌ای)</button>
+</div>
+
 <button type="button" class="btn-action" id="txt-play4" onclick="openAuthOrLobby()">ورود به بازی (۴ نفره)</button>
 <button type="button" class="btn-action btn-secondary" id="txt-custom-btn" onclick="openCustomizeScreen()">طرح پشت کارت</button>
-<button type="button" class="btn-action btn-secondary" id="txt-play6" onclick="alert('نسخه ۶ نفره پس از تست نسخه فعلی فعال می‌شود.')">شلم پیک (۶ نفره) - به‌زودی</button>
+<button type="button" class="btn-action btn-secondary" id="txt-play6" onclick="alert('نسخه ۶ نفره پس از تست فعال می‌شود.')">شلم پیک (۶ نفره) - به‌زودی</button>
 <button type="button" class="btn-action btn-outline" id="txt-rules-btn" onclick="document.getElementById('rules-modal').style.display='flex'">راهنمای بازی و قوانین</button>
 <button type="button" class="btn-action btn-feedback" id="txt-feedback-btn" onclick="openFeedbackModal()">✉ ارسال پیشنهاد به ادمین</button>
 </div>
@@ -1125,10 +1177,10 @@ applyCardBack(currentCardBack);
 </div>
 </div>
 
-<!-- ۳. صفحه لابی و تعیین ترکیب -->
+<!-- ۳. صفحه لابی -->
 <div class="view-screen hidden" id="lobby-screen">
 <h2 class="brand-title" style="font-size:24px;">میز و ترکیب بازیکنان</h2>
-<p class="brand-sub">انتخاب هم‌تیمی و رقیبان مسابقه</p>
+<p class="brand-sub">انتخاب هم‌‌تیمی و رقیبان مسابقه</p>
 <div class="card-panel">
 <div style="font-size:12px; color:var(--gold); font-weight:bold;">تیم اول:</div>
 <div style="background:#090d16; padding:8px; border-radius:8px; font-size:12px;" id="slot-p0-name">شما</div>
@@ -1143,27 +1195,27 @@ applyCardBack(currentCardBack);
 </div>
 </div>
 
-<!-- ۴. صفحه شخصی‌سازی پشت کارت با ۹ طرح متنوع و تیک -->
+<!-- ۴. صفحه شخصی‌سازی پشت کارت -->
 <div class="view-screen hidden" id="customize-screen">
 <h2 class="brand-title" style="font-size:22px;">انتخاب طرح پشت کارت</h2>
-<p class="brand-sub" style="margin-bottom:8px;">طرح مورد علاقهٔ خود را لمس کنید</p>
+<p class="brand-sub" style="margin-bottom:8px;">طرح مورد نظر را انتخاب کنید</p>
 
 <div class="card-panel" style="max-height:80vh; overflow-y:auto;">
-<div class="theme-category-title">طرح‌های روشن و پرطرفدار:</div>
+<div style="font-size:11px; color:var(--gold); font-weight:bold; text-align:right;">طرح‌های روشن و پرطرفدار:</div>
 <div class="card-back-grid">
 <div class="back-option" style="background: repeating-linear-gradient(45deg, #b91c1c 0, #b91c1c 4px, #f87171 4px, #f87171 8px);" onclick="selectCardBack(0)"></div>
 <div class="back-option" style="background: radial-gradient(circle, #fde047 15%, #ca8a04 85%);" onclick="selectCardBack(1)"></div>
 <div class="back-option" style="background: repeating-linear-gradient(-45deg, #cbd5e1 0, #cbd5e1 5px, #f8fafc 5px, #f8fafc 10px);" onclick="selectCardBack(2)"></div>
 </div>
 
-<div class="theme-category-title">طرح‌های تیره و کلاسیک:</div>
+<div style="font-size:11px; color:var(--gold); font-weight:bold; text-align:right;">طرح‌های تیره و کلاسیک:</div>
 <div class="card-back-grid">
 <div class="back-option" style="background: radial-gradient(circle, #1d4ed8 20%, #0f172a 90%);" onclick="selectCardBack(3)"></div>
 <div class="back-option" style="background: radial-gradient(circle, #047857 20%, #064e3b 90%);" onclick="selectCardBack(4)"></div>
 <div class="back-option" style="background: repeating-linear-gradient(45deg, #090d16 0, #090d16 4px, #1e293b 4px, #1e293b 8px);" onclick="selectCardBack(5)"></div>
 </div>
 
-<div class="theme-category-title">طرح‌های ساده و مینیمال:</div>
+<div style="font-size:11px; color:var(--gold); font-weight:bold; text-align:right;">طرح‌های ساده و مینیمال:</div>
 <div class="card-back-grid">
 <div class="back-option" style="background: #1e3a8a;" onclick="selectCardBack(6)"></div>
 <div class="back-option" style="background: #881337;" onclick="selectCardBack(7)"></div>
@@ -1178,7 +1230,7 @@ applyCardBack(currentCardBack);
 </div>
 </div>
 
-<!-- ۵. میز بازی اصلی -->
+<!-- ۵. میز مسابقه اصلی -->
 <header>
 <button type="button" class="btn-action btn-back" style="padding:4px 8px; font-size:10px;" onclick="handleInGameBack()">⇦ منو</button>
 <div class="team-badge">
@@ -1194,6 +1246,9 @@ applyCardBack(currentCardBack);
 <span style="font-size:9px;" id="meta-t1">تعهد: - | دست: ۰ | هشت: ۰</span>
 </div>
 </header>
+
+<!-- نوار هشدار هوشمند -->
+<div id="warning-strip">هشدار: جوکر سیاه را حداکثر با ۳ برگ در دست باید بازی کنید!</div>
 
 <div id="table-arena">
 <div class="seat-node" id="node-top">
@@ -1219,47 +1274,28 @@ applyCardBack(currentCardBack);
 </div>
 </div>
 
+<!-- نوار بزرگ نتیجه بازی در جریان بالای برگ‌های شما -->
+<div id="live-scoreboard-bar">
+<div class="live-score-item">
+<span>تیم ما:</span>
+<span class="live-score-num" id="live-t0-tricks">۰ از ۰</span>
+<span style="font-size:10px; color:#cbd5e1;">(مجموع: <span id="live-t0-pts" style="color:var(--gold);">۰</span>)</span>
+</div>
+<div style="color:rgba(255,255,255,0.2);">|</div>
+<div class="live-score-item">
+<span>حریف:</span>
+<span class="live-score-num" id="live-t1-tricks">۰ از ۰</span>
+<span style="font-size:10px; color:#cbd5e1;">(مجموع: <span id="live-t1-pts" style="color:var(--gold);">۰</span>)</span>
+</div>
+</div>
+
 <div id="user-hand-tray">
-<div style="font-size:10px; color:#cbd5e1; margin-bottom:2px; width:100%; text-align:right; padding-right:8px;">برگ‌های دست شما (۱۳ برگ):</div>
 <div class="hand-fan-container" id="user-cards-fan"></div>
 </div>
 
-<!-- مدال ارسال نظر و پیشنهاد -->
+<!-- مدال نظر و پیشنهاد -->
 <div class="modal-backdrop" id="feedback-modal">
-<div class="modal-sheet" style="text-align: inherit;">
-<h3 style="color:var(--gold); text-align:center; margin-bottom:8px;">ارسال نظر به سازنده</h3>
-<p style="font-size:12px; color:#94a3b8; margin-bottom:12px; line-height:1.5;">پیشنهادها مستقیماً به ادمین ارسال می‌شوند.</p>
-<input type="text" id="fb-sender" class="input-field" placeholder="نام شما (اختیاری)" style="margin-bottom:8px;">
-<textarea id="fb-message" class="input-field" rows="4" placeholder="متن نظر خود را بنویسید..." style="resize:none; text-align:right;"></textarea>
-<div id="fb-status" style="font-size:11px; margin-bottom:8px; text-align:center;"></div>
-<button type="button" class="btn-action" style="width:100%;" id="btn-submit-feedback" onclick="submitFeedbackForm()">ارسال پیام</button>
-<button type="button" class="btn-action btn-secondary" style="width:100%; margin-top:6px;" onclick="closeFeedbackModal()">انصراف</button>
-</div>
-</div>
+<div class="modal-sheet
+...
 
-<!-- راهنمای قوانین -->
-<div class="modal-backdrop" id="rules-modal">
-<div class="modal-sheet" style="text-align: right; font-size:12px; line-height:1.7;">
-<h3 style="color:var(--gold); text-align:center; margin-bottom:12px;">قوانین شلم پیک</h3>
-<p><b>۱. برگ‌ها:</b> دسته ۵۲ تایی؛ ۲ دل و ۲ خشت حذف و دو جوکر اضافه شده‌اند[span_3](start_span)[span_3](end_span).</p>
-<p><b>۲. حکم:</b> پیک همواره حکم است[span_4](start_span)[span_4](end_span).</p>
-<p><b>۳. تعهد:</b> حداقل تعهد هر بازیکن ۲ دست است[span_5](start_span)[span_5](end_span).</p>
-<p><b>۴. مهلت جوکر سیاه:</b> حداکثر تا ۳ برگ در دست باید بازی شود[span_6](start_span)[span_6](end_span).</p>
-<p><b>۵. هشت برتر:</b> تعهد ۸ دست موفق باعث ثبت هشت برتر و خنثی‌سازی هشت حریف می‌شود[span_7](start_span)[span_7](end_span).</p>
-<br>
-<button type="button" class="btn-action" style="width:100%;" onclick="document.getElementById('rules-modal').style.display='none'">متوجه شدم</button>
-</div>
-</div>
-
-<!-- گزارش پایان دور -->
-<div class="modal-backdrop" id="round-report-modal">
-<div class="modal-sheet">
-<h3 id="report-title" style="color:var(--gold); margin-bottom:10px;">نتیجه دور و کارنامه مسابقه</h3>
-<div id="report-body"></div>
-<button type="button" class="btn-action" style="width:100%; margin-top:8px;" onclick="startNewRoundCycle()">دور بعدی</button>
-</div>
-</div>
-
-</body>
-</html>
-
+[Message clipped]  View entire message
