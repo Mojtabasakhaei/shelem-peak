@@ -3,11 +3,10 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no, viewport-fit=cover">
-<title>شلم پیک</title>
-
-<!-- ثبت رسمی مالکیت مادی و معنوی اثر -->
+<title>شلم پیک - Shelem Peak</title>
+<!-- ثبت رسمی و قانونی مالکیت مادی و معنوی به نام مجتبی سخایی -->
 <meta name="author" content="مجتبی سخایی">
-<meta name="copyright" content="تمامی حقوق مادی و معنوی، ساختار، قوانین و ایده شلم پیک متعلق به مجتبی سخایی است.">
+<meta name="copyright" content="تمامی حقوق مادی و معنوی، ساختار و ایده بازی شلم پیک متعلق به مجتبی سخایی است.">
 <meta name="developer" content="Mojtaba Sakhaei">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -35,6 +34,34 @@ flex-direction: column;
 position: relative;
 }
 
+/* نوار انتخاب زبان در صفحه ورودی */
+.lang-switcher {
+display: flex;
+gap: 6px;
+margin-bottom: 20px;
+background: rgba(0, 0, 0, 0.4);
+padding: 4px;
+border-radius: 20px;
+border: 1px solid rgba(255, 255, 255, 0.15);
+}
+.lang-btn {
+background: transparent;
+border: none;
+color: #94a3b8;
+font-size: 11px;
+font-weight: bold;
+padding: 5px 12px;
+border-radius: 14px;
+cursor: pointer;
+transition: all 0.2s ease;
+}
+.lang-btn.active {
+background: var(--gold);
+color: #000;
+box-shadow: 0 0 10px var(--gold-glow);
+}
+
+/* صفحه ورودی */
 #welcome-screen {
 position: absolute;
 inset: 0;
@@ -57,13 +84,13 @@ margin-bottom: 6px;
 .brand-sub {
 font-size: 13px;
 color: #94a3b8;
-margin-bottom: 30px;
+margin-bottom: 22px;
 line-height: 1.5;
 }
 .menu-group {
 display: flex;
 flex-direction: column;
-gap: 12px;
+gap: 10px;
 width: 100%;
 max-width: 260px;
 }
@@ -71,7 +98,7 @@ max-width: 260px;
 background: var(--gold);
 color: #000;
 border: none;
-padding: 13px 18px;
+padding: 12px 16px;
 border-radius: 12px;
 font-weight: bold;
 font-size: 14px;
@@ -91,9 +118,18 @@ background: transparent;
 border: 1px solid var(--gold);
 color: var(--gold);
 box-shadow: none;
-margin-top: 6px;
+}
+.btn-feedback {
+background: #334155;
+color: #38bdf8;
+border: 1px dashed #38bdf8;
+box-shadow: none;
+font-size: 12px;
+padding: 10px;
+margin-top: 4px;
 }
 
+/* هدر تابلوی امتیاز */
 header {
 background: rgba(5, 10, 5, 0.9);
 padding: env(safe-area-inset-top, 8px) 12px 6px 12px;
@@ -128,6 +164,7 @@ display: none;
 z-index: 40;
 }
 
+/* میز مسابقه */
 #table-arena {
 flex: 1;
 background: var(--bg-felt);
@@ -178,6 +215,7 @@ align-items: center;
 .trick-slot[data-pos="left"] { transform: translateX(-34px); }
 .trick-slot[data-pos="right"] { transform: translateX(34px); }
 
+/* کادر شناور تعهد */
 #bid-controller {
 position: absolute;
 bottom: 110px;
@@ -206,6 +244,7 @@ justify-content: center;
 }
 #bid-val-num { font-size: 20px; font-weight: bold; color: var(--gold); min-width: 24px; text-align: center; }
 
+/* دست بازیکن */
 #user-hand-tray {
 background: rgba(0, 0, 0, 0.65);
 border-top: 1px solid rgba(255, 255, 255, 0.1);
@@ -253,6 +292,7 @@ border: 2px solid #38bdf8;
 background-image: repeating-linear-gradient(45deg, #0f172a 0, #0f172a 4px, #1e293b 4px, #1e293b 8px);
 }
 
+/* مدال‌ها و ورودی‌ها */
 .modal-backdrop {
 position: fixed;
 inset: 0;
@@ -274,33 +314,53 @@ text-align: center;
 max-height: 85vh;
 overflow-y: auto;
 }
+.input-box {
+width: 100%;
+background: #1e293b;
+border: 1px solid #475569;
+color: #fff;
+padding: 10px;
+border-radius: 8px;
+margin: 8px 0;
+font-family: inherit;
+font-size: 13px;
+resize: none;
+}
+.input-box:focus { outline: none; border-color: var(--gold); }
 </style>
 </head>
 <body>
 
-<!-- صفحه ورودی -->
+<!-- صفحه ورودی با سوئیچر زبان -->
 <div id="welcome-screen">
+<div class="lang-switcher">
+<button class="lang-btn active" id="btn-fa" onclick="setAppLanguage('fa')">فارسی</button>
+<button class="lang-btn" id="btn-en" onclick="setAppLanguage('en')">English</button>
+<button class="lang-btn" id="btn-ar" onclick="setAppLanguage('ar')">العربية</button>
+</div>
+
 <div style="font-size:46px; margin-bottom:6px;">♠</div>
-<h1 class="brand-title">شلم پیک</h1>
-<p class="brand-sub">نسخهٔ اختصاصی شلم لاری با حکم ثابت پیک</p>
+<h1 class="brand-title" id="txt-title">شلم پیک</h1>
+<p class="brand-sub" id="txt-subtitle">نسخهٔ اختصاصی شلم لاری با حکم ثابت پیک</p>
 
 <div class="menu-group">
-<button class="btn-action" onclick="appStartGame4()">ورود به بازی (۴ نفره)</button>
-<button class="btn-action btn-secondary" onclick="appOpenSixModal()">شلم پیک (۶ نفره) - به‌زودی</button>
-<button class="btn-action btn-outline" onclick="appOpenRulesModal()">راهنمای بازی و قوانین</button>
+<button class="btn-action" id="txt-play4" onclick="appStartGame4()">ورود به بازی (۴ نفره)</button>
+<button class="btn-action btn-secondary" id="txt-play6" onclick="appOpenSixModal()">شلم پیک (۶ نفره) - به‌زودی</button>
+<button class="btn-action btn-outline" id="txt-rules-btn" onclick="appOpenRulesModal()">راهنمای بازی و قوانین</button>
+<button class="btn-action btn-feedback" id="txt-feedback-btn" onclick="appOpenFeedbackModal()">✉ ارسال پیشنهاد به ادمین</button>
 </div>
 </div>
 
 <!-- هدر تابلوی امتیاز -->
 <header>
 <div class="team-badge">
-<span>تیم ما (شما و مهدی)</span>
+<span id="txt-team0-lbl">تیم ما (شما و مهدی)</span>
 <span class="team-score" id="score-t0">۰</span>
 <span style="font-size:9px;" id="meta-t0">تعهد: - | دست: ۰ | هشت: ۰</span>
 </div>
-<div class="trump-indicator">حکم: پیک ♠</div>
+<div class="trump-indicator" id="txt-trump-badge">حکم: پیک ♠</div>
 <div class="team-badge" style="text-align: left;">
-<span>تیم حریف</span>
+<span id="txt-team1-lbl">تیم حریف</span>
 <span class="team-score" id="score-t1">۰</span>
 <span style="font-size:9px;" id="meta-t1">تعهد: - | دست: ۰ | هشت: ۰</span>
 </div>
@@ -308,107 +368,59 @@ overflow-y: auto;
 
 <div id="warning-strip">هشدار: جوکر سیاه را حداکثر با ۳ برگ در دست باید بازی کنید!</div>
 
-<!-- میز بازی -->
+<!-- میز مسابقه -->
 <div id="table-arena">
 <div class="seat-node" id="node-top">
-<div class="player-pill" id="pill-2">مهدی (یار)<br><span id="bid-lbl-2">تعهد: ؟</span> | دست: <span id="tricks-2">۰</span></div>
+<div class="player-pill" id="pill-2"><span id="pname-2">مهدی (یار)</span><br><span id="bid-lbl-2">تعهد: ؟</span> | <span id="trick-lbl-2">دست:</span> <span id="tricks-2">۰</span></div>
 <div class="playing-card back-cover" style="width:28px; height:40px; margin:0;"></div>
 </div>
 
 <div class="seat-node" id="node-left">
-<div class="player-pill" id="pill-1">رضا<br><span id="bid-lbl-1">تعهد: ؟</span> | دست: <span id="tricks-1">۰</span></div>
+<div class="player-pill" id="pill-1"><span id="pname-1">رضا</span><br><span id="bid-lbl-1">تعهد: ؟</span> | <span id="trick-lbl-1">دست:</span> <span id="tricks-1">۰</span></div>
 <div class="playing-card back-cover" style="width:28px; height:40px; margin:0;"></div>
 </div>
 
 <div class="table-center-tricks" id="trick-drop-zone"></div>
 
 <div class="seat-node" id="node-right">
-<div class="player-pill" id="pill-3">سینا<br><span id="bid-lbl-3">تعهد: ؟</span> | دست: <span id="tricks-3">۰</span></div>
+<div class="player-pill" id="pill-3"><span id="pname-3">سینا</span><br><span id="bid-lbl-3">تعهد: ؟</span> | <span id="trick-lbl-3">دست:</span> <span id="tricks-3">۰</span></div>
 <div class="playing-card back-cover" style="width:28px; height:40px; margin:0;"></div>
 </div>
 
 <div id="bid-controller">
-<span style="font-size:11px; color:var(--gold);">تعهد شما:</span>
+<span style="font-size:11px; color:var(--gold);" id="txt-your-bid">تعهد شما:</span>
 <button class="bid-btn-circle" onclick="changeBidStep(-1)">-</button>
 <span id="bid-val-num">۲</span>
 <button class="bid-btn-circle" onclick="changeBidStep(1)">+</button>
-<button class="btn-action" style="padding:6px 14px; font-size:11px; margin:0;" onclick="confirmUserBid()">ثبت</button>
+<button class="btn-action" style="padding:6px 14px; font-size:11px; margin:0;" id="txt-bid-submit" onclick="confirmUserBid()">ثبت</button>
 </div>
 </div>
 
 <div id="user-hand-tray">
-<div style="font-size:10px; color:#cbd5e1; margin-bottom:2px; width:100%; text-align:right; padding-right:8px;">
+<div style="font-size:10px; color:#cbd5e1; margin-bottom:2px; width:100%; text-align:right; padding-right:8px;" id="txt-hand-label">
 برگ‌های دست شما (۱۳ برگ):
 </div>
 <div class="hand-fan-container" id="user-cards-fan"></div>
 </div>
 
-<!-- راهنمای قوانین -->
-<div class="modal-backdrop" id="rules-modal">
-<div class="modal-sheet" style="text-align: right; font-size:12px; line-height:1.7;">
-<h3 style="color:var(--gold); text-align:center; margin-bottom:12px;">قوانین شلم پیک (۴ نفره)</h3>
-<p><b>۱. برگ‌ها:</b> دسته ۵۲ تایی؛ ۲ دل و ۲ خشت حذف و دو جوکر اضافه شده‌اند.</p>
-<p><b>۲. حکم ثابت:</b> پیک همواره حکم است و نیازی به انتخاب ندارد.</p>
-<p><b>۳. تعهد:</b> حداقل تعهد هر بازیکن ۲ دست است. تعهد تیم = جمع تعهد دو یار.</p>
-<p><b>۴. قواعد جوکر:</b>
-<br>• جوکر رنگی بالاتر از تمام کارت‌ها است.
-<br>• جوکر سیاه از آس پیک بالاتر است.
-<br>• جوکر رنگی فقط پس از بازی‌شدن جوکر سیاه مجاز می‌شود.
-<br>• دارنده جوکر سیاه باید حداکثر زمانی که ۳ برگ در دست دارد آن را بازی کند و نباید به دو برگ پایانی برسد.</p>
-<p><b>۵. امتیازدهی:</b> موفقیت = ۱۰ × تعهد + دست‌های اضافه. نرسیدن به تعهد = منفی ۱۰ × تعهد.</p>
-<p><b>۶. هشت برتر:</b> تعهد ۸ و موفقیت در آن یک هشت برتر ثبت می‌کند. هشت‌های دو تیم همدیگر را خنثی می‌کنند. برای برد به ۵۰۰ امتیاز و حداقل ۱ هشت خنثی‌نشده نیاز است.</p>
-<br>
-<button class="btn-action" style="width:100%;" onclick="appCloseRulesModal()">متوجه شدم</button>
-</div>
-</div>
-
-<!-- پیام حالت ۶ نفره -->
-<div class="modal-backdrop" id="six-modal">
-<div class="modal-sheet">
-<h3 style="color:var(--gold); margin-bottom:10px;">شلم پیک (۶ نفره)</h3>
-<p style="font-size:13px; line-height:1.6; color:#cbd5e1; margin-bottom:16px;">
-گزینه ۶ نفره ثبت گردید. پس از نهایی‌سازی آزمایش نسخه ۴ نفره، با دریافت قوانین اختصاصیِ شما فعال خواهد شد.
+<!-- مدال ارسال پیشنهاد -->
+<div class="modal-backdrop" id="feedback-modal">
+<div class="modal-sheet" style="text-align: inherit;">
+<h3 style="color:var(--gold); text-align:center; margin-bottom:8px;" id="txt-fb-title">ارسال نظر به سازنده</h3>
+<p style="font-size:12px; color:#94a3b8; margin-bottom:12px; line-height:1.5;" id="txt-fb-desc">
+پیشنهادها و گزارش‌های شما مستقیماً به پنل اختصاصی ادمین بازی منتقل می‌شود.
 </p>
-<button class="btn-action" onclick="appCloseSixModal()">بازگشت</button>
+<input type="text" id="fb-sender" class="input-box" placeholder="نام یا شناسه شما (اختیاری)">
+<textarea id="fb-message" class="input-box" rows="4" placeholder="متن نظر یا پیشنهاد خود را اینجا بنویسید..."></textarea>
+<div id="fb-status" style="font-size:11px; margin-bottom:8px; text-align:center;"></div>
+<button class="btn-action" style="width:100%;" id="btn-submit-feedback" onclick="submitFeedbackForm()">ارسال پیام</button>
+<button class="btn-action btn-secondary" style="width:100%; margin-top:6px;" id="txt-fb-cancel" onclick="appCloseFeedbackModal()">انصراف</button>
 </div>
 </div>
 
-<!-- گزارش پایان دور -->
-<div class="modal-backdrop" id="round-report-modal">
-<div class="modal-sheet">
-<h3 id="report-title" style="color:var(--gold); margin-bottom:10px;">نتیجه دور</h3>
-<p id="report-body" style="font-size:13px; line-height:1.6; margin-bottom:16px;"></p>
-<button class="btn-action" onclick="appNextRound()">دور بعدی</button>
-</div>
-</div>
-
-<script>
-const SUIT_ICONS = { SPADES: '♠', HEARTS: '♥', DIAMONDS: '♦', CLUBS: '♣' };
-const POS_MAP = { 0: 'bottom', 1: 'left', 2: 'top', 3: 'right' };
-
-let state = {
-rules: { minBid: 2, targetScore: 500, enableEight: true, eightThreshold: 8 },
-teamScores: [0, 0],
-teamEights: [0, 0],
-players: [
-{ id: 0, name: 'شما', team: 0, hand: [], bid: 0, tricks: 0, isBot: false },
-{ id: 1, name: 'رضا', team: 1, hand: [], bid: 0, tricks: 0, isBot: true },
-{ id: 2, name: 'مهدی', team: 0, hand: [], bid: 0, tricks: 0, isBot: true },
-{ id: 3, name: 'سینا', team: 1, hand: [], bid: 0, tricks: 0, isBot: true }
-],
-currentTurn: 0,
-dealer: 0,
-trick: [],
-leadSuit: null,
-blackJokerPlayed: false,
-phase: 'bidding',
-tempUserBid: 2
-};
-
-function appStartGame4() {
-document.getElementById('welcome-screen').style.display = 'none';
-startNewRoundCycle();
-}
-function appOpenSixModal() {
-document.getElementById('six-modal
+<!-- مدال راهنمای قوانین -->
+<div class="modal-backdrop" id="rules-modal">
+<div class="modal-sheet" style="text-align: inherit; font-size:12px; line-height:1.7;">
+<h3 style="color:var(--gold); text-align:center; margin-bottom:12px;" id="txt-rules-modal-title">قوانین شلم پیک (۴ نفره)</h3>
+<div id="txt-rules-content
 
