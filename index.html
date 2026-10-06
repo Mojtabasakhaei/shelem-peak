@@ -131,7 +131,7 @@ font-size: 12px;
 padding: 9px;
 }
 
-/* شبکهٔ ۹ طرح کارت با دسته‌بندی و تیک */
+/* پشت کارت */
 .theme-category-title {
 font-size: 11px;
 color: var(--gold);
@@ -174,10 +174,9 @@ border-radius: 50%;
 display: flex;
 align-items: center;
 justify-content: center;
-box-shadow: 0 2px 4px rgba(0,0,0,0.5);
 }
 
-/* هدر امتیاز */
+/* هدر تابلوی امتیاز */
 header {
 background: rgba(5, 10, 5, 0.9);
 padding: env(safe-area-inset-top, 8px) 12px 6px 12px;
@@ -239,7 +238,6 @@ background: rgba(245, 158, 11, 0.2);
 box-shadow: 0 0 8px var(--gold);
 }
 
-/* کارت‌های سه بازیکن دیگر با سایز بزرگ‌تر و واضح‌تر */
 .other-player-card {
 width: 40px !important;
 height: 58px !important;
@@ -309,6 +307,7 @@ height: 84px;
 padding: 0 4px;
 }
 
+/* کارت‌ها و طراحی ظاهری جوکر واقعی */
 .playing-card {
 width: 46px;
 height: 72px;
@@ -337,6 +336,41 @@ background-position: center;
 border: 1px solid #cbd5e1;
 }
 
+/* طراحی واقعی جوکر */
+.joker-card {
+background: linear-gradient(135deg, #ffffff 0%, #f1f5f9 100%) !important;
+border: 1.5px solid #0f172a !important;
+display: flex;
+flex-direction: column;
+justify-content: space-between;
+align-items: center;
+padding: 2px !important;
+}
+.joker-card.color-joker {
+border-color: #b91c1c !important;
+background: linear-gradient(135deg, #fffbeb 0%, #fee2e2 100%) !important;
+}
+.joker-index {
+font-size: 7px;
+font-weight: 900;
+letter-spacing: 0.5px;
+line-height: 1;
+width: 100%;
+display: flex;
+justify-content: space-between;
+}
+.joker-art {
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+flex: 1;
+}
+.joker-art svg {
+width: 26px;
+height: 26px;
+}
+
 .modal-backdrop {
 position: fixed;
 inset: 0;
@@ -351,12 +385,32 @@ padding: 16px;
 background: #0f172a;
 border: 1px solid var(--gold);
 border-radius: 16px;
-padding: 20px;
+padding: 18px;
 width: 100%;
-max-width: 360px;
+max-width: 350px;
 text-align: inherit;
 max-height: 85vh;
 overflow-y: auto;
+}
+
+/* جدول گزارش پایانی مرحله */
+.round-table-summary {
+width: 100%;
+border-collapse: collapse;
+margin: 12px 0;
+font-size: 11px;
+text-align: center;
+}
+.round-table-summary th {
+background: #1e293b;
+color: var(--gold);
+padding: 6px 4px;
+border: 1px solid #334155;
+}
+.round-table-summary td {
+padding: 7px 4px;
+border: 1px solid #334155;
+color: #e2e8f0;
 }
 </style>
 
@@ -387,7 +441,7 @@ fbSendBtn: 'Send Message', fbCancel: 'Cancel', fbSending: 'Sending...',
 fbSuccess: 'Message sent successfully.', fbEmptyErr: 'Message is empty.'
 },
 ar: {
-dir: 'rtl', title: 'شلم بيك', subtitle: 'نسخة شلم لاري الحصرية مع حكم السبيت الدائم',
+dir: 'rtl', title: 'شلم بيك', subtitle: 'نسخة شلم لاري الحصرية مع حکم السبيت الدائم',
 play4: 'دخول اللعبة (٤ لاعبين)', play6: 'شلم بيك (٦ لاعبين) - قريباً',
 rulesBtn: 'قواعد اللعبة', customizeBtn: 'تصميم ظهر البطاقة',
 feedbackBtn: '✉ إرسال اقتراح للمشرف',
@@ -430,19 +484,13 @@ var currentUser = localStorage.getItem('shelem_current_user') || '';
 var turnCountdown = 15;
 var turnTimerInterval = null;
 
-/* ۹ الگوی محبوب کارت: ۳ روشن، ۳ تیره، ۳ مینیمال */
 var cardBacks = [
-// ۳ طرح روشن و پرطرفدار
 { id: 'b_l1', name: 'زنبوری قرمز و سفید', style: 'repeating-linear-gradient(45deg, #b91c1c 0, #b91c1c 4px, #f87171 4px, #f87171 8px)' },
 { id: 'b_l2', name: 'طلایی شنی اشرافی', style: 'radial-gradient(circle, #fde047 15%, #ca8a04 85%)' },
 { id: 'b_l3', name: 'نقره‌ای الماسی روشن', style: 'repeating-linear-gradient(-45deg, #cbd5e1 0, #cbd5e1 5px, #f8fafc 5px, #f8fafc 10px)' },
-
-// ۳ طرح تیره و محبوب
 { id: 'b_d1', name: 'آبی رویال کازینو', style: 'radial-gradient(circle, #1d4ed8 20%, #0f172a 90%)' },
 { id: 'b_d2', name: 'سبز زمردی سلطنتی', style: 'radial-gradient(circle, #047857 20%, #064e3b 90%)' },
 { id: 'b_d3', name: 'دودی گرانیتی کلاسیک', style: 'repeating-linear-gradient(45deg, #090d16 0, #090d16 4px, #1e293b 4px, #1e293b 8px)' },
-
-// ۳ طرح مینیمال و ساده
 { id: 'b_s1', name: 'آبی درباری ساده', style: '#1e3a8a' },
 { id: 'b_s2', name: 'زرشکی مات شیک', style: '#881337' },
 { id: 'b_s3', name: 'سرمه‌ای تیره مونوکروم', style: '#0f172a' }
@@ -464,11 +512,8 @@ updateThemeCheckmarks();
 function updateThemeCheckmarks() {
 var options = document.querySelectorAll('.back-option');
 options.forEach(function(el, i) {
-if (cardBacks[i].id === currentCardBackId) {
-el.classList.add('active');
-} else {
-el.classList.remove('active');
-}
+if (cardBacks[i].id === currentCardBackId) el.classList.add('active');
+else el.classList.remove('active');
 });
 }
 
@@ -509,7 +554,6 @@ document.getElementById('txt-custom-btn').innerText = dict.customizeBtn;
 document.getElementById('txt-feedback-btn').innerText = dict.feedbackBtn;
 }
 
-/* فرم پیشنهادها */
 function openFeedbackModal() {
 document.getElementById('feedback-modal').style.display = 'flex';
 document.getElementById('fb-status').innerText = '';
@@ -552,7 +596,6 @@ submitBtn.disabled = false;
 });
 }
 
-/* سیستم کاربر و لابی */
 function openAuthOrLobby() {
 if (currentUser) {
 openLobby();
@@ -643,7 +686,6 @@ document.getElementById('welcome-screen').classList.remove('hidden');
 }
 }
 
-/* موتور بازی شلم لاری */
 var SUIT_ICONS = { SPADES: '♠', HEARTS: '♥', DIAMONDS: '♦', CLUBS: '♣' };
 var POS_MAP = { 0: 'bottom', 1: 'left', 2: 'top', 3: 'right' };
 
@@ -739,11 +781,12 @@ document.getElementById('bid-val-num').innerText = state.tempUserBid;
 startTurnTimer();
 } else {
 document.getElementById('bid-controller').style.display = 'none';
+/* سرعت معتدل برای اعلام تعهد ربات (۱ ثانیه) */
 setTimeout(function() {
 var p = state.players[state.currentTurn];
 p.bid = 2 + Math.floor(Math.random() * 2);
 advanceBiddingTurn();
-}, 450);
+}, 1000);
 }
 }
 
@@ -777,11 +820,12 @@ renderView();
 if (state.phase !== 'playing') return;
 var p = state.players[state.currentTurn];
 if (p.isBot) {
+/* سرعت کمتر و ملایم‌تر برای انداختن برگ توسط ربات‌ها (۱۲۰۰ میلی‌ثانیه) */
 setTimeout(function() {
 var valids = getLegalMoves(state.currentTurn);
 var pick = valids[Math.floor(Math.random() * valids.length)];
 executeMove(state.currentTurn, pick);
-}, 550);
+}, 1200);
 } else {
 startTurnTimer();
 }
@@ -822,9 +866,11 @@ p.hand = p.hand.filter(function(c) { return c.id !== card.id; });
 if (card.type === 'blackJoker') state.blackJokerPlayed = true;
 if (state.trick.length === 0) state.leadSuit = card.suit;
 state.trick.push({ playerId: playerIndex, card: card });
+
 if (state.trick.length === 4) {
 renderView();
-setTimeout(settleTrickWinner, 750);
+/* افزایش مکث دیدن دست آخر تا ۱۵۰۰ میلی‌ثانیه برای فهمیدن برنده */
+setTimeout(settleTrickWinner, 1500);
 } else {
 state.currentTurn = (state.currentTurn + 1) % 4;
 triggerRoundPlay();
@@ -871,30 +917,57 @@ var violBid = state.players.filter(function(p) { return p.team === violatingTeam
 var oppBid = state.players.filter(function(p) { return p.team === opp; }).reduce(function(a,b){ return a + b.bid; }, 0);
 state.teamScores[violatingTeam] -= (10 * violBid);
 state.teamScores[opp] += (10 * oppBid);
-openReportModal("تخلف جوکر سیاه!", "به دلیل نگه‌‌داشتن جوکر سیاه در دو برگ آخر، دور متوقف و تیم متخلف جریمه شد.");
+openReportModal("تخلف جوکر سیاه!", "به دلیل نگه‌داشتن جوکر سیاه در دو برگ آخر، دور متوقف و تیم متخلف جریمه شد.");
 }
 
 function completeRoundScoring() {
-var reportTxt = "";
-for (var t = 0; t < 2; t++) {
-var bid = state.players.filter(function(p) { return p.team === t; }).reduce(function(a,b){ return a + b.bid; }, 0);
-var won = state.players.filter(function(p) { return p.team === t; }).reduce(function(a,b){ return a + b.tricks; }, 0);
-if (won >= bid) {
-var sc = (10 * bid) + (won - bid);
-state.teamScores[t] += sc;
-reportTxt += (t === 0 ? 'تیم ما' : 'تیم حریف') + ": تعهد " + bid + " | دست " + won + " ➔ " + sc + " امتیاز.<br>";
-if (state.rules.enableEight && bid >= state.rules.eightThreshold) {
-applyEightSuperior(t);
-reportTxt += "★ ثبت هشت برتر!<br>";
+var t0Bid = state.players.filter(function(p) { return p.team === 0; }).reduce(function(a,b){ return a + b.bid; }, 0);
+var t0Won = state.players.filter(function(p) { return p.team === 0; }).reduce(function(a,b){ return a + b.tricks; }, 0);
+var t1Bid = state.players.filter(function(p) { return p.team === 1; }).reduce(function(a,b){ return a + b.bid; }, 0);
+var t1Won = state.players.filter(function(p) { return p.team === 1; }).reduce(function(a,b){ return a + b.tricks; }, 0);
+
+var sc0 = (t0Won >= t0Bid) ? ((10 * t0Bid) + (t0Won - t0Bid)) : (-10 * t0Bid);
+var sc1 = (t1Won >= t1Bid) ? ((10 * t1Bid) + (t1Won - t1Bid)) : (-10 * t1Bid);
+
+state.teamScores[0] += sc0;
+state.teamScores[1] += sc1;
+
+if (state.rules.enableEight) {
+if (t0Bid >= state.rules.eightThreshold && t0Won >= t0Bid) applyEightSuperior(0);
+if (t1Bid >= state.rules.eightThreshold && t1Won >= t1Bid) applyEightSuperior(1);
 }
-} else {
-var pen = -10 * bid;
-state.teamScores[t] += pen;
-reportTxt += (t === 0 ? 'تیم ما' : 'تیم حریف') + ": عدم تعهد ➔ " + pen + " امتیاز.<br>";
-}
-}
+
+/* جدول کامل با جزئیات این دور + جمع کل امتیازات تا این مرحله */
+var reportHtml = '' +
+'<table class="round-table-summary">' +
+'<tr>' +
+'<th>تیم</th>' +
+'<th>تعهد</th>' +
+'<th>دست</th>' +
+'<th>امتیاز دور</th>' +
+'<th>مجموع کل</th>' +
+'</tr>' +
+'<tr>' +
+'<td><b>تیم ما</b></td>' +
+'<td>' + t0Bid + '</td>' +
+'<td>' + t0Won + '</td>' +
+'<td style="color:' + (sc0 >= 0 ? '#22c55e' : '#ef4444') + '">' + (sc0 >= 0 ? '+' : '') + sc0 + '</td>' +
+'<td style="color:var(--gold); font-weight:bold;">' + state.teamScores[0] + '</td>' +
+'</tr>' +
+'<tr>' +
+'<td><b>تیم حریف</b></td>' +
+'<td>' + t1Bid + '</td>' +
+'<td>' + t1Won + '</td>' +
+'<td style="color:' + (sc1 >= 0 ? '#22c55e' : '#ef4444') + '">' + (sc1 >= 0 ? '+' : '') + sc1 + '</td>' +
+'<td style="color:var(--gold); font-weight:bold;">' + state.teamScores[1] + '</td>' +
+'</tr>' +
+'</table>' +
+'<div style="font-size:11px; color:#94a3b8; margin:8px 0;">' +
+'هشت‌های فعال: تیم ما (' + state.teamEights[0] + ') | تیم حریف (' + state.teamEights[1] + ')' +
+'</div>';
+
 state.dealer = (state.dealer + 1) % 4;
-openReportModal("نتیجه دور", reportTxt);
+openReportModal("نتیجه دور و جدول کل مسابقه", reportHtml);
 }
 
 function applyEightSuperior(teamId) {
@@ -929,10 +1002,6 @@ var node = document.getElementById(i === 1 ? 'node-left' : i === 2 ? 'node-top' 
 if (node) node.classList.toggle('active', state.currentTurn === i && state.phase === 'playing');
 }
 
-var myBlack = state.players[0].hand.some(function(c) { return c.type === 'blackJoker'; });
-var warn = document.getElementById('warning-strip');
-if (warn) warn.style.display = (myBlack && state.players[0].hand.length <= 4) ? 'block' : 'none';
-
 var dropZone = document.getElementById('trick-drop-zone');
 dropZone.innerHTML = '';
 state.trick.forEach(function(t) {
@@ -959,6 +1028,7 @@ fanContainer.appendChild(cardEl);
 });
 }
 
+/* گرافیک واقعی جوکر و کارت‌ها */
 function buildCardVisual(card, isHand, isLegal) {
 var node = document.createElement('div');
 node.className = 'playing-card';
@@ -972,10 +1042,43 @@ node.innerHTML = '<div style="font-size:10px; line-height:1;">' + rankTxt + '</d
 '<div style="font-size:15px; text-align:center; line-height:1;">' + SUIT_ICONS[card.suit] + '</div>' +
 '<div style="font-size:10px; line-height:1; text-align:inherit;">' + rankTxt + '</div>';
 } else if (card.type === 'blackJoker') {
-node.innerHTML = '<div style="font-size:7px;">جوکر سیاه</div><div style="font-size:11px; text-align:center;">★</div><div style="font-size:7px; text-align:inherit;">JKR</div>';
+node.className += ' joker-card';
+node.innerHTML = '' +
+'<div class="joker-index" style="color:#0f172a;"><span>J</span><span>★</span></div>' +
+'<div class="joker-art">' +
+'<svg viewBox="0 0 64 64" fill="none" stroke="#0f172a" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">' +
+'<path d="M16 48 C16 32 48 32 48 48 Z" fill="#334155"/>' +
+'<circle cx="32" cy="28" r="10" fill="#f8fafc"/>' +
+'<path d="M22 24 C14 12 28 6 32 14 C36 6 50 12 42 24 Z" fill="#0f172a"/>' +
+'<circle cx="16" cy="12" r="3" fill="#f59e0b"/>' +
+'<circle cx="32" cy="6" r="3" fill="#f59e0b"/>' +
+'<circle cx="48" cy="12" r="3" fill="#f59e0b"/>' +
+'<circle cx="28" cy="28" r="1.5" fill="#000"/>' +
+'<circle cx="36" cy="28" r="1.5" fill="#000"/>' +
+'<path d="M28 33 Q32 37 36 33" stroke="#000" stroke-width="2"/>' +
+'</svg>' +
+'<span style="font-size:8px; font-weight:900; color:#0f172a; margin-top:1px;">JOKER</span>' +
+'</div>' +
+'<div class="joker-index" style="color:#0f172a; transform:rotate(180deg);"><span>J</span><span>★</span></div>';
 } else {
-node.classList.add('red');
-node.innerHTML = '<div style="font-size:7px;">جوکر رنگی</div><div style="font-size:11px; text-align:center;">★</div><div style="font-size:7px; text-align:inherit;">JKR</div>';
+node.className += ' joker-card color-joker';
+node.innerHTML = '' +
+'<div class="joker-index" style="color:#b91c1c;"><span>J</span><span style="color:#f59e0b;">★</span></div>' +
+'<div class="joker-art">' +
+'<svg viewBox="0 0 64 64" fill="none" stroke="#b91c1c" stroke-width="3" stroke-linecap="round" stroke-linejoin="round">' +
+'<path d="M16 48 C16 32 48 32 48 48 Z" fill="#b91c1c"/>' +
+'<circle cx="32" cy="28" r="10" fill="#fef3c7"/>' +
+'<path d="M22 24 C14 12 28 6 32 14 C36 6 50 12 42 24 Z" fill="#dc2626"/>' +
+'<circle cx="16" cy="12" r="3.5" fill="#f59e0b"/>' +
+'<circle cx="32" cy="6" r="3.5" fill="#f59e0b"/>' +
+'<circle cx="48" cy="12" r="3.5" fill="#f59e0b"/>' +
+'<circle cx="28" cy="28" r="1.5" fill="#b91c1c"/>' +
+'<circle cx="36" cy="28" r="1.5" fill="#b91c1c"/>' +
+'<path d="M27 32 Q32 38 37 32" stroke="#b91c1c" stroke-width="2.2"/>' +
+'</svg>' +
+'<span style="font-size:8px; font-weight:900; color:#b91c1c; margin-top:1px;">JOKER</span>' +
+'</div>' +
+'<div class="joker-index" style="color:#b91c1c; transform:rotate(180deg);"><span>J</span><span style="color:#f59e0b;">★</span></div>';
 }
 return node;
 }
@@ -1093,25 +1196,20 @@ applyCardBack(currentCardBack);
 </header>
 
 <div id="table-arena">
-<!-- مهدی (یار روبه‌رو) با کارت بزرگ‌تر -->
 <div class="seat-node" id="node-top">
 <div class="player-pill" id="pill-2"><span id="pname-2">مهدی</span><br><span id="bid-lbl-2">تعهد: ؟</span> | دست: <span id="tricks-2">۰</span></div>
 <div class="playing-card back-cover other-player-card"></div>
 </div>
-<!-- رضا (حریف چپ) با کارت بزرگ‌تر -->
 <div class="seat-node" id="node-left">
 <div class="player-pill" id="pill-1"><span id="pname-1">رضا</span><br><span id="bid-lbl-1">تعهد: ؟</span> | دست: <span id="tricks-1">۰</span></div>
 <div class="playing-card back-cover other-player-card"></div>
 </div>
-<!-- وسط میز: کارت‌های بازی‌شده -->
 <div class="table-center-tricks" id="trick-drop-zone"></div>
-<!-- سینا (حریف راست) با کارت بزرگ‌تر -->
 <div class="seat-node" id="node-right">
 <div class="player-pill" id="pill-3"><span id="pname-3">سینا</span><br><span id="bid-lbl-3">تعهد: ؟</span> | دست: <span id="tricks-3">۰</span></div>
 <div class="playing-card back-cover other-player-card"></div>
 </div>
 
-<!-- کادر شناور تعهد -->
 <div id="bid-controller">
 <span style="font-size:11px; color:var(--gold);">تعهد شما:</span>
 <button type="button" class="bid-btn-circle" onclick="changeBidStep(-1)">-</button>
@@ -1143,11 +1241,11 @@ applyCardBack(currentCardBack);
 <div class="modal-backdrop" id="rules-modal">
 <div class="modal-sheet" style="text-align: right; font-size:12px; line-height:1.7;">
 <h3 style="color:var(--gold); text-align:center; margin-bottom:12px;">قوانین شلم پیک</h3>
-<p><b>۱. برگ‌ها:</b> دسته ۵۲ تایی؛ ۲ دل و ۲ خشت حذف و دو جوکر اضافه شده‌اند[span_1](start_span)[span_1](end_span).</p>
-<p><b>۲. حکم:</b> پیک همواره حکم است[span_2](start_span)[span_2](end_span).</p>
-<p><b>۳. تعهد:</b> حداقل تعهد هر بازیکن ۲ دست است[span_3](start_span)[span_3](end_span).</p>
-<p><b>۴. مهلت جوکر سیاه:</b> حداکثر تا ۳ برگ در دست باید بازی شود[span_4](start_span)[span_4](end_span).</p>
-<p><b>۵. هشت برتر:</b> تعهد ۸ دست موفق باعث ثبت هشت برتر و خنثی‌سازی هشت حریف می‌شود[span_5](start_span)[span_5](end_span).</p>
+<p><b>۱. برگ‌ها:</b> دسته ۵۲ تایی؛ ۲ دل و ۲ خشت حذف و دو جوکر اضافه شده‌اند[span_3](start_span)[span_3](end_span).</p>
+<p><b>۲. حکم:</b> پیک همواره حکم است[span_4](start_span)[span_4](end_span).</p>
+<p><b>۳. تعهد:</b> حداقل تعهد هر بازیکن ۲ دست است[span_5](start_span)[span_5](end_span).</p>
+<p><b>۴. مهلت جوکر سیاه:</b> حداکثر تا ۳ برگ در دست باید بازی شود[span_6](start_span)[span_6](end_span).</p>
+<p><b>۵. هشت برتر:</b> تعهد ۸ دست موفق باعث ثبت هشت برتر و خنثی‌سازی هشت حریف می‌شود[span_7](start_span)[span_7](end_span).</p>
 <br>
 <button type="button" class="btn-action" style="width:100%;" onclick="document.getElementById('rules-modal').style.display='none'">متوجه شدم</button>
 </div>
@@ -1156,9 +1254,9 @@ applyCardBack(currentCardBack);
 <!-- گزارش پایان دور -->
 <div class="modal-backdrop" id="round-report-modal">
 <div class="modal-sheet">
-<h3 id="report-title" style="color:var(--gold); margin-bottom:10px;">نتیجه دور</h3>
-<p id="report-body" style="font-size:13px; line-height:1.6; margin-bottom:16px;"></p>
-<button type="button" class="btn-action" onclick="startNewRoundCycle()">دور بعدی</button>
+<h3 id="report-title" style="color:var(--gold); margin-bottom:10px;">نتیجه دور و کارنامه مسابقه</h3>
+<div id="report-body"></div>
+<button type="button" class="btn-action" style="width:100%; margin-top:8px;" onclick="startNewRoundCycle()">دور بعدی</button>
 </div>
 </div>
 
