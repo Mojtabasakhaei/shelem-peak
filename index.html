@@ -30,7 +30,6 @@ color: var(--text-main);
 display: flex;
 flex-direction: column;
 }
-.hidden { display: none !important; }
 
 /* صفحه منو و فرود */
 .view-screen {
@@ -152,7 +151,6 @@ font-size: 12px;
 padding: 9px;
 }
 
-/* ۹ طرح پشت کارت */
 .card-back-grid {
 display: grid;
 grid-template-columns: repeat(3, 1fr);
@@ -197,7 +195,7 @@ font-size: 11px;
 border-bottom: 1px solid rgba(255, 215, 0, 0.2);
 z-index: 50;
 flex-shrink: 0;
-min-height: 42px;
+min-height: 44px;
 }
 .team-badge { display: flex; flex-direction: column; line-height: 1.2; }
 .team-score { font-size: 14px; font-weight: 800; color: var(--gold); }
@@ -216,7 +214,7 @@ z-index: 40;
 flex-shrink: 0;
 }
 
-/* محیط میز مسابقه */
+/* محیط میز بازی */
 #table-arena {
 flex: 1 1 auto;
 background: var(--bg-felt);
@@ -265,8 +263,8 @@ padding: 8px 16px;
 display: none;
 align-items: center;
 gap: 12px;
-z-index: 90;
-box-shadow: 0 10px 25px rgba(0,0,0,0.7);
+z-index: 95;
+box-shadow: 0 10px 25px rgba(0,0,0,0.8);
 }
 .bid-btn-circle {
 width: 32px;
@@ -305,13 +303,13 @@ z-index: 55;
 #user-hand-tray {
 flex: 0 0 auto;
 width: 100%;
-background: rgba(0, 0, 0, 0.85);
-padding: 4px 4px calc(env(safe-area-inset-bottom, 14px) + 2px) 4px;
+background: rgba(0, 0, 0, 0.9);
+padding: 6px 4px calc(env(safe-area-inset-bottom, 16px) + 4px) 4px;
 display: flex;
 flex-direction: column;
 align-items: center;
 z-index: 60;
-min-height: 86px;
+min-height: 94px;
 }
 .hand-fan-container {
 display: flex;
@@ -319,13 +317,13 @@ justify-content: center;
 align-items: flex-end;
 width: 100%;
 max-width: 440px;
-height: 74px;
+height: 78px;
 padding: 0 4px;
 }
 
 .playing-card {
 width: 44px;
-height: 68px;
+height: 72px;
 background: var(--card-bg);
 border-radius: 5px;
 box-shadow: -2px 2px 6px rgba(0,0,0,0.5);
@@ -334,11 +332,12 @@ color: #0f172a;
 display: flex;
 flex-direction: column;
 justify-content: space-between;
-padding: 2px;
+padding: 3px;
 font-weight: 800;
 position: relative;
 cursor: pointer;
 margin-left: -20px;
+touch-action: manipulation;
 }
 .playing-card:first-child { margin-left: 0; }
 .playing-card.selectable:active { transform: translateY(-16px); }
@@ -351,7 +350,7 @@ background-position: center;
 border: 1px solid #cbd5e1;
 }
 
-/* جوکرهای واقعی بر اساس عکس ارسالی */
+/* جوکرهای اصیل و دقیق */
 .joker-card {
 background: #fafafa !important;
 border: 1px solid #475569 !important;
@@ -381,13 +380,13 @@ width: 28px;
 height: 46px;
 }
 
-/* پنجره‌های مدال */
+/* مدال‌ها */
 .modal-backdrop {
 position: fixed;
 inset: 0;
 background: rgba(0,0,0,0.88);
 z-index: 300;
-display: flex;
+display: none;
 justify-content: center;
 align-items: center;
 padding: 16px;
@@ -559,19 +558,19 @@ document.getElementById('txt-team0-lbl').innerText = dict.team0;
 document.getElementById('txt-team1-lbl').innerText = dict.team1;
 }
 
-/* توابع تضمینی باز و بسته شدن مودال‌ها */
+/* باز و بسته شدن دقیق پنجره‌ها بدون باگ کلاس‌های CSS */
 function openFeedbackModal() {
-document.getElementById('feedback-modal').classList.remove('hidden');
+document.getElementById('feedback-modal').style.display = 'flex';
 document.getElementById('fb-status').innerText = '';
 }
 function closeFeedbackModal() {
-document.getElementById('feedback-modal').classList.add('hidden');
+document.getElementById('feedback-modal').style.display = 'none';
 }
 function openRulesModal() {
-document.getElementById('rules-modal').classList.remove('hidden');
+document.getElementById('rules-modal').style.display = 'flex';
 }
 function closeRulesModal() {
-document.getElementById('rules-modal').classList.add('hidden');
+document.getElementById('rules-modal').style.display = 'none';
 }
 
 function submitFeedbackForm() {
@@ -603,8 +602,8 @@ submitBtn.disabled = false;
 function openAuthOrLobby() {
 if (currentUser) openLobby();
 else {
-document.getElementById('welcome-screen').classList.add('hidden');
-document.getElementById('auth-screen').classList.remove('hidden');
+document.getElementById('welcome-screen').style.display = 'none';
+document.getElementById('auth-screen').style.display = 'flex';
 }
 }
 
@@ -617,13 +616,13 @@ registeredUsers.push(name);
 localStorage.setItem('shelem_all_users', JSON.stringify(registeredUsers));
 currentUser = name;
 localStorage.setItem('shelem_current_user', name);
-document.getElementById('auth-screen').classList.add('hidden');
+document.getElementById('auth-screen').style.display = 'none';
 openLobby();
 }
 
 function openLobby() {
-document.getElementById('welcome-screen').classList.add('hidden');
-document.getElementById('lobby-screen').classList.remove('hidden');
+document.getElementById('welcome-screen').style.display = 'none';
+document.getElementById('lobby-screen').style.display = 'flex';
 document.getElementById('slot-p0-name').innerText = currentUser + ' (شما)';
 renderRegisteredDropdowns();
 }
@@ -646,15 +645,15 @@ s3.innerHTML += '<option value="' + u + '">' + u + '</option>';
 }
 
 function goBackToWelcome() {
-document.getElementById('auth-screen').classList.add('hidden');
-document.getElementById('lobby-screen').classList.add('hidden');
-document.getElementById('customize-screen').classList.add('hidden');
-document.getElementById('welcome-screen').classList.remove('hidden');
+document.getElementById('auth-screen').style.display = 'none';
+document.getElementById('lobby-screen').style.display = 'none';
+document.getElementById('customize-screen').style.display = 'none';
+document.getElementById('welcome-screen').style.display = 'flex';
 }
 
 function openCustomizeScreen() {
-document.getElementById('welcome-screen').classList.add('hidden');
-document.getElementById('customize-screen').classList.remove('hidden');
+document.getElementById('welcome-screen').style.display = 'none';
+document.getElementById('customize-screen').style.display = 'flex';
 updateThemeCheckmarks();
 }
 
@@ -677,7 +676,7 @@ if (valids.length > 0) userPickCard(valids[0].id);
 
 function handleInGameBack() {
 var confirmLeave = confirm('آیا موقتاً به منو بازمی‌گردید؟');
-if (confirmLeave) document.getElementById('welcome-screen').classList.remove('hidden');
+if (confirmLeave) document.getElementById('welcome-screen').style.display = 'flex';
 }
 
 var SUIT_ICONS = { SPADES: '♠', HEARTS: '♥', DIAMONDS: '♦', CLUBS: '♣' };
@@ -716,8 +715,8 @@ document.getElementById('pname-1').innerText = p1;
 document.getElementById('pname-3').innerText = p3;
 document.getElementById('txt-team0-lbl').innerText = (I18N[curLang].team0) + ' (' + state.players[0].name + ' و ' + p2 + ')';
 
-document.getElementById('lobby-screen').classList.add('hidden');
-document.getElementById('welcome-screen').classList.add('hidden');
+document.getElementById('lobby-screen').style.display = 'none';
+document.getElementById('welcome-screen').style.display = 'none';
 startNewRoundCycle();
 }
 
@@ -749,7 +748,7 @@ return deck.sort(function() { return Math.random() - 0.5; });
 }
 
 function startNewRoundCycle() {
-document.getElementById('round-report-modal').classList.add('hidden');
+document.getElementById('round-report-modal').style.display = 'none';
 var deck = createFreshDeck();
 for (var i = 0; i < 4; i++) {
 state.players[i].hand = sortPlayerHand(deck.slice(i * 13, (i + 1) * 13));
@@ -856,7 +855,6 @@ return valids[0];
 
 function getLegalMoves(playerIndex) {
 var p = state.players[playerIndex];
-// در برگ آخر هیچ محدودیتی نیست
 if (p.hand.length === 1) return p.hand;
 
 if (state.trick.length === 0) {
@@ -1007,7 +1005,7 @@ function openReportModal(title, content) {
 state.phase = 'ended';
 document.getElementById('report-title').innerText = title;
 document.getElementById('report-body').innerHTML = content;
-document.getElementById('round-report-modal').classList.remove('hidden');
+document.getElementById('round-report-modal').style.display = 'flex';
 renderView();
 }
 
@@ -1033,7 +1031,6 @@ var node = document.getElementById(i === 1 ? 'node-left' : i === 2 ? 'node-top' 
 if (node) node.classList.toggle('active', state.currentTurn === i && state.phase === 'playing');
 }
 
-// هشدار دست ۱۰ و جوکر سیاه
 var myBlack = state.players[0].hand.some(function(c) { return c.type === 'blackJoker'; });
 var warn = document.getElementById('warning-strip');
 if (myBlack && state.players[0].hand.length === 4) {
@@ -1057,15 +1054,15 @@ wrapper.appendChild(cNode);
 dropZone.appendChild(wrapper);
 });
 
-// رندر قطعی و بدون افت برگ‌های دست کاربر
+// رندر قطعی و بدون قفل برگ‌های دست کاربر
 var fanContainer = document.getElementById('user-cards-fan');
 fanContainer.innerHTML = '';
 var valids = (state.phase === 'playing' && state.currentTurn === 0) ? getLegalMoves(0) : [];
 
 state.players[0].hand.forEach(function(c) {
-var canPlay = state.phase === 'bidding' || valids.some(function(v) { return v.id === c.id; });
-var cardEl = buildCardVisual(c, true, canPlay);
-if (state.phase === 'playing' && canPlay) {
+var isLegal = (state.phase === 'bidding') || (state.phase === 'playing' && state.currentTurn === 0 && valids.some(function(v) { return v.id === c.id; }));
+var cardEl = buildCardVisual(c, true, isLegal);
+if (state.phase === 'playing' && state.currentTurn === 0 && isLegal) {
 cardEl.classList.add('selectable');
 cardEl.setAttribute('onclick', "userPickCard('" + c.id + "')");
 }
@@ -1173,7 +1170,7 @@ applyCardBack(currentCardBack);
 </div>
 
 <!-- ۲. صفحه ثبت کاربری -->
-<div class="view-screen hidden" id="auth-screen">
+<div class="view-screen" id="auth-screen" style="display:none;">
 <h2 class="brand-title" style="font-size:24px;">ثبت‌نام بازیکن جدید</h2>
 <p class="brand-sub">تعیین شناسهٔ یکتا در مسابقات</p>
 <div class="card-panel">
@@ -1185,7 +1182,7 @@ applyCardBack(currentCardBack);
 </div>
 
 <!-- ۳. صفحه لابی -->
-<div class="view-screen hidden" id="lobby-screen">
+<div class="view-screen" id="lobby-screen" style="display:none;">
 <h2 class="brand-title" style="font-size:24px;">میز و ترکیب بازیکنان</h2>
 <p class="brand-sub">انتخاب هم‌تیمی و رقیبان مسابقه</p>
 <div class="card-panel">
@@ -1203,7 +1200,7 @@ applyCardBack(currentCardBack);
 </div>
 
 <!-- ۴. صفحه شخصی‌سازی پشت کارت -->
-<div class="view-screen hidden" id="customize-screen">
+<div class="view-screen" id="customize-screen" style="display:none;">
 <h2 class="brand-title" style="font-size:22px;">انتخاب طرح پشت کارت</h2>
 <p class="brand-sub" style="margin-bottom:8px;">طرح مورد نظر را انتخاب کنید</p>
 
@@ -1237,7 +1234,7 @@ applyCardBack(currentCardBack);
 </div>
 </div>
 
-<!-- ۵. میز مسابقه اصلی -->
+<!-- ۵. میز مسابقه -->
 <header>
 <button type="button" class="btn-action btn-back" style="padding:4px 8px; font-size:10px;" onclick="handleInGameBack()">⇦ منو</button>
 <div class="team-badge">
@@ -1281,15 +1278,16 @@ applyCardBack(currentCardBack);
 </div>
 </div>
 
-<!-- تابلوی افقی و درشت دست حاضر -->
+<!-- تابلوی درشت دست حاضر -->
 <div id="round-status-bar">
 <div>تیم ما: <span class="round-status-num" id="status-t0-tricks">۰ از ؟</span></div>
-<div style="color:rgba(255,255,255,0.2);">|</div>
 <div>تیم حریف: <span class="round-status-num" id="status-t1-tricks">۰ از ؟</span></div>
 </div>
 
-<!-- سینی کارت‌های دست کاربر با نمایش تضمین‌شده -->
+<!-- سینی برگ‌های دست بازیکن -->
 <div id="user-hand-tray">
+<div class="hand-fan-container" id="user-cards-fan"></div>
+</div>
 ...
 
 [Message clipped]  View entire message
