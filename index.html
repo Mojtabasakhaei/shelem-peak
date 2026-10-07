@@ -99,5 +99,3 @@ window.addEventListener('error',function(e){showRuntimeError(e.message||'خطا�
 // The script is after the DOM. No undefined window.onload call.
 applyCardBack(currentCardBack);cardBacks.forEach(function(b,i){var button=document.createElement('button');button.className='back-option';button.style.background=b.style;button.setAttribute('aria-label',b.name);button.onclick=function(){selectCardBack(i);};el('card-back-options').appendChild(button);});updateThemeCheckmarks();setAppLanguage('fa');renderView();
 </script></body></html>
-index.html
-Displaying index.html.
