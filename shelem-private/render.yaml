@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: shelem-private
+    runtime: node
+    plan: free
+    rootDir: shelem-private
+    buildCommand: node --version
+    startCommand: npm start
+    envVars:
+      - key: NODE_VERSION
+        value: "22"
+      - key: REQUIRE_PERSISTENCE
+        value: "true"
+      - key: SUPABASE_URL
+        sync: false
+      - key: SUPABASE_SECRET_KEY
+        sync: false
+      - key: PUBLIC_ORIGIN
+        sync: false
