@@ -52,7 +52,10 @@ async function body(req){let raw='';for await(const chunk of req){raw+=chunk;if(
 function reply(res,status,data){res.writeHead(status,{'Content-Type':'application/json; charset=utf-8','Cache-Control':'no-store'});res.end(JSON.stringify(data));}
 export function createServer(){return http.createServer((req,res)=>{serial(async()=>{const before=JSON.stringify(snapshot());let status=200,response;const send=(code,data)=>{status=code;response=data;};try{
  const url=new URL(req.url,'http://localhost');
- if(req.method==='GET'&&url.pathname==='/'){res.writeHead(200,{'Content-Type':'text/html; charset=utf-8','Cache-Control':'no-cache','X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer'});res.end(fs.readFileSync(root+'public/index.html'));return;}
+ if(req.method==='GET'&&['/','/online','/offline','/sw.js'].includes(url.pathname)){
+ const file={'/':'public/home.html','/online':'public/index.html','/offline':'public/offline.html','/sw.js':'public/sw.js'}[url.pathname];
+ res.writeHead(200,{'Content-Type':url.pathname==='/sw.js'?'text/javascript; charset=utf-8':'text/html; charset=utf-8','Cache-Control':'no-cache','X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer'});res.end(fs.readFileSync(root+file));return;
+ }
  if(url.pathname==='/health'){send(200,{ok:true});return;}
  if(req.method==='GET'&&url.pathname==='/api/state'){const {room,seat}=identify(req);send(200,view(room,seat));return;}
  if(req.method!=='POST')fail('مسیر پیدا نشد.',404);
