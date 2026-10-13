@@ -15,7 +15,7 @@ test('actual process restart restores tokens, cards and pending trick exactly on
  const get=i=>call('state',null,members[i].token);
  for(let i=0;i<4;i++){const s=await get(i);await call('ready',{ready:true,version:s.version},members[i].token);}
  let s=await get(0);await call('start',{version:s.version},members[0].token);
- for(let i=0;i<4;i++){s=await get(0);await call('bid',{version:s.version,bid:2},members[s.turn].token);}
+ for(let i=0;i<4;i++){s=await get(0);await call('bid',{version:s.version,bid:3},members[s.turn].token);}
  for(let i=0;i<4;i++){s=await get(0);const own=await get(s.turn);await call('play',{version:own.version,card:own.legal[0]},members[s.turn].token);}
  const before=await Promise.all(members.map((_,i)=>get(i)));assert.equal(before[0].trick.length,4);
  await stop();await boot();let after=await get(0);assert.deepEqual(after.hand,before[0].hand);assert.equal(after.trick.length,4);assert.equal(after.code,before[0].code);

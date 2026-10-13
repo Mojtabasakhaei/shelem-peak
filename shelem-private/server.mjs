@@ -34,15 +34,15 @@ function newEngine(room){
  ctx.window=ctx;ctx.addEventListener=()=>{};vm.createContext(ctx);vm.runInContext(source,ctx);
  ctx.renderView=()=>{};ctx.startTurnTimer=()=>{};ctx.runBiddingRoutine=()=>{};
  ctx.triggerRoundPlay=()=>{if(ctx.state.phase==='playing'&&!ctx.state.moveLocked)ctx.enforceBlackJokerDeadline(ctx.state.currentTurn);};
- ctx.recordPersonalRound=()=>null;
+ ctx.recordPersonalRound=()=>null;ctx.state.serverMode=true;
  room.ctx=ctx;room.nodes=nodes;room.timers=timers;
  ctx.state.players.forEach(p=>p.isBot=false);
 }
 function member(room,name,seat){const token=crypto.randomBytes(32).toString('hex');room.members[seat]={name,token,ready:false,lastSeen:Date.now()};sessions.set(token,{room,seat});room.version++;return {code:room.code,token,seat};}
 function identify(req){const token=(req.headers.authorization||'').replace(/^Bearer /,'');const session=sessions.get(token);if(!session)fail('نشست معتبر نیست؛ دوباره وارد میز شوید.',401);session.room.touched=Date.now();session.room.members[session.seat].lastSeen=Date.now();return session;}
-function view(room,seat){const s=room.ctx.state;return {code:room.code,version:room.version,you:seat,host:seat===0,phase:room.started?s.phase:'lobby',members:room.members.map((m,i)=>m?{name:m.name,seat:i,team:i%2,ready:m.ready,connected:Date.now()-m.lastSeen<10000}:null),players:s.players.map((p,i)=>({name:room.members[i]?.name||'',bid:p.bid,tricks:p.tricks,count:p.hand.length,team:p.team})),hand:room.started?s.players[seat].hand:[],legal:room.started&&s.phase==='playing'&&s.currentTurn===seat&&!s.moveLocked?room.ctx.getLegalMoves(seat).map(c=>c.id):[],turn:s.currentTurn,locked:s.moveLocked,trick:s.trick,scores:s.teamScores,eights:s.teamEights,round:s.roundNumber,report:s.phase==='ended'?room.nodes.get('report-body')?.innerHTML||'':'',reportTitle:s.phase==='ended'?room.nodes.get('report-title')?.textContent||'':'',winner:s.matchWinner,hakem:room.hakem??null};}
-function beginRound(room){const c=room.ctx;
- room.hakem=room.hakem===undefined?crypto.randomInt(4):nextHakem(room.hakem,c.state.teamScores,c.state.teamEights);
+function view(room,seat){const s=room.ctx.state;return {code:room.code,version:room.version,you:seat,host:seat===0,phase:room.started?s.phase:'lobby',members:room.members.map((m,i)=>m?{name:m.name,seat:i,team:i%2,ready:m.ready,connected:Date.now()-m.lastSeen<10000}:null),players:s.players.map((p,i)=>({name:room.members[i]?.name||'',bid:p.bid,tricks:p.tricks,personalTotal:p.personalTotal||0,count:p.hand.length,team:p.team})),hand:room.started?s.players[seat].hand:[],legal:room.started&&s.phase==='playing'&&s.currentTurn===seat&&!s.moveLocked?room.ctx.getLegalMoves(seat).map(c=>c.id):[],turn:s.currentTurn,locked:s.moveLocked,trick:s.trick,scores:s.teamScores,eights:s.teamEights,round:s.roundNumber,report:s.phase==='ended'?room.nodes.get('report-body')?.innerHTML||'':'',reportTitle:s.phase==='ended'?room.nodes.get('report-title')?.textContent||'':'',winner:s.matchWinner,repeatDeal:!!s.repeatDeal,noPlayPersonal:s.noPlayPersonal||null,hakem:room.hakem??null};}
+function beginRound(room,repeat=false){const c=room.ctx;if(repeat)c.state.roundNumber--;
+ room.hakem=repeat?room.hakem:room.hakem===undefined?crypto.randomInt(4):nextHakem(room.hakem,c.state.teamScores,c.state.teamEights);
  c.state.dealer=(room.hakem+3)%4;c.startNewRoundCycle();
  const hands=dealPackages(c.createFreshDeck(),room.hakem);
  c.state.players.forEach((p,i)=>{p.name=room.members[i].name;p.isBot=false;p.hand=c.sortPlayerHand(hands[i]);});
@@ -56,7 +56,7 @@ export function createServer(){return http.createServer((req,res)=>{serial(async
  const file={'/':'public/home.html','/online':'public/index.html','/offline':'public/offline.html','/sw.js':'public/sw.js'}[url.pathname];
  res.writeHead(200,{'Content-Type':url.pathname==='/sw.js'?'text/javascript; charset=utf-8':'text/html; charset=utf-8','Cache-Control':'no-cache','X-Content-Type-Options':'nosniff','Referrer-Policy':'no-referrer'});res.end(fs.readFileSync(root+file));return;
  }
- if(url.pathname==='/health'){send(200,{ok:true});return;}
+ if(url.pathname==='/health'){send(200,{ok:true,release:'2026-10-13-rules-v3'});return;}
  if(req.method==='GET'&&url.pathname==='/api/state'){const {room,seat}=identify(req);send(200,view(room,seat));return;}
  if(req.method!=='POST')fail('مسیر پیدا نشد.',404);
  // Same-origin browser requests only. No cross-site cookie authentication.
@@ -69,9 +69,9 @@ export function createServer(){return http.createServer((req,res)=>{serial(async
  if(b.version!==room.version)fail('وضعیت میز تغییر کرده؛ دوباره تلاش کنید.',409);
  if(url.pathname==='/api/ready'){if(room.started)fail('بازی شروع شده است.');room.members[seat].ready=!!b.ready;}
  else if(url.pathname==='/api/start'){if(seat!==0)fail('فقط سازنده میز می‌تواند شروع کند.',403);if(room.started)fail('بازی شروع شده است.');if(!room.members.every(m=>m?.ready))fail('هر چهار بازیکن باید ترکیب را تأیید کنند.');beginRound(room);}
- else if(url.pathname==='/api/bid'){if(!room.started||s.phase!=='bidding'||s.currentTurn!==seat)fail('نوبت تعهد شما نیست.');if(!Number.isInteger(b.bid)||b.bid<2||b.bid>13)fail('تعهد باید بین ۲ و ۱۳ باشد.');s.players[seat].bid=b.bid;s.currentTurn=(seat+1)%4;if(s.players.every(p=>p.bid>=2)){s.phase='playing';s.currentTurn=(s.dealer+1)%4;c.triggerRoundPlay();}}
+ else if(url.pathname==='/api/bid'){if(!room.started||s.phase!=='bidding'||s.currentTurn!==seat)fail('نوبت تعهد شما نیست.');if(!Number.isInteger(b.bid)||b.bid<2||b.bid>13)fail('تعهد باید بین ۲ و ۱۳ باشد.');s.players[seat].bid=b.bid;s.currentTurn=(seat+1)%4;if(s.players.every(p=>p.bid>=2))c.finishBidding();}
  else if(url.pathname==='/api/play'){if(!room.started||s.phase!=='playing'||s.currentTurn!==seat||s.moveLocked)fail('نوبت بازی شما نیست.');const card=s.players[seat].hand.find(x=>x.id===b.card);if(!card)fail('کارت در دست شما نیست.');const before=s.phase;if(!c.executeMove(seat,card)&&s.phase===before)fail('این کارت در این نوبت مجاز نیست.');}
- else if(url.pathname==='/api/next'){if(seat!==0||s.phase!=='ended')fail('فقط سازنده پس از پایان دور می‌تواند ادامه دهد.');if(s.matchWinner!==null){s.teamScores=[0,0];s.teamEights=[0,0];s.roundNumber=0;room.hakem=undefined;}beginRound(room);}
+ else if(url.pathname==='/api/next'){if(seat!==0||s.phase!=='ended')fail('فقط سازنده پس از پایان دور می‌تواند ادامه دهد.');if(s.matchWinner!==null){s.teamScores=[0,0];s.teamEights=[0,0];s.roundNumber=0;room.hakem=undefined;}beginRound(room,!!s.repeatDeal);}
  else if(url.pathname==='/api/leave'){if(room.started)fail('بازی در جریان است؛ نشست شما برای بازگشت حفظ می‌شود.');if(seat===0){room.members.filter(Boolean).forEach(m=>sessions.delete(m.token));rooms.delete(room.code);}else{sessions.delete(room.members[seat].token);room.members[seat]=null;room.members.forEach(m=>{if(m)m.ready=false;});}send(200,{left:true});return;}
  else fail('مسیر پیدا نشد.',404);
  room.version++;send(200,view(room,seat));
